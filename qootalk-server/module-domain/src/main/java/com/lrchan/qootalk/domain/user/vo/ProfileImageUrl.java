@@ -2,7 +2,7 @@ package com.lrchan.qootalk.domain.user.vo;
 
 public class ProfileImageUrl {
     
-    private String value;
+    private final String value;
 
     public ProfileImageUrl(String value) {
         validate(value);
@@ -20,5 +20,18 @@ public class ProfileImageUrl {
         if (!value.matches("^https?://.*")) {
             throw new IllegalArgumentException("Invalid profile image URL format");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProfileImageUrl that = (ProfileImageUrl) o;
+        return value.equals(that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }
