@@ -6,8 +6,8 @@ public abstract class BaseException extends RuntimeException {
     
     private final ErrorCode errorCode;
 
-    public BaseException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
+    public BaseException(ErrorCode errorCode, Throwable cause) {
+        super(errorCode.getMessage(), cause);
         this.errorCode = errorCode;
     }
 
