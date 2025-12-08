@@ -1,4 +1,4 @@
-package com.lrchan.qootalk;
+package com.lrchan.qootalk.presentation;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,3 +11,4 @@ class QootalkApplicationTests {
 	}
 
 }
+

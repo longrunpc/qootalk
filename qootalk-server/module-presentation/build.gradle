@@ -1,0 +1,15 @@
+plugins {
+	id 'org.springframework.boot'
+}
+
+dependencies {
+	implementation project(':module-domain')
+	implementation project(':module-application')
+	implementation project(':module-infrastructure')
+	implementation project(':module-common')
+	
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
