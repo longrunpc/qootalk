@@ -38,7 +38,7 @@ public class User extends BaseModel {
     }
 
     public static User create(Email email, String password, UserName name) {
-        return new User(null, email, password, name, new ProfileImageUrl(null), "", UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
+        return new User(null, email, password, name, null, "", UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
     public Email email() {
