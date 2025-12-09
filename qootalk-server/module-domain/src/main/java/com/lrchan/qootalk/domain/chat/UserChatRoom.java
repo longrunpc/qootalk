@@ -8,17 +8,17 @@ public class UserChatRoom extends BaseModel {
 
     private Long userId;
     private Long roomId;
-    private RoomMemberRole role;
+    private RoomRole role;
 
-    private UserChatRoom(Long id, Long userId, Long roomId, RoomMemberRole role, LocalDateTime createdAt,
+    private UserChatRoom(Long id, Long userId, Long roomId, RoomRole role, LocalDateTime createdAt,
             LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         this.userId = userId;
         this.roomId = roomId;
-        this.role = role == null ? RoomMemberRole.MEMBER : role;
+        this.role = role == null ? RoomRole.MEMBER : role;
     }
 
-    public static UserChatRoom create(Long userId, Long roomId, RoomMemberRole role) {
+    public static UserChatRoom create(Long userId, Long roomId, RoomRole role) {
         return new UserChatRoom(null, userId, roomId, role, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
@@ -30,12 +30,12 @@ public class UserChatRoom extends BaseModel {
         return roomId;
     }
 
-    public RoomMemberRole role() {
+    public RoomRole role() {
         return role;
     }
 
-    public void changeRole(RoomMemberRole role) {
-        this.role = role == null ? RoomMemberRole.MEMBER : role;
+    public void changeRole(RoomRole role) {
+        this.role = role == null ? RoomRole.MEMBER : role;
         update();
     }
 }
