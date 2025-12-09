@@ -250,5 +250,27 @@ class UserTest {
             assertThat(role).isEqualTo(UserRole.USER);
         }
     }
+
+    @Nested
+    @DisplayName("소프트 삭제")
+    class SoftDeleteTest {
+
+        @Test
+        @DisplayName("유저를 소프트 삭제하면 삭제 상태가 되어야 한다")
+        void should_MarkAsDeleted_When_SoftDelete() {
+            // given
+            User user = User.create(
+                new Email("test@example.com"),
+                "password123",
+                new UserName("홍길동")
+            );
+
+            // when
+            user.softDelete();
+
+            // then
+            assertThat(user.isDeleted()).isTrue();
+        }
+    }
 }
 
