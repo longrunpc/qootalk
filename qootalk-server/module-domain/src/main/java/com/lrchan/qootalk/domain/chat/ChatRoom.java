@@ -21,8 +21,8 @@ public class ChatRoom extends BaseModel {
         return new ChatRoom(null, new RoomName(roomName), roomType, createBy, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
-    public RoomName roomName() {
-        return roomName;
+    public String roomName() {
+        return roomName.value();
     }
 
     public RoomType roomType() {
