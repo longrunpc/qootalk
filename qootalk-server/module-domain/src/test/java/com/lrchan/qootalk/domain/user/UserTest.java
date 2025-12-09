@@ -33,6 +33,7 @@ class UserTest {
             assertThat(user.name()).isEqualTo(name);
             assertThat(user.role()).isEqualTo(UserRole.USER);
             assertThat(user.statusMessage()).isEqualTo("");
+            assertThat(user.profileImageUrl()).isNull();
             assertThat(user.id()).isNull();
             assertThat(user.isDeleted()).isFalse();
         }
@@ -248,6 +249,47 @@ class UserTest {
 
             // then
             assertThat(role).isEqualTo(UserRole.USER);
+        }
+    }
+
+    @Nested
+    @DisplayName("소프트 삭제")
+    class SoftDeleteTest {
+
+        @Test
+        @DisplayName("소프트 삭제를 실행하면 삭제 상태가 true가 되어야 한다")
+        void should_MarkAsDeleted_When_SoftDelete() {
+            // given
+            User user = User.create(
+                new Email("test@example.com"),
+                "password123",
+                new UserName("홍길동")
+            );
+            assertThat(user.isDeleted()).isFalse();
+
+            // when
+            user.softDelete();
+
+            // then
+            assertThat(user.isDeleted()).isTrue();
+        }
+
+        @Test
+        @DisplayName("소프트 삭제 후에도 유저 정보는 유지되어야 한다")
+        void should_KeepUserData_When_SoftDelete() {
+            // given
+            Email email = new Email("test@example.com");
+            UserName name = new UserName("홍길동");
+            User user = User.create(email, "password123", name);
+
+            // when
+            user.softDelete();
+
+            // then
+            assertThat(user.isDeleted()).isTrue();
+            assertThat(user.email()).isEqualTo(email);
+            assertThat(user.name()).isEqualTo(name);
+            assertThat(user.role()).isEqualTo(UserRole.USER);
         }
     }
 }
