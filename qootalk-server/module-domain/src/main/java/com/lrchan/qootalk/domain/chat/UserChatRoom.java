@@ -13,6 +13,12 @@ public class UserChatRoom extends BaseModel {
     private UserChatRoom(Long id, Long userId, Long roomId, RoomRole role, LocalDateTime createdAt,
             LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+        if (roomId == null) {
+            throw new IllegalArgumentException("Room ID cannot be null");
+        }
         this.userId = userId;
         this.roomId = roomId;
         this.role = role == null ? RoomRole.MEMBER : role;
