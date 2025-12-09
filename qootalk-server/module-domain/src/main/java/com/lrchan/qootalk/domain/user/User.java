@@ -50,7 +50,7 @@ public class User extends BaseModel {
     }
 
     public String profileImageUrl() {
-        return profileImageUrl.value();
+        return profileImageUrl != null ? profileImageUrl.value() : null;
     }
 
     public String statusMessage() {

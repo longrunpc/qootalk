@@ -9,17 +9,17 @@ public class ChatRoom extends BaseModel {
 
     private RoomName roomName;
     private RoomType roomType;
-    private Long createBy;
+    private Long createdBy;
 
-    private ChatRoom(Long id, RoomName roomName, RoomType roomType, Long createBy, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+    private ChatRoom(Long id, RoomName roomName, RoomType roomType, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         this.roomName = roomName;
         this.roomType = roomType;
-        this.createBy = createBy;
+        this.createdBy = createdBy;
     }
 
-    public static ChatRoom create(String roomName, RoomType roomType, Long createBy) {
-        return new ChatRoom(null, new RoomName(roomName), roomType, createBy, LocalDateTime.now(), LocalDateTime.now(), null);
+    public static ChatRoom create(String roomName, RoomType roomType, Long createdBy) {
+        return new ChatRoom(null, new RoomName(roomName), roomType, createdBy, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
     public String roomName() {
@@ -30,8 +30,8 @@ public class ChatRoom extends BaseModel {
         return roomType;
     }
 
-    public Long createBy() {
-        return createBy;
+    public Long createdBy() {
+        return createdBy;
     }
 
     public void changeRoomName(String roomName) {
@@ -39,12 +39,8 @@ public class ChatRoom extends BaseModel {
         update();
     }
 
-    public void changeCreateBy(Long createBy) {
-        this.createBy = createBy;
+    public void changeCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
         update();
-    }
-
-    public void softDelete() {
-        super.softDelete();
     }
 }
