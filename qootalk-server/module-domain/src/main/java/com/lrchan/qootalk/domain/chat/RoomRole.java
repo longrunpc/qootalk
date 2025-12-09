@@ -1,6 +1,6 @@
 package com.lrchan.qootalk.domain.chat;
 
-public enum RoomMemberRole {
+public enum RoomRole {
     OWNER,
     ADMIN,
     MEMBER,
