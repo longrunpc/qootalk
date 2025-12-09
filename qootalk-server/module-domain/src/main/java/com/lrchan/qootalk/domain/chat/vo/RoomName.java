@@ -2,7 +2,7 @@ package com.lrchan.qootalk.domain.chat.vo;
 
 public class RoomName {
     
-    private String value;
+    private final String value;
 
     public RoomName(String value) {
         validate(value);

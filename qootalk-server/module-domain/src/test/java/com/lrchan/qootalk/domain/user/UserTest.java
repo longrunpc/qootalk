@@ -29,6 +29,8 @@ class UserTest {
             assertThat(user.name()).isEqualTo("홍길동");
             assertThat(user.role()).isEqualTo(UserRole.USER);
             assertThat(user.statusMessage()).isEqualTo("");
+            assertThat(user.id()).isNull();
+            assertThat(user.isDeleted()).isFalse();
         }
 
         @Test
@@ -41,6 +43,10 @@ class UserTest {
 
             // when
             User user = User.create(email, password, name);
+
+            // then
+            assertThat(user.id()).isNull();
+            assertThat(user.isDeleted()).isFalse();
         }
     }
 
@@ -102,7 +108,6 @@ class UserTest {
 
             // then
             assertThat(user.profileImageUrl()).isEqualTo(newProfileImageUrl);
-            assertThat(user.profileImageUrl()).isEqualTo("https://example.com/profile.jpg");
         }
 
         @Test

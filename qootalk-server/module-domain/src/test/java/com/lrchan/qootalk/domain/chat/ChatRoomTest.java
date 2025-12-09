@@ -27,19 +27,19 @@ class ChatRoomTest {
             // then
             assertThat(chatRoom.roomName()).isEqualTo("테스트 채팅방");
             assertThat(chatRoom.roomType()).isEqualTo(RoomType.GROUP);
-            assertThat(chatRoom.createBy()).isEqualTo(1L);
+            assertThat(chatRoom.createdBy()).isEqualTo(1L);
         }
 
         @Test
-        @DisplayName("채팅방을 생성할 때 생성 시간과 수정 시간이 설정되어야 한다")
-        void should_SetCreatedAtAndUpdatedAt_When_CreateChatRoom() {
+        @DisplayName("채팅방을 생성할 때 ID는 null이어야 한다")
+        void should_HaveNullId_When_CreateChatRoom() {
             // given
             String roomName = "테스트 채팅방";
             RoomType roomType = RoomType.DIRECT;
-            Long createBy = 1L;
+            Long createdBy = 1L;
 
             // when
-            ChatRoom chatRoom = ChatRoom.create(roomName, roomType, createBy);
+            ChatRoom chatRoom = ChatRoom.create(roomName, roomType, createdBy);
 
             // then
             assertThat(chatRoom.id()).isNull();
@@ -87,40 +87,40 @@ class ChatRoomTest {
 
     @Nested
     @DisplayName("생성자 변경")
-    class ChangeCreateByTest {
+    class ChangeCreatedByTest {
 
         @Test
         @DisplayName("생성자를 변경할 때 생성자가 업데이트되고 수정 시간이 갱신되어야 한다")
-        void should_UpdateCreateBy_When_ChangeCreateBy() {
+        void should_UpdateCreatedBy_When_ChangeCreatedBy() {
             // given
             String roomName = "테스트 채팅방";
             RoomType roomType = RoomType.GROUP;
-            Long createBy = 1L;
-            ChatRoom chatRoom = ChatRoom.create(roomName, roomType, createBy);
-            Long newCreateBy = 2L;
+            Long createdBy = 1L;
+            ChatRoom chatRoom = ChatRoom.create(roomName, roomType, createdBy);
+            Long newCreatedBy = 2L;
 
             // when
-            chatRoom.changeCreateBy(newCreateBy);
+            chatRoom.changeCreatedBy(newCreatedBy);
 
             // then
-            assertThat(chatRoom.createBy()).isEqualTo(newCreateBy);
+            assertThat(chatRoom.createdBy()).isEqualTo(newCreatedBy);
         }
 
         @Test
         @DisplayName("여러 번 생성자를 변경할 때 마지막 생성자가 유지되어야 한다")
-        void should_KeepLastCreateBy_When_ChangeCreateByMultipleTimes() {
+        void should_KeepLastCreatedBy_When_ChangeCreatedByMultipleTimes() {
             // given
             String roomName = "테스트 채팅방";
             RoomType roomType = RoomType.GROUP;
-            Long createBy = 1L;
-            ChatRoom chatRoom = ChatRoom.create(roomName, roomType, createBy);
+            Long createdBy = 1L;
+            ChatRoom chatRoom = ChatRoom.create(roomName, roomType, createdBy);
 
             // when
-            chatRoom.changeCreateBy(2L);
-            chatRoom.changeCreateBy(3L);
+            chatRoom.changeCreatedBy(2L);
+            chatRoom.changeCreatedBy(3L);
 
             // then
-            assertThat(chatRoom.createBy()).isEqualTo(3L);
+            assertThat(chatRoom.createdBy()).isEqualTo(3L);
         }
     }
 
@@ -162,18 +162,18 @@ class ChatRoomTest {
 
         @Test
         @DisplayName("생성자를 조회할 때 올바른 생성자 ID가 반환되어야 한다")
-        void should_ReturnCreateBy_When_GetCreateBy() {
+        void should_ReturnCreatedBy_When_GetCreatedBy() {
             // given
             String roomName = "테스트 채팅방";
             RoomType roomType = RoomType.GROUP;
-            Long createBy = 1L;
-            ChatRoom chatRoom = ChatRoom.create(roomName, roomType, createBy);
+            Long createdBy = 1L;
+            ChatRoom chatRoom = ChatRoom.create(roomName, roomType, createdBy);
 
             // when
-            Long result = chatRoom.createBy();
+            Long result = chatRoom.createdBy();
 
             // then
-            assertThat(result).isEqualTo(createBy);
+            assertThat(result).isEqualTo(createdBy);
         }
     }
 
