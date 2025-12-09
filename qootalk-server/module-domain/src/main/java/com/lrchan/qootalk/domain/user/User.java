@@ -37,20 +37,20 @@ public class User extends BaseModel {
         this.role = role == null ? UserRole.USER : role;
     }
 
-    public static User create(Email email, String password, UserName name) {
-        return new User(null, email, password, name, null, "", UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
+    public static User create(String email, String password, String name) {
+        return new User(null, new Email(email), password, new UserName(name), null, "", UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
-    public Email email() {
-        return email;
+    public String email() {
+        return email.value();
     }
 
-    public UserName name() {
-        return name;
+    public String name() {
+        return name.value();
     }
 
-    public ProfileImageUrl profileImageUrl() {
-        return profileImageUrl;
+    public String profileImageUrl() {
+        return profileImageUrl != null ? profileImageUrl.value() : null;
     }
 
     public String statusMessage() {
@@ -61,13 +61,13 @@ public class User extends BaseModel {
         return role;
     }
 
-    public void changeName(UserName name) {
-        this.name = name;
+    public void changeName(String name) {
+        this.name = new UserName(name);
         update();
     }
 
-    public void changeProfileImageUrl(ProfileImageUrl profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+    public void changeProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = new ProfileImageUrl(profileImageUrl);
         update();
     }
 
