@@ -2,6 +2,7 @@ package com.lrchan.qootalk.domain.chat;
 
 import java.time.LocalDateTime;
 
+import com.lrchan.qootalk.domain.chat.vo.RoomName;
 import com.lrchan.qootalk.domain.common.BaseModel;
 
 public class ChatRoom extends BaseModel {
