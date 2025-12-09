@@ -105,6 +105,77 @@ class MessageTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("User ID cannot be null");
         }
+
+        @Test
+        @DisplayName("메시지를 생성할 때 멘션이 null이면 빈 리스트가 설정되어야 한다")
+        void should_SetEmptyList_When_MentionsIsNull() {
+            // given
+            Long roomId = 1L;
+            Long userId = 100L;
+            String content = "안녕하세요";
+            MessageType messageType = MessageType.TEXT;
+            List<Long> mentions = null;
+
+            // when
+            Message message = Message.create(roomId, userId, content, messageType, mentions);
+
+            // then
+            assertThat(message.mentions()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("생성 시 전달한 멘션 리스트를 나중에 수정해도 메시지에 영향을 주지 않아야 한다")
+        void should_NotAffectMessage_When_ModifyOriginalMentionsAfterCreate() {
+            // given
+            Long roomId = 1L;
+            Long userId = 100L;
+            String content = "안녕하세요";
+            MessageType messageType = MessageType.TEXT;
+            List<Long> mentions = new ArrayList<>(Arrays.asList(200L, 300L));
+
+            // when
+            Message message = Message.create(roomId, userId, content, messageType, mentions);
+            mentions.add(400L);
+
+            // then
+            assertThat(message.mentions()).containsExactly(200L, 300L);
+            assertThat(message.mentions()).doesNotContain(400L);
+        }
+
+        @Test
+        @DisplayName("답글 메시지를 생성할 때 부모 메시지 ID가 올바르게 설정되어야 한다")
+        void should_CreateReplyMessage_When_ParentMessageIdProvided() {
+            // given
+            Long roomId = 1L;
+            Long userId = 100L;
+            String content = "답글입니다";
+            MessageType messageType = MessageType.REPLY;
+            List<Long> mentions = Collections.emptyList();
+            Long parentMessageId = 999L;
+
+            // when
+            Message message = Message.create(roomId, userId, content, messageType, mentions, parentMessageId);
+
+            // then
+            assertThat(message.parentMessageId()).isEqualTo(999L);
+        }
+
+        @Test
+        @DisplayName("답글이 아닌 메시지를 생성할 때 부모 메시지 ID는 null이어야 한다")
+        void should_HaveNullParentMessageId_When_CreateNormalMessage() {
+            // given
+            Long roomId = 1L;
+            Long userId = 100L;
+            String content = "일반 메시지";
+            MessageType messageType = MessageType.TEXT;
+            List<Long> mentions = Collections.emptyList();
+
+            // when
+            Message message = Message.create(roomId, userId, content, messageType, mentions);
+
+            // then
+            assertThat(message.parentMessageId()).isNull();
+        }
     }
 
     @Nested
@@ -385,6 +456,26 @@ class MessageTest {
 
             // then
             assertThat(result).containsExactly(200L, 300L);
+        }
+
+        @Test
+        @DisplayName("조회한 멘션 리스트를 수정해도 원본에 영향을 주지 않아야 한다")
+        void should_NotAffectOriginal_When_ModifyReturnedMentions() {
+            // given
+            Long roomId = 1L;
+            Long userId = 100L;
+            String content = "안녕하세요";
+            MessageType messageType = MessageType.TEXT;
+            List<Long> mentions = Arrays.asList(200L, 300L);
+            Message message = Message.create(roomId, userId, content, messageType, mentions);
+
+            // when
+            List<Long> returnedMentions = message.mentions();
+            returnedMentions.add(400L);
+
+            // then
+            assertThat(message.mentions()).containsExactly(200L, 300L);
+            assertThat(message.mentions()).doesNotContain(400L);
         }
     }
 

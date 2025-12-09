@@ -12,19 +12,26 @@ public class Message extends BaseModel {
     private String content;
     private MessageType messageType;
     private List<Long> mentions;
+    private Long parentMessageId;
 
     private Message(Long id, Long roomId, Long userId, String content, MessageType messageType, List<Long> mentions,
-            LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+            Long parentMessageId, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         this.roomId = roomId;
         this.userId = userId;
         this.content = content;
         this.messageType = messageType;
         this.mentions = mentions;
+        this.parentMessageId = parentMessageId;
     }
 
     public static Message create(Long roomId, Long userId, String content, MessageType messageType,
             List<Long> mentions) {
+        return create(roomId, userId, content, messageType, mentions, null);
+    }
+
+    public static Message create(Long roomId, Long userId, String content, MessageType messageType,
+            List<Long> mentions, Long parentMessageId) {
         if (roomId == null) {
             throw new IllegalArgumentException("Room ID cannot be null");
         }
@@ -32,8 +39,8 @@ public class Message extends BaseModel {
             throw new IllegalArgumentException("User ID cannot be null");
         }
         return new Message(null, roomId, userId, content, messageType == null ? MessageType.TEXT : messageType,
-                mentions, LocalDateTime.now(),
-                LocalDateTime.now(), null);
+                mentions == null ? Collections.emptyList() : new ArrayList<>(mentions), parentMessageId,
+                LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
     public Long roomId() {
@@ -53,7 +60,11 @@ public class Message extends BaseModel {
     }
 
     public List<Long> mentions() {
-        return mentions;
+        return mentions == null ? Collections.emptyList() : new ArrayList<>(mentions);
+    }
+
+    public Long parentMessageId() {
+        return parentMessageId;
     }
 
     public void changeContent(String content) {
