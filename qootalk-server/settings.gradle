@@ -1,4 +1,4 @@
-rootProject.name = 'qootalk'
+rootProject.name = 'qootalk-server'
 
 include 'module-domain'
 include 'module-application'
