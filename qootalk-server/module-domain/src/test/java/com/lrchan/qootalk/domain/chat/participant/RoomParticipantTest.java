@@ -6,8 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import com.lrchan.qootalk.domain.chat.room.RoomRole;
-
 @DisplayName("RoomParticipant 도메인 테스트")
 class RoomParticipantTest {
 
