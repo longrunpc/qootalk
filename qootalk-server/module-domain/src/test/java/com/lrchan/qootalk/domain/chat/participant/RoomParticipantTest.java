@@ -1,6 +1,7 @@
 package com.lrchan.qootalk.domain.chat.participant;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -19,14 +20,16 @@ class RoomParticipantTest {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = RoomRole.MEMBER;
 
             // when
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
 
             // then
             assertThat(userChatRoom.userId()).isEqualTo(1L);
             assertThat(userChatRoom.roomId()).isEqualTo(100L);
+            assertThat(userChatRoom.lastReadMessageId()).isEqualTo(0L);
             assertThat(userChatRoom.role()).isEqualTo(RoomRole.MEMBER);
         }
 
@@ -36,10 +39,11 @@ class RoomParticipantTest {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = null;
 
             // when
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
 
             // then
             assertThat(userChatRoom.role()).isEqualTo(RoomRole.MEMBER);
@@ -51,13 +55,44 @@ class RoomParticipantTest {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = RoomRole.OWNER;
 
             // when
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
 
             // then
             assertThat(userChatRoom.id()).isNull();
+        }
+
+        @Test
+        @DisplayName("유저 채팅방을 생성할 때 userId가 null이면 예외가 발생해야 한다")
+        void should_ThrowException_When_UserIdIsNull() {
+            // given
+            Long userId = null;
+            Long roomId = 100L;
+            Long lastReadMessageId = 0L;
+            RoomRole role = RoomRole.MEMBER;
+
+            // when & then
+            assertThatThrownBy(() -> RoomParticipant.create(userId, roomId, lastReadMessageId, role))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("User ID cannot be null");
+        }
+
+        @Test
+        @DisplayName("유저 채팅방을 생성할 때 roomId가 null이면 예외가 발생해야 한다")
+        void should_ThrowException_When_RoomIdIsNull() {
+            // given
+            Long userId = 1L;
+            Long roomId = null;
+            Long lastReadMessageId = 0L;
+            RoomRole role = RoomRole.MEMBER;
+
+            // when & then
+            assertThatThrownBy(() -> RoomParticipant.create(userId, roomId, lastReadMessageId, role))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Room ID cannot be null");
         }
     }
 
@@ -71,8 +106,9 @@ class RoomParticipantTest {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = RoomRole.MEMBER;
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
             RoomRole newRole = RoomRole.ADMIN;
 
             // when
@@ -88,8 +124,9 @@ class RoomParticipantTest {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = RoomRole.MEMBER;
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
 
             // when
             userChatRoom.changeRole(RoomRole.ADMIN);
@@ -105,8 +142,9 @@ class RoomParticipantTest {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = RoomRole.ADMIN;
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
 
             // when
             userChatRoom.changeRole(null);
@@ -126,8 +164,9 @@ class RoomParticipantTest {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = RoomRole.MEMBER;
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
 
             // when
             Long result = userChatRoom.userId();
@@ -142,8 +181,9 @@ class RoomParticipantTest {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = RoomRole.MEMBER;
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
 
             // when
             Long result = userChatRoom.roomId();
@@ -153,13 +193,31 @@ class RoomParticipantTest {
         }
 
         @Test
+        @DisplayName("마지막 읽은 메시지 ID를 조회할 때 올바른 메시지 ID가 반환되어야 한다")
+        void should_ReturnLastReadMessageId_When_GetLastReadMessageId() {
+            // given
+            Long userId = 1L;
+            Long roomId = 100L;
+            Long lastReadMessageId = 50L;
+            RoomRole role = RoomRole.MEMBER;
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
+
+            // when
+            Long result = userChatRoom.lastReadMessageId();
+
+            // then
+            assertThat(result).isEqualTo(lastReadMessageId);
+        }
+
+        @Test
         @DisplayName("역할을 조회할 때 올바른 역할이 반환되어야 한다")
         void should_ReturnRole_When_GetRole() {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = RoomRole.OWNER;
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
 
             // when
             RoomRole result = userChatRoom.role();
@@ -174,14 +232,56 @@ class RoomParticipantTest {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = null;
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
 
             // when
             RoomRole result = userChatRoom.role();
 
             // then
             assertThat(result).isEqualTo(RoomRole.MEMBER);
+        }
+    }
+
+    @Nested
+    @DisplayName("마지막 읽은 메시지 ID 변경")
+    class ChangeLastReadMessageIdTest {
+
+        @Test
+        @DisplayName("마지막 읽은 메시지 ID를 변경할 때 ID가 업데이트되고 수정 시간이 갱신되어야 한다")
+        void should_UpdateLastReadMessageId_When_ChangeLastReadMessageId() {
+            // given
+            Long userId = 1L;
+            Long roomId = 100L;
+            Long lastReadMessageId = 0L;
+            RoomRole role = RoomRole.MEMBER;
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
+            Long newLastReadMessageId = 100L;
+
+            // when
+            userChatRoom.updateReadReceipt(newLastReadMessageId);
+
+            // then
+            assertThat(userChatRoom.lastReadMessageId()).isEqualTo(newLastReadMessageId);
+        }
+
+        @Test
+        @DisplayName("여러 번 마지막 읽은 메시지 ID를 변경할 때 마지막 ID가 유지되어야 한다")
+        void should_KeepLastMessageId_When_ChangeLastReadMessageIdMultipleTimes() {
+            // given
+            Long userId = 1L;
+            Long roomId = 100L;
+            Long lastReadMessageId = 0L;
+            RoomRole role = RoomRole.MEMBER;
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
+
+            // when
+            userChatRoom.updateReadReceipt(50L);
+            userChatRoom.updateReadReceipt(100L);
+
+            // then
+            assertThat(userChatRoom.lastReadMessageId()).isEqualTo(100L);
         }
     }
 
@@ -195,8 +295,9 @@ class RoomParticipantTest {
             // given
             Long userId = 1L;
             Long roomId = 100L;
+            Long lastReadMessageId = 0L;
             RoomRole role = RoomRole.MEMBER;
-            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
 
             // when
             userChatRoom.softDelete();

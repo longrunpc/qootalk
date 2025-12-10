@@ -20,9 +20,6 @@ public class RoomParticipant extends BaseModel {
         if (roomId == null) {
             throw new IllegalArgumentException("Room ID cannot be null");
         }
-        if (lastReadMessageId == null) {
-            throw new IllegalArgumentException("Last read message ID cannot be null");
-        }
         this.userId = userId;
         this.roomId = roomId;
         this.lastReadMessageId = lastReadMessageId;
@@ -54,8 +51,13 @@ public class RoomParticipant extends BaseModel {
         update();
     }
 
-    public void changeLastReadMessageId(Long lastReadMessageId) {
-        this.lastReadMessageId = lastReadMessageId;
-        update();
+    public void updateReadReceipt(Long messageId) {
+        if (messageId == null) {
+            throw new IllegalArgumentException("Last read message ID cannot be null");
+        }
+        if(this.lastReadMessageId == null || messageId > this.lastReadMessageId) {
+            this.lastReadMessageId = messageId;
+            update();
+        }
     }
 }
