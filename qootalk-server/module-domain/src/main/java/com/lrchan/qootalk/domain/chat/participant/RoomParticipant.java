@@ -1,16 +1,17 @@
-package com.lrchan.qootalk.domain.chat;
+package com.lrchan.qootalk.domain.chat.participant;
 
 import java.time.LocalDateTime;
 
+import com.lrchan.qootalk.domain.chat.room.RoomRole;
 import com.lrchan.qootalk.domain.common.BaseModel;
 
-public class UserChatRoom extends BaseModel {
+public class RoomParticipant extends BaseModel {
 
     private Long userId;
     private Long roomId;
     private RoomRole role;
 
-    private UserChatRoom(Long id, Long userId, Long roomId, RoomRole role, LocalDateTime createdAt,
+    private RoomParticipant(Long id, Long userId, Long roomId, RoomRole role, LocalDateTime createdAt,
             LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         if (userId == null) {
@@ -24,8 +25,8 @@ public class UserChatRoom extends BaseModel {
         this.role = role == null ? RoomRole.MEMBER : role;
     }
 
-    public static UserChatRoom create(Long userId, Long roomId, RoomRole role) {
-        return new UserChatRoom(null, userId, roomId, role, LocalDateTime.now(), LocalDateTime.now(), null);
+    public static RoomParticipant create(Long userId, Long roomId, RoomRole role) {
+        return new RoomParticipant(null, userId, roomId, role, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
     public Long userId() {

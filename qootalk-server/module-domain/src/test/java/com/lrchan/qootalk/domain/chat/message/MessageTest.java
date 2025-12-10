@@ -1,4 +1,4 @@
-package com.lrchan.qootalk.domain.chat;
+package com.lrchan.qootalk.domain.chat.message;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
