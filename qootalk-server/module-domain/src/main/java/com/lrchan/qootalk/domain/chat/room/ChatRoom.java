@@ -1,4 +1,4 @@
-package com.lrchan.qootalk.domain.chat;
+package com.lrchan.qootalk.domain.chat.room;
 
 import java.time.LocalDateTime;
 

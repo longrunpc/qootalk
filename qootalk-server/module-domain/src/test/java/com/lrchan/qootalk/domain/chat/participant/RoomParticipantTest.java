@@ -1,4 +1,4 @@
-package com.lrchan.qootalk.domain.chat;
+package com.lrchan.qootalk.domain.chat.participant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,8 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("UserChatRoom 도메인 테스트")
-class UserChatRoomTest {
+import com.lrchan.qootalk.domain.chat.room.RoomRole;
+
+@DisplayName("RoomParticipant 도메인 테스트")
+class RoomParticipantTest {
 
     @Nested
     @DisplayName("유저 채팅방 생성")
@@ -22,7 +24,7 @@ class UserChatRoomTest {
             RoomRole role = RoomRole.MEMBER;
 
             // when
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
 
             // then
             assertThat(userChatRoom.userId()).isEqualTo(1L);
@@ -39,7 +41,7 @@ class UserChatRoomTest {
             RoomRole role = null;
 
             // when
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
 
             // then
             assertThat(userChatRoom.role()).isEqualTo(RoomRole.MEMBER);
@@ -54,7 +56,7 @@ class UserChatRoomTest {
             RoomRole role = RoomRole.OWNER;
 
             // when
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
 
             // then
             assertThat(userChatRoom.id()).isNull();
@@ -72,7 +74,7 @@ class UserChatRoomTest {
             Long userId = 1L;
             Long roomId = 100L;
             RoomRole role = RoomRole.MEMBER;
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
             RoomRole newRole = RoomRole.ADMIN;
 
             // when
@@ -89,7 +91,7 @@ class UserChatRoomTest {
             Long userId = 1L;
             Long roomId = 100L;
             RoomRole role = RoomRole.MEMBER;
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
 
             // when
             userChatRoom.changeRole(RoomRole.ADMIN);
@@ -106,7 +108,7 @@ class UserChatRoomTest {
             Long userId = 1L;
             Long roomId = 100L;
             RoomRole role = RoomRole.ADMIN;
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
 
             // when
             userChatRoom.changeRole(null);
@@ -127,7 +129,7 @@ class UserChatRoomTest {
             Long userId = 1L;
             Long roomId = 100L;
             RoomRole role = RoomRole.MEMBER;
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
 
             // when
             Long result = userChatRoom.userId();
@@ -143,7 +145,7 @@ class UserChatRoomTest {
             Long userId = 1L;
             Long roomId = 100L;
             RoomRole role = RoomRole.MEMBER;
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
 
             // when
             Long result = userChatRoom.roomId();
@@ -159,7 +161,7 @@ class UserChatRoomTest {
             Long userId = 1L;
             Long roomId = 100L;
             RoomRole role = RoomRole.OWNER;
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
 
             // when
             RoomRole result = userChatRoom.role();
@@ -175,7 +177,7 @@ class UserChatRoomTest {
             Long userId = 1L;
             Long roomId = 100L;
             RoomRole role = null;
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
 
             // when
             RoomRole result = userChatRoom.role();
@@ -196,7 +198,7 @@ class UserChatRoomTest {
             Long userId = 1L;
             Long roomId = 100L;
             RoomRole role = RoomRole.MEMBER;
-            UserChatRoom userChatRoom = UserChatRoom.create(userId, roomId, role);
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, role);
 
             // when
             userChatRoom.softDelete();
