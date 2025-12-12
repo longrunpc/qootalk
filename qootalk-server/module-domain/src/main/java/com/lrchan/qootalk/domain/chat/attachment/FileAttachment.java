@@ -1,5 +1,6 @@
 package com.lrchan.qootalk.domain.chat.attachment;
 
+import com.lrchan.qootalk.domain.chat.vo.FileName;
 import com.lrchan.qootalk.domain.common.BaseModel;
 
 
