@@ -85,6 +85,59 @@ class FileAttachmentTest {
             assertThat(FileAttachment.create(messageId, uploaderId, metadata, FileType.OTHER, fileSecurity)
                 .fileType()).isEqualTo(FileType.OTHER);
         }
+
+        @Test
+        @DisplayName("다양한 FileSecurity 설정으로 생성할 수 있다")
+        void should_CreateFileAttachment_When_VariousFileSecurity() {
+            // given
+            Long messageId = 1L;
+            Long uploaderId = 100L;
+            FileMetadata metadata = createFileMetadata();
+            FileType fileType = FileType.DOCUMENT;
+
+            // when & then
+            FileAttachment privateAttachment = FileAttachment.create(
+                messageId, uploaderId, metadata, fileType, FileSecurity.defaultPrivate()
+            );
+            assertThat(privateAttachment.fileSecurity().visibility()).isEqualTo(com.lrchan.qootalk.domain.chat.vo.Visibility.PRIVATE);
+
+            FileAttachment publicAttachment = FileAttachment.create(
+                messageId, uploaderId, metadata, fileType, FileSecurity.publicReadable()
+            );
+            assertThat(publicAttachment.fileSecurity().visibility()).isEqualTo(com.lrchan.qootalk.domain.chat.vo.Visibility.PUBLIC);
+        }
+
+        @Test
+        @DisplayName("다양한 FileMetadata로 생성할 수 있다")
+        void should_CreateFileAttachment_When_VariousFileMetadata() {
+            // given
+            Long messageId = 1L;
+            Long uploaderId = 100L;
+            FileType fileType = FileType.IMAGE;
+            FileSecurity fileSecurity = createFileSecurity();
+
+            // when
+            FileMetadata imageMetadata = new FileMetadata(
+                new FileName("image.jpg"),
+                new FileName("stored-image.jpg"),
+                new ContentType("image/jpeg"),
+                new FileSize(2048L),
+                new Path("uploads/images/"),
+                StorageType.LOCAL
+            );
+
+            FileAttachment fileAttachment = FileAttachment.create(
+                messageId,
+                uploaderId,
+                imageMetadata,
+                fileType,
+                fileSecurity
+            );
+
+            // then
+            assertThat(fileAttachment.metadata()).isEqualTo(imageMetadata);
+            assertThat(fileAttachment.metadata().contentType().value()).isEqualTo("image/jpeg");
+        }
     }
 
     @Nested
@@ -194,6 +247,140 @@ class FileAttachmentTest {
             ))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("fileSecurity");
+        }
+    }
+
+    @Nested
+    @DisplayName("BaseModel 기능")
+    class BaseModelTest {
+
+        @Test
+        @DisplayName("생성 시 id는 null이다")
+        void should_HaveNullId_When_Created() {
+            // given
+            Long messageId = 1L;
+            Long uploaderId = 100L;
+            FileMetadata metadata = createFileMetadata();
+            FileType fileType = FileType.DOCUMENT;
+            FileSecurity fileSecurity = createFileSecurity();
+
+            // when
+            FileAttachment fileAttachment = FileAttachment.create(
+                messageId,
+                uploaderId,
+                metadata,
+                fileType,
+                fileSecurity
+            );
+
+            // then
+            assertThat(fileAttachment.id()).isNull();
+        }
+
+        @Test
+        @DisplayName("생성 시 삭제되지 않은 상태이다")
+        void should_NotBeDeleted_When_Created() {
+            // given
+            Long messageId = 1L;
+            Long uploaderId = 100L;
+            FileMetadata metadata = createFileMetadata();
+            FileType fileType = FileType.DOCUMENT;
+            FileSecurity fileSecurity = createFileSecurity();
+
+            // when
+            FileAttachment fileAttachment = FileAttachment.create(
+                messageId,
+                uploaderId,
+                metadata,
+                fileType,
+                fileSecurity
+            );
+
+            // then
+            assertThat(fileAttachment.isDeleted()).isFalse();
+        }
+
+        @Test
+        @DisplayName("softDelete를 호출하면 삭제 상태가 된다")
+        void should_BeDeleted_When_SoftDeleteCalled() {
+            // given
+            Long messageId = 1L;
+            Long uploaderId = 100L;
+            FileMetadata metadata = createFileMetadata();
+            FileType fileType = FileType.DOCUMENT;
+            FileSecurity fileSecurity = createFileSecurity();
+
+            FileAttachment fileAttachment = FileAttachment.create(
+                messageId,
+                uploaderId,
+                metadata,
+                fileType,
+                fileSecurity
+            );
+
+            // when
+            fileAttachment.softDelete();
+
+            // then
+            assertThat(fileAttachment.isDeleted()).isTrue();
+        }
+
+        @Test
+        @DisplayName("update를 호출하면 updatedAt이 갱신된다")
+        void should_UpdateTimestamp_When_UpdateCalled() throws InterruptedException {
+            // given
+            Long messageId = 1L;
+            Long uploaderId = 100L;
+            FileMetadata metadata = createFileMetadata();
+            FileType fileType = FileType.DOCUMENT;
+            FileSecurity fileSecurity = createFileSecurity();
+
+            FileAttachment fileAttachment = FileAttachment.create(
+                messageId,
+                uploaderId,
+                metadata,
+                fileType,
+                fileSecurity
+            );
+
+            // when
+            Thread.sleep(10); // 시간 차이를 위해 잠시 대기
+            fileAttachment.update();
+
+            // then
+            assertThat(fileAttachment.isDeleted()).isFalse();
+        }
+    }
+
+    @Nested
+    @DisplayName("접근자 메서드")
+    class AccessorTest {
+
+        @Test
+        @DisplayName("모든 접근자 메서드가 올바른 값을 반환한다")
+        void should_ReturnCorrectValues_When_AccessorMethodsCalled() {
+            // given
+            Long messageId = 1L;
+            Long uploaderId = 100L;
+            FileMetadata metadata = createFileMetadata();
+            FileType fileType = FileType.DOCUMENT;
+            FileSecurity fileSecurity = createFileSecurity();
+
+            // when
+            FileAttachment fileAttachment = FileAttachment.create(
+                messageId,
+                uploaderId,
+                metadata,
+                fileType,
+                fileSecurity
+            );
+
+            // then
+            assertThat(fileAttachment.messageId()).isEqualTo(messageId);
+            assertThat(fileAttachment.uploaderId()).isEqualTo(uploaderId);
+            assertThat(fileAttachment.metadata()).isEqualTo(metadata);
+            assertThat(fileAttachment.fileType()).isEqualTo(fileType);
+            assertThat(fileAttachment.fileSecurity()).isEqualTo(fileSecurity);
         }
     }
 }
