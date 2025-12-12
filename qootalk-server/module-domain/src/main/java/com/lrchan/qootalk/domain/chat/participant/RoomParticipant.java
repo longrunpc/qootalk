@@ -2,16 +2,16 @@ package com.lrchan.qootalk.domain.chat.participant;
 
 import java.time.LocalDateTime;
 
-import com.lrchan.qootalk.domain.chat.room.RoomRole;
 import com.lrchan.qootalk.domain.common.BaseModel;
 
 public class RoomParticipant extends BaseModel {
 
     private Long userId;
     private Long roomId;
+    private Long lastReadMessageId;
     private RoomRole role;
 
-    private RoomParticipant(Long id, Long userId, Long roomId, RoomRole role, LocalDateTime createdAt,
+    private RoomParticipant(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role, LocalDateTime createdAt,
             LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         if (userId == null) {
@@ -22,12 +22,13 @@ public class RoomParticipant extends BaseModel {
         }
         this.userId = userId;
         this.roomId = roomId;
+        this.lastReadMessageId = lastReadMessageId;
         this.role = role == null ? RoomRole.MEMBER : role;
     }
 
-    public static RoomParticipant create(Long userId, Long roomId, RoomRole role) {
-        return new RoomParticipant(null, userId, roomId, role, LocalDateTime.now(), LocalDateTime.now(), null);
-    }
+    public static RoomParticipant create(Long userId, Long roomId, Long lastReadMessageId, RoomRole role) {
+        return new RoomParticipant(null, userId, roomId, lastReadMessageId, role, LocalDateTime.now(), LocalDateTime.now(), null);
+    }   
 
     public Long userId() {
         return userId;
@@ -37,6 +38,10 @@ public class RoomParticipant extends BaseModel {
         return roomId;
     }
 
+    public Long lastReadMessageId() {  
+        return lastReadMessageId;
+    }
+
     public RoomRole role() {
         return role;
     }
@@ -44,5 +49,15 @@ public class RoomParticipant extends BaseModel {
     public void changeRole(RoomRole role) {
         this.role = role == null ? RoomRole.MEMBER : role;
         update();
+    }
+
+    public void updateReadReceipt(Long messageId) {
+        if (messageId == null) {
+            throw new IllegalArgumentException("Last read message ID cannot be null");
+        }
+        if(this.lastReadMessageId == null || messageId > this.lastReadMessageId) {
+            this.lastReadMessageId = messageId;
+            update();
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.lrchan.qootalk.domain.chat.room;
+package com.lrchan.qootalk.domain.chat.participant;
 
 public enum RoomRole {
     OWNER,
