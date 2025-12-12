@@ -83,4 +83,21 @@ public final class FileSecurity {
     public Encryption encryption() {
         return encryption;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FileSecurity that = (FileSecurity) o;
+        return visibility == that.visibility &&
+                downloadPolicy == that.downloadPolicy &&
+                sharePolicy == that.sharePolicy &&
+                scanStatus == that.scanStatus &&
+                encryption == that.encryption;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(visibility, downloadPolicy, sharePolicy, scanStatus, encryption);
+    }
 }

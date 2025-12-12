@@ -1,4 +1,4 @@
-package com.lrchan.qootalk.domain.chat.attachment;
+package com.lrchan.qootalk.domain.chat.vo;
 
 public enum StorageType {
     LOCAL,

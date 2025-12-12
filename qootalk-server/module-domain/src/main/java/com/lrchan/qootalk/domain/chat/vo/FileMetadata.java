@@ -32,8 +32,8 @@ public final class FileMetadata {
     private void validatePolicy() {
         // TEMP 스토리지는 tmp 경로만 허용
         if (storageType == StorageType.TEMP &&
-                !storagePath.value().startsWith("system/tmp/")) {
-            throw new IllegalArgumentException("TEMP storage must use tmp path");
+                !(storagePath.value().startsWith("system/tmp/") && storagePath.value().endsWith("/"))) {
+            throw new IllegalArgumentException("TEMP storage must use path starting and ending with 'system/tmp/'");
         }
 
         // LOCAL 스토리지는 로컬 경로만 허용

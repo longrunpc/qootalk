@@ -1,5 +1,9 @@
 package com.lrchan.qootalk.domain.chat.attachment;
 
-public class FileType {
-
+public enum FileType {
+    IMAGE,
+    VIDEO,
+    DOCUMENT,
+    AUDIO,
+    OTHER
 }
