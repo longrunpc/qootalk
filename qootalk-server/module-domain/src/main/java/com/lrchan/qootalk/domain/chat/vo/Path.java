@@ -19,11 +19,8 @@ public class Path {
         if (value.length() < 2 || value.length() > 200) {
             throw new IllegalArgumentException("Path must be between 2 and 200 characters");
         }
-        if (!value.matches("^[a-zA-Z0-9._%+-]+$")) {
-            throw new IllegalArgumentException("Path must contain only letters, numbers, and special characters");
-        }
-        if (!value.startsWith("/")) {
-            throw new IllegalArgumentException("Path must start with a slash");
+        if (!value.matches("^[a-zA-Z0-9._%+/-]+$")) {
+            throw new IllegalArgumentException("Path must contain only letters, numbers, slashes, and special characters");
         }
         if (!value.endsWith("/")) {
             throw new IllegalArgumentException("Path must end with a slash");
@@ -34,5 +31,18 @@ public class Path {
         if (value.contains("..")) {
             throw new IllegalArgumentException("Path cannot contain parent directory");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Path path = (Path) o;
+        return value.equals(path.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }

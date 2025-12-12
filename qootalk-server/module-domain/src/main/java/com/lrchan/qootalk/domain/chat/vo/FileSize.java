@@ -20,7 +20,20 @@ public class FileSize {
             throw new IllegalArgumentException("File size cannot be null or negative");
         }
         if (value > GLOBAL_MAX) {
-            throw new IllegalArgumentException("File size cannot be greater than " + GLOBAL_MAX + "bytes");
+            throw new IllegalArgumentException("File size cannot be greater than " + GLOBAL_MAX + " bytes");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FileSize fileSize = (FileSize) o;
+        return value.equals(fileSize.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }
