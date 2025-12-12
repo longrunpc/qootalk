@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.lrchan.qootalk.domain.chat.vo.FileMetadata;
+import com.lrchan.qootalk.domain.chat.vo.FileSecurity;
 import com.lrchan.qootalk.domain.common.BaseModel;
 
 public class FileAttachment extends BaseModel {
