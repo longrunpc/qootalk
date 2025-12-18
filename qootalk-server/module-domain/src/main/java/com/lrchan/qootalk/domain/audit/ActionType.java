@@ -1,0 +1,22 @@
+package com.lrchan.qootalk.domain.audit;
+
+public enum ActionType {
+
+    USER_CREATED,
+    USER_DELETED,
+    USER_UPDATED,
+    
+    MESSAGE_SENT,
+    MESSAGE_DELETED,
+
+    ROOM_CREATED,
+    ROOM_DELETED,
+    ROOM_UPDATED,
+
+    ROOM_PARTICIPANT_ADDED,
+    ROOM_PARTICIPANT_REMOVED,
+    ROOM_PARTICIPANT_ROLE_CHANGED,
+    ROOM_PARTICIPANT_KICKED,
+
+    ROLE_CHANGED,
+}
