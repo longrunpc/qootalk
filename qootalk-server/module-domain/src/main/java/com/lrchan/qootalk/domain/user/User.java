@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 
 import com.lrchan.qootalk.domain.common.BaseModel;
 import com.lrchan.qootalk.domain.user.vo.Email;
+import com.lrchan.qootalk.domain.user.vo.Password;
 import com.lrchan.qootalk.domain.user.vo.ProfileImageUrl;
 import com.lrchan.qootalk.domain.user.vo.UserName;
 
 public class User extends BaseModel {
     
     private Email email;
-    private String password;
+    private Password password;
     private UserName name;
     private ProfileImageUrl profileImageUrl;
     private String statusMessage;
@@ -19,7 +20,7 @@ public class User extends BaseModel {
     private User(
             Long id,
             Email email,
-            String password,
+            Password password,
             UserName name,
             ProfileImageUrl profileImageUrl,
             String statusMessage,
@@ -38,7 +39,7 @@ public class User extends BaseModel {
     }
 
     public static User create(String email, String password, String name) {
-        return new User(null, new Email(email), password, new UserName(name), null, "", UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
+        return new User(null, new Email(email), new Password(password), new UserName(name), null, "", UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
     public String email() {
@@ -47,6 +48,10 @@ public class User extends BaseModel {
 
     public String name() {
         return name.value();
+    }
+
+    public String password() {
+        return password.encryptedPassword();
     }
 
     public String profileImageUrl() {
