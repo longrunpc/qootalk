@@ -2,7 +2,7 @@ package com.lrchan.qootalk.common.exception;
 
 import com.lrchan.qootalk.common.error.ErrorCode;
 
-public abstract class DomainException extends RuntimeException {
+public class DomainException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
