@@ -154,7 +154,7 @@ class MessageTest {
             Long parentMessageId = 999L;
 
             // when
-            Message message = Message.create(roomId, userId, content, messageType, mentions, parentMessageId);
+            Message message = Message.createReply(roomId, userId, content, messageType, mentions, parentMessageId);
 
             // then
             assertThat(message.parentMessageId()).isEqualTo(999L);

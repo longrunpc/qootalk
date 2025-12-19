@@ -17,8 +17,8 @@ public class Message extends BaseModel {
     private Message(Long id, Long roomId, Long userId, String content, MessageType messageType, List<Long> mentions,
             Long parentMessageId, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
-        this.roomId = roomId;
-        this.userId = userId;
+        this.roomId = Objects.requireNonNull(roomId);
+        this.userId = Objects.requireNonNull(userId);
         this.content = content;
         this.messageType = messageType;
         this.mentions = mentions;
@@ -27,17 +27,11 @@ public class Message extends BaseModel {
 
     public static Message create(Long roomId, Long userId, String content, MessageType messageType,
             List<Long> mentions) {
-        return create(roomId, userId, content, messageType, mentions, null);
+        return createReply(roomId, userId, content, messageType, mentions, null);
     }
 
-    public static Message create(Long roomId, Long userId, String content, MessageType messageType,
+    public static Message createReply(Long roomId, Long userId, String content, MessageType messageType,
             List<Long> mentions, Long parentMessageId) {
-        if (roomId == null) {
-            throw new IllegalArgumentException("Room ID cannot be null");
-        }
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
-        }
         return new Message(null, roomId, userId, content, messageType == null ? MessageType.TEXT : messageType,
                 mentions == null ? Collections.emptyList() : new ArrayList<>(mentions), parentMessageId,
                 LocalDateTime.now(), LocalDateTime.now(), null);
@@ -76,7 +70,7 @@ public class Message extends BaseModel {
         this.messageType = messageType == null ? MessageType.TEXT : messageType;
         update();
     }
-    
+
     public void changeMentions(List<Long> userIds) {
         this.mentions = userIds == null ? Collections.emptyList() : new ArrayList<>(userIds);
         update();
