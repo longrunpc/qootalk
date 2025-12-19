@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 @DisplayName("RoomName VO 테스트")
 class RoomNameTest {
 
@@ -76,8 +79,8 @@ class RoomNameTest {
         void should_ThrowException_When_Null() {
             // when & then
             assertThatThrownBy(() -> new RoomName(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Room name cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_ROOM_INVALID_NAME.getMessage());
         }
 
         @Test
@@ -85,12 +88,12 @@ class RoomNameTest {
         void should_ThrowException_When_Blank() {
             // when & then
             assertThatThrownBy(() -> new RoomName(""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Room name cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_ROOM_INVALID_NAME.getMessage());
 
             assertThatThrownBy(() -> new RoomName("   "))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Room name cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_ROOM_INVALID_NAME.getMessage());
         }
 
         @Test
@@ -98,8 +101,8 @@ class RoomNameTest {
         void should_ThrowException_When_TooShort() {
             // when & then
             assertThatThrownBy(() -> new RoomName("방"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Room name must be between 2 and 20 characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_ROOM_INVALID_NAME.getMessage());
         }
 
         @Test
@@ -110,8 +113,8 @@ class RoomNameTest {
 
             // when & then
             assertThatThrownBy(() -> new RoomName(tooLongName))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Room name must be between 2 and 20 characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_ROOM_INVALID_NAME.getMessage());
         }
     }
 }
