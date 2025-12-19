@@ -1,7 +1,10 @@
 package com.lrchan.qootalk.domain.chat.participant;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
 import com.lrchan.qootalk.domain.common.BaseModel;
 
 public class RoomParticipant extends BaseModel {
@@ -14,15 +17,9 @@ public class RoomParticipant extends BaseModel {
     private RoomParticipant(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role, LocalDateTime createdAt,
             LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
-        }
-        if (roomId == null) {
-            throw new IllegalArgumentException("Room ID cannot be null");
-        }
-        this.userId = userId;
-        this.roomId = roomId;
-        this.lastReadMessageId = lastReadMessageId;
+        this.userId = Objects.requireNonNull(userId);
+        this.roomId = Objects.requireNonNull(roomId);
+        this.lastReadMessageId = Objects.requireNonNull(lastReadMessageId);
         this.role = role == null ? RoomRole.MEMBER : role;
     }
 
@@ -52,12 +49,10 @@ public class RoomParticipant extends BaseModel {
     }
 
     public void updateReadReceipt(Long messageId) {
-        if (messageId == null) {
-            throw new IllegalArgumentException("Last read message ID cannot be null");
+        if (messageId == null || messageId <= this.lastReadMessageId) {
+            throw new DomainException(ChatErrorCode.CHAT_ROOM_PARTICIPANT_INVALID_LAST_READ_MESSAGE_ID);
         }
-        if(this.lastReadMessageId == null || messageId > this.lastReadMessageId) {
-            this.lastReadMessageId = messageId;
-            update();
-        }
+        this.lastReadMessageId = messageId;
+        update();
     }
 }
