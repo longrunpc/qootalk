@@ -1,5 +1,8 @@
 package com.lrchan.qootalk.domain.chat.vo;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 public class FileName {
     
     private final String value;
@@ -15,13 +18,13 @@ public class FileName {
 
     private void validate(String value) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("File name cannot be null or blank");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_NAME);
         }
         if (value.length() < 2 || value.length() > 100) {
-            throw new IllegalArgumentException("File name must be between 2 and 100 characters");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_NAME);
         }
         if (!value.matches("^[a-zA-Z0-9._%+-]+$")) {
-            throw new IllegalArgumentException("File name must contain only letters, numbers, and special characters");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_NAME);
         }
     }
 
