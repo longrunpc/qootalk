@@ -1,5 +1,8 @@
 package com.lrchan.qootalk.domain.chat.vo;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 public class FileSize {
 
     private static final long GLOBAL_MAX = 500L * 1024 * 1024;
@@ -17,10 +20,10 @@ public class FileSize {
 
     private void validate(Long value) {
         if (value == null || value < 0) {
-            throw new IllegalArgumentException("File size cannot be null or negative");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_SIZE);
         }
         if (value > GLOBAL_MAX) {
-            throw new IllegalArgumentException("File size cannot be greater than " + GLOBAL_MAX + " bytes");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_SIZE);
         }
     }
 
