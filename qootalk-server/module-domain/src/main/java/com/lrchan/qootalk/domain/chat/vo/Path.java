@@ -1,5 +1,8 @@
 package com.lrchan.qootalk.domain.chat.vo;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 public class Path {
     private final String value;
     
@@ -14,22 +17,22 @@ public class Path {
     
     private void validate(String value) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("Path cannot be null or blank");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH);
         }
         if (value.length() < 2 || value.length() > 200) {
-            throw new IllegalArgumentException("Path must be between 2 and 200 characters");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH);
         }
         if (!value.matches("^[a-zA-Z0-9._%+/-]+$")) {
-            throw new IllegalArgumentException("Path must contain only letters, numbers, slashes, and special characters");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH);
         }
         if (!value.endsWith("/")) {
-            throw new IllegalArgumentException("Path must end with a slash");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH);
         }
         if (value.contains("//")) {
-            throw new IllegalArgumentException("Path cannot contain multiple slashes");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH);
         }
         if (value.contains("..")) {
-            throw new IllegalArgumentException("Path cannot contain parent directory");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH);
         }
     }
 
