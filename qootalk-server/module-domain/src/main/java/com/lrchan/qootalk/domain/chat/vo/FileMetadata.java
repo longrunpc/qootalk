@@ -22,12 +22,12 @@ public final class FileMetadata {
             Path storagePath,
             StorageType storageType
     ) {
-        this.originalFileName = Objects.requireNonNull(originalFileName, "originalFileName");
-        this.storedFileName = Objects.requireNonNull(storedFileName, "storedFileName");
-        this.contentType = Objects.requireNonNull(contentType, "contentType");
-        this.fileSize = Objects.requireNonNull(fileSize, "fileSize");
-        this.storagePath = Objects.requireNonNull(storagePath, "storagePath");
-        this.storageType = Objects.requireNonNull(storageType, "storageType");
+        this.originalFileName = Objects.requireNonNull(originalFileName);
+        this.storedFileName = Objects.requireNonNull(storedFileName);
+        this.contentType = Objects.requireNonNull(contentType);
+        this.fileSize = Objects.requireNonNull(fileSize);
+        this.storagePath = Objects.requireNonNull(storagePath);
+        this.storageType = Objects.requireNonNull(storageType);
 
         validatePolicy();
     }
@@ -37,9 +37,8 @@ public final class FileMetadata {
                 !(storagePath.value().startsWith("system/tmp/") && storagePath.value().endsWith("/"))) {
             throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_STORAGE_TYPE);
         }
-
         if (storageType == StorageType.LOCAL &&
-                !storagePath.value().startsWith("local/")) {
+                !storagePath.value().startsWith("uploads/")) {
             throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_STORAGE_TYPE);
         }
         if (storageType == StorageType.S3 &&
