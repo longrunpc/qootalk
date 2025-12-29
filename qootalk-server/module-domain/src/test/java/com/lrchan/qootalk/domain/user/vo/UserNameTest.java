@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.user.error.UserErrorCode;
+
 @DisplayName("UserName VO 테스트")
 class UserNameTest {
 
@@ -76,8 +79,8 @@ class UserNameTest {
         void should_ThrowException_When_Null() {
             // when & then
             assertThatThrownBy(() -> new UserName(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Username cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_NAME.getMessage());
         }
 
         @Test
@@ -85,12 +88,12 @@ class UserNameTest {
         void should_ThrowException_When_Blank() {
             // when & then
             assertThatThrownBy(() -> new UserName(""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Username cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_NAME.getMessage());
 
             assertThatThrownBy(() -> new UserName("   "))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Username cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_NAME.getMessage());
         }
 
         @Test
@@ -98,8 +101,8 @@ class UserNameTest {
         void should_ThrowException_When_TooShort() {
             // when & then
             assertThatThrownBy(() -> new UserName("홍"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Username must be between 2 and 20 characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_NAME.getMessage());
         }
 
         @Test
@@ -110,8 +113,8 @@ class UserNameTest {
 
             // when & then
             assertThatThrownBy(() -> new UserName(tooLongName))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Username must be between 2 and 20 characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_NAME.getMessage());
         }
     }
 }

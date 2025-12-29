@@ -3,6 +3,9 @@ package com.lrchan.qootalk.domain.chat.vo;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 public class ContentType {
 
     private static final Pattern MIME_TYPE_PATTERN =
@@ -29,22 +32,22 @@ public class ContentType {
 
     private String normalize(String value) {
         if (value == null) {
-            throw new IllegalArgumentException("Content type cannot be null");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE);
         }
         return value.trim().toLowerCase();
     }
 
     private void validate(String value) {
         if (value.isBlank()) {
-            throw new IllegalArgumentException("Content type cannot be blank");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE);
         }
 
         if (!MIME_TYPE_PATTERN.matcher(value).matches()) {
-            throw new IllegalArgumentException("Invalid MIME type format: " + value);
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE);
         }
 
         if (BLOCKED_TYPES.contains(value)) {
-            throw new IllegalArgumentException("Blocked content type: " + value);
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE);
         }
     }
 

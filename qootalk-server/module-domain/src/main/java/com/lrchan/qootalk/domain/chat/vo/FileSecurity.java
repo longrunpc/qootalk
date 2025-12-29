@@ -2,6 +2,9 @@ package com.lrchan.qootalk.domain.chat.vo;
 
 import java.util.Objects;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 public final class FileSecurity {
 
     private final Visibility visibility;
@@ -50,17 +53,13 @@ public final class FileSecurity {
         if (scanStatus == ScanStatus.MALICIOUS) {
             if (downloadPolicy == DownloadPolicy.ALLOWED
                     || sharePolicy != SharePolicy.DISABLED) {
-                throw new IllegalArgumentException(
-                        "Malicious file cannot be downloadable or shareable"
-                );
+                throw new DomainException(ChatErrorCode.CHAT_FILE_SECURITY_INVALID_MALICIOUS_FILE_DOWNLOADABLE_OR_SHAREABLE);
             }
         }
 
         if (visibility == Visibility.PUBLIC
                 && downloadPolicy == DownloadPolicy.DISABLED) {
-            throw new IllegalArgumentException(
-                    "Public file must be downloadable"
-            );
+            throw new DomainException(ChatErrorCode.CHAT_FILE_SECURITY_INVALID_PUBLIC_FILE_DOWNLOADABLE);
         }
     }
 

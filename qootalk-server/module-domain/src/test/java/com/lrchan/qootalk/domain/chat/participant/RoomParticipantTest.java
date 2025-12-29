@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 @DisplayName("RoomParticipant 도메인 테스트")
 class RoomParticipantTest {
 
@@ -76,8 +79,7 @@ class RoomParticipantTest {
 
             // when & then
             assertThatThrownBy(() -> RoomParticipant.create(userId, roomId, lastReadMessageId, role))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("User ID cannot be null");
+                    .isInstanceOf(NullPointerException.class);
         }
 
         @Test
@@ -91,8 +93,7 @@ class RoomParticipantTest {
 
             // when & then
             assertThatThrownBy(() -> RoomParticipant.create(userId, roomId, lastReadMessageId, role))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("Room ID cannot be null");
+                    .isInstanceOf(NullPointerException.class);
         }
     }
 
@@ -282,6 +283,23 @@ class RoomParticipantTest {
 
             // then
             assertThat(userChatRoom.lastReadMessageId()).isEqualTo(100L);
+        }
+
+        @Test
+        @DisplayName("마지막 읽은 메시지 ID를 변경할 때 마지막 읽은 메시지 ID가 올바르지 않으면 예외가 발생해야 한다")
+        void should_ThrowException_When_LastReadMessageIdIsInvalid() {
+            // given
+            Long userId = 1L;
+            Long roomId = 100L;
+            Long lastReadMessageId = 0L;
+            RoomRole role = RoomRole.MEMBER;
+        
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, role);
+
+            // when & then
+            assertThatThrownBy(() -> userChatRoom.updateReadReceipt(lastReadMessageId))
+                    .isInstanceOf(DomainException.class)
+                    .hasMessage(ChatErrorCode.CHAT_ROOM_PARTICIPANT_INVALID_LAST_READ_MESSAGE_ID.getMessage());
         }
     }
 

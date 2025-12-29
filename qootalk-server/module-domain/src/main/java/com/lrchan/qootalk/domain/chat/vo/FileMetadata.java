@@ -2,6 +2,9 @@ package com.lrchan.qootalk.domain.chat.vo;
 
 import java.util.Objects;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 public final class FileMetadata {
 
     private final FileName originalFileName;
@@ -30,16 +33,18 @@ public final class FileMetadata {
     }
 
     private void validatePolicy() {
-        // TEMP 스토리지는 tmp 경로만 허용
         if (storageType == StorageType.TEMP &&
                 !(storagePath.value().startsWith("system/tmp/") && storagePath.value().endsWith("/"))) {
-            throw new IllegalArgumentException("TEMP storage must use path starting and ending with 'system/tmp/'");
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_STORAGE_TYPE);
         }
 
-        // LOCAL 스토리지는 로컬 경로만 허용
         if (storageType == StorageType.LOCAL &&
-                storagePath.value().startsWith("s3/")) {
-            throw new IllegalArgumentException("LOCAL storage cannot use remote path");
+                !storagePath.value().startsWith("local/")) {
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_STORAGE_TYPE);
+        }
+        if (storageType == StorageType.S3 &&
+                !storagePath.value().startsWith("s3/")) {
+            throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_STORAGE_TYPE);
         }
     }
 

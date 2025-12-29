@@ -27,19 +27,11 @@ public class FileAttachment extends BaseModel {
             LocalDateTime updatedAt,
             LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
-
-        if (messageId == null) {
-            throw new IllegalArgumentException("messageId cannot be null");
-        }
-        if (uploaderId == null) {
-            throw new IllegalArgumentException("uploaderId cannot be null");
-        }
-
-        this.messageId = messageId;
-        this.uploaderId = uploaderId;
-        this.metadata = Objects.requireNonNull(metadata, "metadata");
-        this.fileType = Objects.requireNonNull(fileType, "fileType");
-        this.fileSecurity = Objects.requireNonNull(fileSecurity, "fileSecurity");
+        this.messageId = Objects.requireNonNull(messageId);
+        this.uploaderId = Objects.requireNonNull(uploaderId);
+        this.metadata = metadata;
+        this.fileType = fileType == null ? FileType.DOCUMENT : fileType;
+        this.fileSecurity = fileSecurity == null ? FileSecurity.defaultPrivate() : fileSecurity;
     }
 
     public static FileAttachment create(
