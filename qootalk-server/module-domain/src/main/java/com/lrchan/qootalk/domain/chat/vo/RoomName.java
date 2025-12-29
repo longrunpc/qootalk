@@ -30,7 +30,7 @@ public class RoomName {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoomName roomName = (RoomName) o;
-        return value.equals(roomName.value);
+        return java.util.Objects.equals(value, roomName.value);
     }
     
     @Override
