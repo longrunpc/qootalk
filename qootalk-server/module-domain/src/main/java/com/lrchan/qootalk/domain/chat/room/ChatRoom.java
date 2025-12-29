@@ -1,6 +1,7 @@
 package com.lrchan.qootalk.domain.chat.room;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import com.lrchan.qootalk.domain.chat.vo.RoomName;
 import com.lrchan.qootalk.domain.common.BaseModel;
@@ -15,7 +16,7 @@ public class ChatRoom extends BaseModel {
         super(id, createdAt, updatedAt, deletedAt);
         this.roomName = roomName;
         this.roomType = roomType;
-        this.createdBy = createdBy;
+        this.createdBy = Objects.requireNonNull(createdBy);
     }
 
     public static ChatRoom create(String roomName, RoomType roomType, Long createdBy) {

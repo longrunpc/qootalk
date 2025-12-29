@@ -1,5 +1,8 @@
 package com.lrchan.qootalk.domain.user.vo;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.user.error.UserErrorCode;
+
 public class UserName {
     
     private String value;
@@ -15,10 +18,10 @@ public class UserName {
 
     private void validate(String value) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("Username cannot be null or blank");
+            throw new DomainException(UserErrorCode.USER_INVALID_NAME);
         }
         if (value.length() < 2 || value.length() > 20) {
-            throw new IllegalArgumentException("Username must be between 2 and 20 characters");
+            throw new DomainException(UserErrorCode.USER_INVALID_NAME);
         }
     }
 }

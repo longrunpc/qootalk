@@ -1,5 +1,8 @@
 package com.lrchan.qootalk.domain.chat.vo;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 public class RoomName {
     
     private final String value;
@@ -15,10 +18,23 @@ public class RoomName {
 
     private void validate(String value) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("Room name cannot be null or blank");
+            throw new DomainException(ChatErrorCode.CHAT_ROOM_INVALID_NAME);
         }
         if (value.length() < 2 || value.length() > 20) {
-            throw new IllegalArgumentException("Room name must be between 2 and 20 characters");
+            throw new DomainException(ChatErrorCode.CHAT_ROOM_INVALID_NAME);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoomName roomName = (RoomName) o;
+        return java.util.Objects.equals(value, roomName.value);
+    }
+    
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }

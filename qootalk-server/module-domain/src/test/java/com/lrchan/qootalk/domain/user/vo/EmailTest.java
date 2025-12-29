@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.user.error.UserErrorCode;
+
 @DisplayName("Email VO 테스트")
 class EmailTest {
 
@@ -47,8 +50,8 @@ class EmailTest {
         void should_ThrowException_When_Null() {
             // when & then
             assertThatThrownBy(() -> new Email(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Email cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_EMAIL.getMessage());
         }
 
         @Test
@@ -56,12 +59,12 @@ class EmailTest {
         void should_ThrowException_When_Blank() {
             // when & then
             assertThatThrownBy(() -> new Email(""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Email cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_EMAIL.getMessage());
 
             assertThatThrownBy(() -> new Email("   "))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Email cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_EMAIL.getMessage());
         }
 
         @Test
@@ -69,24 +72,24 @@ class EmailTest {
         void should_ThrowException_When_InvalidFormat() {
             // when & then
             assertThatThrownBy(() -> new Email("invalid-email"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid email format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_EMAIL.getMessage());
 
             assertThatThrownBy(() -> new Email("@example.com"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid email format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_EMAIL.getMessage());
 
             assertThatThrownBy(() -> new Email("user@"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid email format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_EMAIL.getMessage());
 
             assertThatThrownBy(() -> new Email("user@example"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid email format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_EMAIL.getMessage());
 
             assertThatThrownBy(() -> new Email("user @example.com"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid email format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_EMAIL.getMessage());
         }
     }
 }

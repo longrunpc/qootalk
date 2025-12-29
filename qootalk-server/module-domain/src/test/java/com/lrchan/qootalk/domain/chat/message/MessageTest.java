@@ -86,8 +86,7 @@ class MessageTest {
 
             // when & then
             assertThatThrownBy(() -> Message.create(roomId, userId, content, messageType, mentions))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Room ID cannot be null");
+                .isInstanceOf(NullPointerException.class);
         }
 
         @Test
@@ -102,8 +101,7 @@ class MessageTest {
 
             // when & then
             assertThatThrownBy(() -> Message.create(roomId, userId, content, messageType, mentions))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("User ID cannot be null");
+                .isInstanceOf(NullPointerException.class);
         }
 
         @Test
@@ -154,7 +152,7 @@ class MessageTest {
             Long parentMessageId = 999L;
 
             // when
-            Message message = Message.create(roomId, userId, content, messageType, mentions, parentMessageId);
+            Message message = Message.createReply(roomId, userId, content, messageType, mentions, parentMessageId);
 
             // then
             assertThat(message.parentMessageId()).isEqualTo(999L);

@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.user.error.UserErrorCode;
+
 @DisplayName("ProfileImageUrl VO 테스트")
 class ProfileImageUrlTest {
 
@@ -62,8 +65,8 @@ class ProfileImageUrlTest {
         void should_ThrowException_When_Null() {
             // when & then
             assertThatThrownBy(() -> new ProfileImageUrl(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Profile image URL cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_PROFILE_IMAGE_URL.getMessage());
         }
 
         @Test
@@ -71,12 +74,12 @@ class ProfileImageUrlTest {
         void should_ThrowException_When_Blank() {
             // when & then
             assertThatThrownBy(() -> new ProfileImageUrl(""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Profile image URL cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_PROFILE_IMAGE_URL.getMessage());
 
             assertThatThrownBy(() -> new ProfileImageUrl("   "))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Profile image URL cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_PROFILE_IMAGE_URL.getMessage());
         }
 
         @Test
@@ -84,20 +87,20 @@ class ProfileImageUrlTest {
         void should_ThrowException_When_InvalidFormat() {
             // when & then
             assertThatThrownBy(() -> new ProfileImageUrl("ftp://example.com/image.jpg"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid profile image URL format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_PROFILE_IMAGE_URL.getMessage());
 
             assertThatThrownBy(() -> new ProfileImageUrl("example.com/image.jpg"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid profile image URL format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_PROFILE_IMAGE_URL.getMessage());
 
             assertThatThrownBy(() -> new ProfileImageUrl("/path/to/image.jpg"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid profile image URL format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_PROFILE_IMAGE_URL.getMessage());
 
             assertThatThrownBy(() -> new ProfileImageUrl("image.jpg"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid profile image URL format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(UserErrorCode.USER_INVALID_PROFILE_IMAGE_URL.getMessage());
         }
     }
 }
