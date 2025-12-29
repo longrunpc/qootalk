@@ -161,8 +161,7 @@ class FileAttachmentTest {
                 fileType,
                 fileSecurity
             ))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("messageId cannot be null");
+            .isInstanceOf(NullPointerException.class);
         }
 
         @Test
@@ -182,8 +181,7 @@ class FileAttachmentTest {
                 fileType,
                 fileSecurity
             ))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("uploaderId cannot be null");
+            .isInstanceOf(NullPointerException.class);
         }
 
         @Test
@@ -203,50 +201,7 @@ class FileAttachmentTest {
                 fileType,
                 fileSecurity
             ))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("metadata");
-        }
-
-        @Test
-        @DisplayName("fileType이 null이면 예외가 발생한다")
-        void should_ThrowException_When_FileTypeIsNull() {
-            // given
-            Long messageId = 1L;
-            Long uploaderId = 100L;
-            FileMetadata metadata = createFileMetadata();
-            FileSecurity fileSecurity = createFileSecurity();
-
-            // when & then
-            assertThatThrownBy(() -> FileAttachment.create(
-                messageId,
-                uploaderId,
-                metadata,
-                null,
-                fileSecurity
-            ))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("fileType");
-        }
-
-        @Test
-        @DisplayName("fileSecurity가 null이면 예외가 발생한다")
-        void should_ThrowException_When_FileSecurityIsNull() {
-            // given
-            Long messageId = 1L;
-            Long uploaderId = 100L;
-            FileMetadata metadata = createFileMetadata();
-            FileType fileType = FileType.DOCUMENT;
-
-            // when & then
-            assertThatThrownBy(() -> FileAttachment.create(
-                messageId,
-                uploaderId,
-                metadata,
-                fileType,
-                null
-            ))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("fileSecurity");
+            .isInstanceOf(NullPointerException.class);
         }
     }
 

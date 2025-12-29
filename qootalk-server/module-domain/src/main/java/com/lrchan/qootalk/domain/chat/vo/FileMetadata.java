@@ -22,12 +22,12 @@ public final class FileMetadata {
             Path storagePath,
             StorageType storageType
     ) {
-        this.originalFileName = Objects.requireNonNull(originalFileName);
-        this.storedFileName = Objects.requireNonNull(storedFileName);
-        this.contentType = Objects.requireNonNull(contentType);
-        this.fileSize = Objects.requireNonNull(fileSize);
-        this.storagePath = Objects.requireNonNull(storagePath);
-        this.storageType = Objects.requireNonNull(storageType);
+        this.originalFileName = Objects.requireNonNull(originalFileName, "originalFileName");
+        this.storedFileName = Objects.requireNonNull(storedFileName, "storedFileName");
+        this.contentType = Objects.requireNonNull(contentType, "contentType");
+        this.fileSize = Objects.requireNonNull(fileSize, "fileSize");
+        this.storagePath = Objects.requireNonNull(storagePath, "storagePath");
+        this.storageType = Objects.requireNonNull(storageType, "storageType");
 
         validatePolicy();
     }

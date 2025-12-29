@@ -29,7 +29,7 @@ public class FileAttachment extends BaseModel {
         super(id, createdAt, updatedAt, deletedAt);
         this.messageId = Objects.requireNonNull(messageId);
         this.uploaderId = Objects.requireNonNull(uploaderId);
-        this.metadata = metadata;
+        this.metadata = Objects.requireNonNull(metadata);
         this.fileType = fileType == null ? FileType.DOCUMENT : fileType;
         this.fileSecurity = fileSecurity == null ? FileSecurity.defaultPrivate() : fileSecurity;
     }

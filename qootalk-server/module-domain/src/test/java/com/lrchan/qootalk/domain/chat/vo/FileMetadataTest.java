@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 @DisplayName("FileMetadata VO 테스트")
 class FileMetadataTest {
 
@@ -172,8 +175,8 @@ class FileMetadataTest {
                 invalidPath,
                 storageType
             ))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("TEMP storage must use path starting and ending with 'system/tmp/'");
+            .isInstanceOf(DomainException.class)
+            .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_STORAGE_TYPE.getMessage());
         }
 
         @Test
@@ -196,8 +199,8 @@ class FileMetadataTest {
                 s3Path,
                 storageType
             ))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("LOCAL storage cannot use remote path");
+            .isInstanceOf(DomainException.class)
+            .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_STORAGE_TYPE.getMessage());
         }
     }
 
