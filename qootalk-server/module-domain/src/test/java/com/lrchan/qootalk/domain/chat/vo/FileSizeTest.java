@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 @DisplayName("FileSize VO 테스트")
 class FileSizeTest {
 
@@ -78,8 +81,8 @@ class FileSizeTest {
         void should_ThrowException_When_Null() {
             // when & then
             assertThatThrownBy(() -> new FileSize(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File size cannot be null or negative");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_SIZE.getMessage());
         }
 
         @Test
@@ -87,8 +90,8 @@ class FileSizeTest {
         void should_ThrowException_When_Negative() {
             // when & then
             assertThatThrownBy(() -> new FileSize(-1L))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File size cannot be null or negative");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_SIZE.getMessage());
         }
 
         @Test
@@ -99,8 +102,8 @@ class FileSizeTest {
 
             // when & then
             assertThatThrownBy(() -> new FileSize(exceedsMax))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("File size cannot be greater than");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_SIZE.getMessage());
         }
     }
 

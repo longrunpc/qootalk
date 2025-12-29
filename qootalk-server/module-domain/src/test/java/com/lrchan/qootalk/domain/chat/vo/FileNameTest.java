@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 @DisplayName("FileName VO 테스트")
 class FileNameTest {
 
@@ -76,8 +79,8 @@ class FileNameTest {
         void should_ThrowException_When_Null() {
             // when & then
             assertThatThrownBy(() -> new FileName(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File name cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_NAME.getMessage());
         }
 
         @Test
@@ -85,12 +88,12 @@ class FileNameTest {
         void should_ThrowException_When_Blank() {
             // when & then
             assertThatThrownBy(() -> new FileName(""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File name cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_NAME.getMessage());
 
             assertThatThrownBy(() -> new FileName("   "))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File name cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_NAME.getMessage());
         }
 
         @Test
@@ -98,8 +101,8 @@ class FileNameTest {
         void should_ThrowException_When_TooShort() {
             // when & then
             assertThatThrownBy(() -> new FileName("a"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File name must be between 2 and 100 characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_NAME.getMessage());
         }
 
         @Test
@@ -110,8 +113,8 @@ class FileNameTest {
 
             // when & then
             assertThatThrownBy(() -> new FileName(tooLongName))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File name must be between 2 and 100 characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_NAME.getMessage());
         }
 
         @Test
@@ -119,12 +122,12 @@ class FileNameTest {
         void should_ThrowException_When_ContainsInvalidCharacters() {
             // when & then
             assertThatThrownBy(() -> new FileName("test@file.pdf"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File name must contain only letters, numbers, and special characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_NAME.getMessage());
 
             assertThatThrownBy(() -> new FileName("test file.pdf"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File name must contain only letters, numbers, and special characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_FILE_NAME.getMessage());
         }
     }
 

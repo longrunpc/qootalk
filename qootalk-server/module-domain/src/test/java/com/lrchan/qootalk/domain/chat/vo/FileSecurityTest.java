@@ -9,6 +9,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 @DisplayName("FileSecurity VO 테스트")
 class FileSecurityTest {
 
@@ -205,8 +208,8 @@ class FileSecurityTest {
                 scanStatus,
                 encryption
             ))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Malicious file cannot be downloadable or shareable");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_SECURITY_INVALID_MALICIOUS_FILE_DOWNLOADABLE_OR_SHAREABLE.getMessage());
         }
 
         @Test
@@ -227,8 +230,8 @@ class FileSecurityTest {
                 scanStatus,
                 encryption
             ))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Malicious file cannot be downloadable or shareable");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_SECURITY_INVALID_MALICIOUS_FILE_DOWNLOADABLE_OR_SHAREABLE.getMessage());
         }
 
         @Test
@@ -249,8 +252,8 @@ class FileSecurityTest {
                 scanStatus,
                 encryption
             ))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Public file must be downloadable");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_SECURITY_INVALID_PUBLIC_FILE_DOWNLOADABLE.getMessage());
         }
     }
 

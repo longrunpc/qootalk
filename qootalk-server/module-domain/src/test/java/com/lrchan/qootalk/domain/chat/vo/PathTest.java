@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 @DisplayName("Path VO 테스트")
 class PathTest {
 
@@ -76,8 +79,8 @@ class PathTest {
         void should_ThrowException_When_Null() {
             // when & then
             assertThatThrownBy(() -> new Path(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Path cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH.getMessage());
         }
 
         @Test
@@ -85,12 +88,12 @@ class PathTest {
         void should_ThrowException_When_Blank() {
             // when & then
             assertThatThrownBy(() -> new Path(""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Path cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH.getMessage());
 
             assertThatThrownBy(() -> new Path("   "))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Path cannot be null or blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH.getMessage());
         }
 
         @Test
@@ -98,8 +101,8 @@ class PathTest {
         void should_ThrowException_When_TooShort() {
             // when & then
             assertThatThrownBy(() -> new Path("a"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Path must be between 2 and 200 characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH.getMessage());
         }
 
         @Test
@@ -110,8 +113,8 @@ class PathTest {
 
             // when & then
             assertThatThrownBy(() -> new Path(tooLongPath))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Path must be between 2 and 200 characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH.getMessage());
         }
 
         @Test
@@ -119,8 +122,8 @@ class PathTest {
         void should_ThrowException_When_NotEndsWithSlash() {
             // when & then
             assertThatThrownBy(() -> new Path("uploads/files"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Path must end with a slash");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH.getMessage());
         }
 
         @Test
@@ -128,8 +131,8 @@ class PathTest {
         void should_ThrowException_When_ContainsMultipleSlashes() {
             // when & then
             assertThatThrownBy(() -> new Path("uploads//files/"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Path cannot contain multiple slashes");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH.getMessage());
         }
 
         @Test
@@ -137,8 +140,8 @@ class PathTest {
         void should_ThrowException_When_ContainsParentDirectory() {
             // when & then
             assertThatThrownBy(() -> new Path("uploads/../files/"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Path cannot contain parent directory");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH.getMessage());
         }
 
         @Test
@@ -146,8 +149,8 @@ class PathTest {
         void should_ThrowException_When_ContainsInvalidCharacters() {
             // when & then
             assertThatThrownBy(() -> new Path("uploads/test@files/"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Path must contain only letters, numbers, slashes, and special characters");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_PATH.getMessage());
         }
     }
 
