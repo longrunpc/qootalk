@@ -1,5 +1,8 @@
 package com.lrchan.qootalk.infrastructure.persistence.user;
 
+import com.lrchan.qootalk.domain.user.User;
+
+
 public class UserEntityMapper {
     
     public static User toDomain(UserEntity userEntity) {
@@ -7,6 +10,6 @@ public class UserEntityMapper {
     }
 
     public static UserEntity toEntity(User user) {
-        return new UserEntity(user.email(), user.password(), user.name());
+        return new UserEntity(user.email(), user.password(), user.name(), user.role());
     }
 }
