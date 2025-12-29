@@ -5,5 +5,5 @@ import java.util.Optional;
 public interface MessageRepository {
     Optional<Message> findById(Long id);
     Optional<Message> findByParentMessageId(Long parentMessageId);
-    void save(Message message);
+    Message save(Message message);
 }

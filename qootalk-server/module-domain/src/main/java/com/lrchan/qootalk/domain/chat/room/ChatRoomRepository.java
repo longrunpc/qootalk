@@ -4,5 +4,5 @@ import java.util.Optional;
 
 public interface ChatRoomRepository {
     Optional<ChatRoom> findById(Long id);
-    void save(ChatRoom chatRoom);
+    ChatRoom save(ChatRoom chatRoom);
 }

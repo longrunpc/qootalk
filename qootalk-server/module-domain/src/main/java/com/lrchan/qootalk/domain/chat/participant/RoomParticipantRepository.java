@@ -4,5 +4,5 @@ import java.util.Optional;
 
 public interface RoomParticipantRepository {
     Optional<RoomParticipant> findById(Long id);
-    void save(RoomParticipant roomParticipant);
+    RoomParticipant save(RoomParticipant roomParticipant);
 }
