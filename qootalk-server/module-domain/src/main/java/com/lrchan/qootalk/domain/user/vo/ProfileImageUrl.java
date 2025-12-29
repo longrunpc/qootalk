@@ -30,7 +30,7 @@ public class ProfileImageUrl {
         if (this == o) return true;
         if (!(o instanceof ProfileImageUrl)) return false;
         ProfileImageUrl profileImageUrl = (ProfileImageUrl) o;
-        return value.equals(profileImageUrl.value);
+        return java.util.Objects.equals(value, profileImageUrl.value);
     }
 
     @Override

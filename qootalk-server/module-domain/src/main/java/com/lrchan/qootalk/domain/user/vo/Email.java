@@ -30,7 +30,7 @@ public class Email {
         if (this == o) return true;
         if (!(o instanceof Email)) return false;
         Email email = (Email) o;
-        return value.equals(email.value);
+        return java.util.Objects.equals(value, email.value);
     }
 
     @Override

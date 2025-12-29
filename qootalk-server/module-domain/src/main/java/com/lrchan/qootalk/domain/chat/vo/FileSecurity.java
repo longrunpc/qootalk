@@ -20,11 +20,11 @@ public final class FileSecurity {
             ScanStatus scanStatus,
             Encryption encryption
     ) {
-        this.visibility = visibility;
-        this.downloadPolicy = downloadPolicy;
-        this.sharePolicy = sharePolicy;
-        this.scanStatus = scanStatus;
-        this.encryption = encryption;
+        this.visibility = Objects.requireNonNull(visibility, "visibility");
+        this.downloadPolicy = Objects.requireNonNull(downloadPolicy, "downloadPolicy");
+        this.sharePolicy = Objects.requireNonNull(sharePolicy, "sharePolicy");
+        this.scanStatus = Objects.requireNonNull(scanStatus, "scanStatus");
+        this.encryption = Objects.requireNonNull(encryption, "encryption");
 
         validatePolicy();
     }
