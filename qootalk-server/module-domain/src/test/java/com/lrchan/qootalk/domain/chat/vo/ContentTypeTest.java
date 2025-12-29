@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+
 @DisplayName("ContentType VO 테스트")
 class ContentTypeTest {
 
@@ -74,8 +77,8 @@ class ContentTypeTest {
         void should_ThrowException_When_Null() {
             // when & then
             assertThatThrownBy(() -> new ContentType(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Content type cannot be null");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE.getMessage());
         }
 
         @Test
@@ -83,12 +86,12 @@ class ContentTypeTest {
         void should_ThrowException_When_Blank() {
             // when & then
             assertThatThrownBy(() -> new ContentType(""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Content type cannot be blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE.getMessage());
 
             assertThatThrownBy(() -> new ContentType("   "))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Content type cannot be blank");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE.getMessage());
         }
 
         @Test
@@ -96,16 +99,16 @@ class ContentTypeTest {
         void should_ThrowException_When_InvalidFormat() {
             // when & then
             assertThatThrownBy(() -> new ContentType("invalid"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Invalid MIME type format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE.getMessage());
 
             assertThatThrownBy(() -> new ContentType("image"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Invalid MIME type format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE.getMessage());
 
             assertThatThrownBy(() -> new ContentType("image/"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Invalid MIME type format");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE.getMessage());
         }
 
         @Test
@@ -113,20 +116,20 @@ class ContentTypeTest {
         void should_ThrowException_When_BlockedType() {
             // when & then
             assertThatThrownBy(() -> new ContentType("application/octet-stream"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Blocked content type: application/octet-stream");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE.getMessage());
 
             assertThatThrownBy(() -> new ContentType("application/x-msdownload"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Blocked content type: application/x-msdownload");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE.getMessage());
 
             assertThatThrownBy(() -> new ContentType("application/x-sh"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Blocked content type: application/x-sh");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE.getMessage());
 
             assertThatThrownBy(() -> new ContentType("application/java-archive"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Blocked content type: application/java-archive");
+                .isInstanceOf(DomainException.class)
+                .hasMessage(ChatErrorCode.CHAT_FILE_METADATA_INVALID_CONTENT_TYPE.getMessage());
         }
     }
 

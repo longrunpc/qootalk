@@ -37,9 +37,8 @@ public final class FileMetadata {
                 !(storagePath.value().startsWith("system/tmp/") && storagePath.value().endsWith("/"))) {
             throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_STORAGE_TYPE);
         }
-
         if (storageType == StorageType.LOCAL &&
-                !storagePath.value().startsWith("local/")) {
+                !storagePath.value().startsWith("uploads/")) {
             throw new DomainException(ChatErrorCode.CHAT_FILE_METADATA_INVALID_STORAGE_TYPE);
         }
         if (storageType == StorageType.S3 &&
