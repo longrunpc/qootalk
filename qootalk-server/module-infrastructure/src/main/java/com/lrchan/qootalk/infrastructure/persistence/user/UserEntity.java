@@ -41,6 +41,19 @@ public class UserEntity extends BaseEntity {
         this.password = password;
         this.name = name;
         this.role = role;
+        this.profileImageUrl = null;
+        this.statusMessage = null;
+    }
+
+    public UserEntity(Long id, String email, String password, String name,
+                      String profileImageUrl, String statusMessage, UserRole role) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
+        this.statusMessage = statusMessage;
+        this.role = role;
     }
 
     public String email() {
