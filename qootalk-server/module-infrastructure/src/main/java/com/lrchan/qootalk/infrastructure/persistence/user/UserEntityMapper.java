@@ -2,6 +2,7 @@ package com.lrchan.qootalk.infrastructure.persistence.user;
 
 import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.vo.ProfileImageUrl;
+import com.lrchan.qootalk.domain.user.vo.StatusMessage;
 import com.lrchan.qootalk.domain.user.vo.UserName;
 import com.lrchan.qootalk.domain.user.vo.Email;
 import com.lrchan.qootalk.domain.user.vo.Password;
@@ -18,7 +19,7 @@ public final class UserEntityMapper {
             new Password(userEntity.password()),
             new UserName(userEntity.name()),
             new ProfileImageUrl(userEntity.profileImageUrl()),
-            userEntity.statusMessage(),
+            new StatusMessage(userEntity.statusMessage()),
             userEntity.role(),
             userEntity.createdAt(),
             userEntity.updatedAt(),
@@ -29,11 +30,11 @@ public final class UserEntityMapper {
     public static UserEntity toEntity(User user) {
         return new UserEntity(
             user.id(), 
-            user.email(),
-            user.password(), 
-            user.name(), 
-            user.profileImageUrl(),
-            user.statusMessage(), 
+            user.email().value(),
+            user.password().encryptedPassword(), 
+            user.name().value(), 
+            user.profileImageUrl().value(),
+            user.statusMessage().value(), 
             user.role()
         );
     }
