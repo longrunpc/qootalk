@@ -6,6 +6,7 @@ import com.lrchan.qootalk.domain.common.BaseModel;
 import com.lrchan.qootalk.domain.user.vo.Email;
 import com.lrchan.qootalk.domain.user.vo.Password;
 import com.lrchan.qootalk.domain.user.vo.ProfileImageUrl;
+import com.lrchan.qootalk.domain.user.vo.StatusMessage;
 import com.lrchan.qootalk.domain.user.vo.UserName;
 
 public class User extends BaseModel {
@@ -38,8 +39,8 @@ public class User extends BaseModel {
         this.role = role == null ? UserRole.USER : role;
     }
 
-    public static User create(String email, String password, String name) {
-        return new User(null, new Email(email), new Password(password), new UserName(name), null, new StatusMessage(""), UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
+    public static User create(Email email, Password password, UserName name) {
+        return new User(null, email, password, name, null, null, UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
     // DB 복구 전용 메서드

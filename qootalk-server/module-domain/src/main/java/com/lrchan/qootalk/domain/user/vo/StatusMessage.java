@@ -1,5 +1,7 @@
 package com.lrchan.qootalk.domain.user.vo;
 
+import java.util.Objects;
+
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
 
@@ -34,11 +36,11 @@ public final class StatusMessage {
         if (this == o) return true;
         if (!(o instanceof StatusMessage)) return false;
         StatusMessage statusMessage = (StatusMessage) o;
-        return java.util.Objects.equals(value, statusMessage.value);
+        return Objects.equals(value, statusMessage.value);
     }
     
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return Objects.hash(value);
     }
 }

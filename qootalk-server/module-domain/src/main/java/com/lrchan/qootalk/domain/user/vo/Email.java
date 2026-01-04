@@ -1,11 +1,17 @@
 package com.lrchan.qootalk.domain.user.vo;
 
+import java.util.Objects;
+
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
 
-public class Email {
+public final class Email {
     
     private final String value;
+
+    protected Email() {
+        this.value = null;
+    }
 
     public Email(String value) {
         validate(value);
@@ -30,12 +36,12 @@ public class Email {
         if (this == o) return true;
         if (!(o instanceof Email)) return false;
         Email email = (Email) o;
-        return java.util.Objects.equals(value, email.value);
+        return Objects.equals(value, email.value);
     }
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return Objects.hash(value);
     }
 
 }

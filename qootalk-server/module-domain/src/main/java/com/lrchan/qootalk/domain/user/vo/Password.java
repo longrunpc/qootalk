@@ -1,11 +1,17 @@
 package com.lrchan.qootalk.domain.user.vo;
 
+import java.util.Objects;
+
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
 
-public class Password {
+public final class Password {
     
-    private String encryptedPassword;
+    private final String encryptedPassword;
+
+    protected Password() {
+        this.encryptedPassword = null;
+    }
 
     public Password(String encryptedPassword) {
         validate(encryptedPassword);
@@ -20,5 +26,18 @@ public class Password {
         if (encryptedPassword == null || encryptedPassword.isBlank()) {
             throw new DomainException(UserErrorCode.USER_INVALID_PASSWORD);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Password)) return false;
+        Password password = (Password) o;
+        return Objects.equals(encryptedPassword, password.encryptedPassword);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(encryptedPassword);
     }
 }

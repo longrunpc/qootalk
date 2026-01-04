@@ -1,11 +1,17 @@
 package com.lrchan.qootalk.domain.user.vo;
 
+import java.util.Objects;
+
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
 
-public class ProfileImageUrl {
+public final class ProfileImageUrl {
     
-    private String value;
+    private final String value;
+
+    protected ProfileImageUrl() {
+        this.value = null;
+    }
 
     public ProfileImageUrl(String value) {
         validate(value);
@@ -30,11 +36,11 @@ public class ProfileImageUrl {
         if (this == o) return true;
         if (!(o instanceof ProfileImageUrl)) return false;
         ProfileImageUrl profileImageUrl = (ProfileImageUrl) o;
-        return java.util.Objects.equals(value, profileImageUrl.value);
+        return Objects.equals(value, profileImageUrl.value);
     }
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return Objects.hash(value);
     }
 }
