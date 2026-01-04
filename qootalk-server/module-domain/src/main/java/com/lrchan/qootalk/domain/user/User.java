@@ -14,7 +14,7 @@ public class User extends BaseModel {
     private Password password;
     private UserName name;
     private ProfileImageUrl profileImageUrl;
-    private String statusMessage;
+    private StatusMessage statusMessage;
     private UserRole role;
 
     private User(
@@ -23,7 +23,7 @@ public class User extends BaseModel {
             Password password,
             UserName name,
             ProfileImageUrl profileImageUrl,
-            String statusMessage,
+            StatusMessage statusMessage,
             UserRole role,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
@@ -39,30 +39,31 @@ public class User extends BaseModel {
     }
 
     public static User create(String email, String password, String name) {
-        return new User(null, new Email(email), new Password(password), new UserName(name), null, "", UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
+        return new User(null, new Email(email), new Password(password), new UserName(name), null, new StatusMessage(""), UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
-    public static User reconstruct(Long id, Email email, Password password, UserName name, ProfileImageUrl profileImageUrl, String statusMessage, UserRole role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+    // DB 복구 전용 메서드
+    public static User reconstruct(Long id, Email email, Password password, UserName name, ProfileImageUrl profileImageUrl, StatusMessage statusMessage, UserRole role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         return new User(id, email, password, name, profileImageUrl, statusMessage, role, createdAt, updatedAt, deletedAt);
     }
 
-    public String email() {
-        return email.value();
+    public Email email() {
+        return email;
     }
 
-    public String name() {
-        return name.value();
+    public UserName name() {
+        return name;
     }
 
-    public String password() {
-        return password.encryptedPassword();
+    public Password password() {
+        return password;
     }
 
-    public String profileImageUrl() {
-        return profileImageUrl != null ? profileImageUrl.value() : null;
+    public ProfileImageUrl profileImageUrl() {
+        return profileImageUrl;
     }
 
-    public String statusMessage() {
+    public StatusMessage statusMessage() {
         return statusMessage;
     }
 
@@ -70,17 +71,17 @@ public class User extends BaseModel {
         return role;
     }
 
-    public void changeName(String name) {
-        this.name = new UserName(name);
+    public void changeName(UserName name) {
+        this.name = name;
         update();
     }
 
-    public void changeProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = new ProfileImageUrl(profileImageUrl);
+    public void changeProfileImageUrl(ProfileImageUrl profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
         update();
     }
 
-    public void changeStatusMessage(String statusMessage) {
+    public void changeStatusMessage(StatusMessage statusMessage) {
         this.statusMessage = statusMessage;
         update();
     }
