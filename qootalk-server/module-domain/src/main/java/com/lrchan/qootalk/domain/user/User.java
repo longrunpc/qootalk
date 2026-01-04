@@ -42,6 +42,10 @@ public class User extends BaseModel {
         return new User(null, new Email(email), new Password(password), new UserName(name), null, "", UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
+    public static User reconstruct(Long id, Email email, Password password, UserName name, ProfileImageUrl profileImageUrl, String statusMessage, UserRole role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        return new User(id, email, password, name, profileImageUrl, statusMessage, role, createdAt, updatedAt, deletedAt);
+    }
+
     public String email() {
         return email.value();
     }
