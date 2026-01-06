@@ -18,7 +18,7 @@ public final class UserEntityMapper {
             new Email(userEntity.email()),
             new Password(userEntity.password()),
             new UserName(userEntity.name()),
-            new ProfileImageUrl(userEntity.profileImageUrl()),
+            userEntity.profileImageUrl() != null ? new ProfileImageUrl(userEntity.profileImageUrl()) : null,
             new StatusMessage(userEntity.statusMessage()),
             userEntity.role(),
             userEntity.createdAt(),
@@ -33,9 +33,12 @@ public final class UserEntityMapper {
             user.email().value(),
             user.password().encryptedPassword(), 
             user.name().value(), 
-            user.profileImageUrl().value(),
-            user.statusMessage().value(), 
-            user.role()
+            user.profileImageUrl() != null ? user.profileImageUrl().value() : null,
+            user.statusMessage() != null ? user.statusMessage().value() : null, 
+            user.role(),
+            user.createdAt(),
+            user.updatedAt(),
+            user.deletedAt()
         );
     }
 }
