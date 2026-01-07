@@ -9,9 +9,10 @@ public final class StatusMessage {
 
     private static final int MAX_LENGTH = 100;
     
-    private String value;
+    private final String value;
 
     protected StatusMessage() {
+        this.value = "";
     }
 
     public StatusMessage(String value) {
