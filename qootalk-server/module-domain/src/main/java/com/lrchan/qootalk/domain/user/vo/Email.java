@@ -6,11 +6,12 @@ import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
 
 public final class Email {
+
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     
-    private final String value;
+    private String value;
 
     protected Email() {
-        this.value = null;
     }
 
     public Email(String value) {
@@ -26,7 +27,7 @@ public final class Email {
         if (value == null || value.isBlank()) {
             throw new DomainException(UserErrorCode.USER_INVALID_EMAIL);
         }
-        if (!value.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+        if (!value.matches(EMAIL_REGEX)) {
             throw new DomainException(UserErrorCode.USER_INVALID_EMAIL);
         }
     }
