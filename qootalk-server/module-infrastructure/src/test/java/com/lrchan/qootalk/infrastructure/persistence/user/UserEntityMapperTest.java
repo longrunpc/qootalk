@@ -224,7 +224,7 @@ class UserEntityMapperTest {
 
             // then
             assertThat(userEntity.profileImageUrl()).isEqualTo("https://example.com/profile.jpg");
-            assertThat(userEntity.statusMessage()).isNull();
+            assertThat(userEntity.statusMessage()).isEqualTo("");
         }
 
         @Test

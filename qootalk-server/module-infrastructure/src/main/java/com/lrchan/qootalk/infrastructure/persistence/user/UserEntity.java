@@ -44,7 +44,7 @@ public class UserEntity extends BaseEntity {
         this.name = name;
         this.role = role;
         this.profileImageUrl = null;
-        this.statusMessage = null;
+        this.statusMessage = "";
     }
 
     public UserEntity(Long id, String email, String password, String name,
@@ -55,7 +55,7 @@ public class UserEntity extends BaseEntity {
         this.password = password;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
-        this.statusMessage = statusMessage;
+        this.statusMessage = (statusMessage == null) ? "" : statusMessage;
         this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
