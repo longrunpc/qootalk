@@ -40,7 +40,7 @@ public class User extends BaseModel {
     }
 
     public static User create(Email email, Password password, UserName name) {
-        return new User(null, email, password, name, null, null, UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
+        return new User(null, email, password, name, null, new StatusMessage(""), UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
     // DB 복구 전용 메서드
@@ -83,7 +83,7 @@ public class User extends BaseModel {
     }
 
     public void changeStatusMessage(StatusMessage statusMessage) {
-        this.statusMessage = statusMessage;
+        this.statusMessage = (statusMessage == null) ? new StatusMessage("") : statusMessage;
         update();
     }
 }
