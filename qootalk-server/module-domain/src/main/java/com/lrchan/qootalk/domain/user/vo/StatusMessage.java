@@ -11,10 +11,6 @@ public final class StatusMessage {
     
     private final String value;
 
-    protected StatusMessage() {
-        this.value = "";
-    }
-
     public StatusMessage(String value) {
         value = value == null ? "" : value;
         validate(value);

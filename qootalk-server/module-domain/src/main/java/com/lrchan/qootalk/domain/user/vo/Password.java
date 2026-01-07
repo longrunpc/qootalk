@@ -9,10 +9,6 @@ public final class Password {
     
     private final String encryptedPassword;
 
-    protected Password() {
-        this.encryptedPassword = null;
-    }
-
     public Password(String encryptedPassword) {
         validate(encryptedPassword);
         this.encryptedPassword = encryptedPassword;

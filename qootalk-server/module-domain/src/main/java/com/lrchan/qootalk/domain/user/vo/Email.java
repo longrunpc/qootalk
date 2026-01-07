@@ -9,10 +9,7 @@ public final class Email {
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     
-    private String value;
-
-    protected Email() {
-    }
+    private final String value;
 
     public Email(String value) {
         validate(value);

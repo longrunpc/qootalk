@@ -9,10 +9,6 @@ public final class UserName {
     
     private final String value;
 
-    protected UserName() {
-        this.value = null;
-    }
-
     public UserName(String value) {
         validate(value);
         this.value = value;

@@ -9,10 +9,6 @@ public final class ProfileImageUrl {
     
     private final String value;
 
-    protected ProfileImageUrl() {
-        this.value = null;
-    }
-
     public ProfileImageUrl(String value) {
         validate(value);
         this.value = value;
