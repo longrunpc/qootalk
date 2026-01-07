@@ -34,7 +34,7 @@ public final class UserEntityMapper {
             user.password().encryptedPassword(), 
             user.name().value(), 
             user.profileImageUrl() != null ? user.profileImageUrl().value() : null,
-            user.statusMessage() != null ? user.statusMessage().value() : null, 
+            user.statusMessage().value(),
             user.role(),
             user.createdAt(),
             user.updatedAt(),
