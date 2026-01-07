@@ -1,9 +1,13 @@
 package com.lrchan.qootalk.domain.user.vo;
 
+import java.util.Objects;
+
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
 
-public class Email {
+public final class Email {
+
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     
     private final String value;
 
@@ -20,7 +24,7 @@ public class Email {
         if (value == null || value.isBlank()) {
             throw new DomainException(UserErrorCode.USER_INVALID_EMAIL);
         }
-        if (!value.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+        if (!value.matches(EMAIL_REGEX)) {
             throw new DomainException(UserErrorCode.USER_INVALID_EMAIL);
         }
     }
@@ -30,12 +34,12 @@ public class Email {
         if (this == o) return true;
         if (!(o instanceof Email)) return false;
         Email email = (Email) o;
-        return java.util.Objects.equals(value, email.value);
+        return Objects.equals(value, email.value);
     }
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return Objects.hash(value);
     }
 
 }

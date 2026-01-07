@@ -1,5 +1,7 @@
 package com.lrchan.qootalk.infrastructure.persistence.user;
 
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -42,18 +44,22 @@ public class UserEntity extends BaseEntity {
         this.name = name;
         this.role = role;
         this.profileImageUrl = null;
-        this.statusMessage = null;
+        this.statusMessage = "";
     }
 
     public UserEntity(Long id, String email, String password, String name,
-                      String profileImageUrl, String statusMessage, UserRole role) {
+                      String profileImageUrl, String statusMessage, UserRole role,
+                      LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
-        this.statusMessage = statusMessage;
+        this.statusMessage = (statusMessage == null) ? "" : statusMessage;
         this.role = role;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
 
     public String email() {

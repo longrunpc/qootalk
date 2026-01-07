@@ -6,6 +6,7 @@ import com.lrchan.qootalk.domain.common.BaseModel;
 import com.lrchan.qootalk.domain.user.vo.Email;
 import com.lrchan.qootalk.domain.user.vo.Password;
 import com.lrchan.qootalk.domain.user.vo.ProfileImageUrl;
+import com.lrchan.qootalk.domain.user.vo.StatusMessage;
 import com.lrchan.qootalk.domain.user.vo.UserName;
 
 public class User extends BaseModel {
@@ -14,7 +15,7 @@ public class User extends BaseModel {
     private Password password;
     private UserName name;
     private ProfileImageUrl profileImageUrl;
-    private String statusMessage;
+    private StatusMessage statusMessage;
     private UserRole role;
 
     private User(
@@ -23,7 +24,7 @@ public class User extends BaseModel {
             Password password,
             UserName name,
             ProfileImageUrl profileImageUrl,
-            String statusMessage,
+            StatusMessage statusMessage,
             UserRole role,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
@@ -34,31 +35,36 @@ public class User extends BaseModel {
         this.password = password;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
-        this.statusMessage = statusMessage;
+        this.statusMessage = (statusMessage == null) ? new StatusMessage("") : statusMessage;
         this.role = role == null ? UserRole.USER : role;
     }
 
-    public static User create(String email, String password, String name) {
-        return new User(null, new Email(email), new Password(password), new UserName(name), null, "", UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
+    public static User create(Email email, Password password, UserName name) {
+        return new User(null, email, password, name, null, null, UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
-    public String email() {
-        return email.value();
+    // DB 복구 전용 메서드
+    public static User reconstruct(Long id, Email email, Password password, UserName name, ProfileImageUrl profileImageUrl, StatusMessage statusMessage, UserRole role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        return new User(id, email, password, name, profileImageUrl, statusMessage, role, createdAt, updatedAt, deletedAt);
     }
 
-    public String name() {
-        return name.value();
+    public Email email() {
+        return email;
     }
 
-    public String password() {
-        return password.encryptedPassword();
+    public UserName name() {
+        return name;
     }
 
-    public String profileImageUrl() {
-        return profileImageUrl != null ? profileImageUrl.value() : null;
+    public Password password() {
+        return password;
     }
 
-    public String statusMessage() {
+    public ProfileImageUrl profileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public StatusMessage statusMessage() {
         return statusMessage;
     }
 
@@ -66,18 +72,18 @@ public class User extends BaseModel {
         return role;
     }
 
-    public void changeName(String name) {
-        this.name = new UserName(name);
+    public void changeName(UserName name) {
+        this.name = name;
         update();
     }
 
-    public void changeProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = new ProfileImageUrl(profileImageUrl);
+    public void changeProfileImageUrl(ProfileImageUrl profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
         update();
     }
 
-    public void changeStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
+    public void changeStatusMessage(StatusMessage statusMessage) {
+        this.statusMessage = (statusMessage == null) ? new StatusMessage("") : statusMessage;
         update();
     }
 }

@@ -19,6 +19,18 @@ public abstract class BaseModel {
         return id;
     }
 
+    public LocalDateTime createdAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime updatedAt() {
+        return updatedAt;
+    }
+
+    public LocalDateTime deletedAt() {
+        return deletedAt;
+    }
+
     public boolean isDeleted() {
         return deletedAt != null;
     }
