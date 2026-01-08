@@ -3,7 +3,7 @@ package com.lrchan.qootalk.domain.chat.vo;
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
 
-public class RoomName {
+public final class RoomName {
     
     private final String value;
 

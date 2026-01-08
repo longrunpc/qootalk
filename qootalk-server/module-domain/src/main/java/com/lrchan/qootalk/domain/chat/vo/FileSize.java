@@ -3,7 +3,7 @@ package com.lrchan.qootalk.domain.chat.vo;
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
 
-public class FileSize {
+public final class FileSize {
 
     private static final long GLOBAL_MAX = 500L * 1024 * 1024;
     

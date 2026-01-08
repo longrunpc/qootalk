@@ -25,6 +25,11 @@ public class RoomParticipant extends BaseModel {
 
     public static RoomParticipant create(Long userId, Long roomId, Long lastReadMessageId, RoomRole role) {
         return new RoomParticipant(null, userId, roomId, lastReadMessageId, role, LocalDateTime.now(), LocalDateTime.now(), null);
+    }
+
+    // DB 복구 전용 메서드
+    public static RoomParticipant reconstruct(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        return new RoomParticipant(id, userId, roomId, lastReadMessageId, role, createdAt, updatedAt, deletedAt);
     }   
 
     public Long userId() {

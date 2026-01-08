@@ -20,8 +20,8 @@ public class Message extends BaseModel {
         this.roomId = Objects.requireNonNull(roomId);
         this.userId = Objects.requireNonNull(userId);
         this.content = content;
-        this.messageType = messageType;
-        this.mentions = mentions;
+        this.messageType = (messageType == null) ? MessageType.TEXT : messageType;
+        this.mentions = mentions == null ? null : new ArrayList<>(mentions);
         this.parentMessageId = parentMessageId;
     }
 
@@ -32,9 +32,16 @@ public class Message extends BaseModel {
 
     public static Message createReply(Long roomId, Long userId, String content, MessageType messageType,
             List<Long> mentions, Long parentMessageId) {
-        return new Message(null, roomId, userId, content, messageType == null ? MessageType.TEXT : messageType,
-                mentions == null ? Collections.emptyList() : new ArrayList<>(mentions), parentMessageId,
+        return new Message(null, roomId, userId, content, messageType, mentions, parentMessageId,
                 LocalDateTime.now(), LocalDateTime.now(), null);
+    }
+
+    // DB 복구 전용 메서드
+    public static Message reconstruct(Long id, Long roomId, Long userId, String content, MessageType messageType,
+            List<Long> mentions, Long parentMessageId, LocalDateTime createdAt, LocalDateTime updatedAt,
+            LocalDateTime deletedAt) {
+        return new Message(id, roomId, userId, content, messageType, mentions, parentMessageId, createdAt, updatedAt,
+                deletedAt);
     }
 
     public Long roomId() {
