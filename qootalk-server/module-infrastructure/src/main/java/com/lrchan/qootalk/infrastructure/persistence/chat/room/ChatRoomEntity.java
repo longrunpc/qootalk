@@ -1,6 +1,7 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.room;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -34,19 +35,19 @@ public class ChatRoomEntity extends BaseEntity {
     }
 
     public ChatRoomEntity(String roomName, RoomType roomType, Long createdBy) {
-        this.roomName = roomName;
-        this.roomType = roomType;
-        this.createdBy = createdBy;
+        this.roomName = Objects.requireNonNull(roomName);
+        this.roomType = Objects.requireNonNull(roomType);
+        this.createdBy = Objects.requireNonNull(createdBy);
     }
 
     public ChatRoomEntity(Long id, String roomName, RoomType roomType, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
-        this.id = id;
-        this.roomName = roomName;
-        this.roomType = roomType;
-        this.createdBy = createdBy;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
+        this.id = Objects.requireNonNull(id);
+        this.roomName = Objects.requireNonNull(roomName);
+        this.roomType = Objects.requireNonNull(roomType);
+        this.createdBy = Objects.requireNonNull(createdBy);
+        this.createdAt = Objects.requireNonNull(createdAt);
+        this.updatedAt = Objects.requireNonNull(updatedAt);
+        this.deletedAt = Objects.requireNonNull(deletedAt);
     }
 
     public String roomName() {
