@@ -52,6 +52,29 @@ public class FileAttachment extends BaseModel {
                 null);
     }
 
+    // DB 복구 전용 메서드
+    public static FileAttachment reconstruct(
+            Long id,
+            Long messageId,
+            Long uploaderId,
+            FileMetadata metadata,
+            FileType fileType,
+            FileSecurity fileSecurity,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt,
+            LocalDateTime deletedAt) {
+        return new FileAttachment(
+                id,
+                messageId,
+                uploaderId,
+                metadata,
+                fileType,
+                fileSecurity,
+                createdAt,
+                updatedAt,
+                deletedAt);
+    }
+
     public Long messageId() {
         return messageId;
     }
