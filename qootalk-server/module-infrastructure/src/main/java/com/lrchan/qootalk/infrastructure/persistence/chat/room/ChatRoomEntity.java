@@ -20,11 +20,11 @@ import jakarta.persistence.Table;
 @SQLRestriction("deleted_at IS NULL")
 public class ChatRoomEntity extends BaseEntity {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "room_name", nullable = false)
     private String roomName;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(name = "room_type", nullable = false)
     private RoomType roomType;
 
     @Column(name = "created_by", nullable = false)
