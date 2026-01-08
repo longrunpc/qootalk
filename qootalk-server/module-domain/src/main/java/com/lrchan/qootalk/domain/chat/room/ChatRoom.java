@@ -23,6 +23,11 @@ public class ChatRoom extends BaseModel {
         return new ChatRoom(null, new RoomName(roomName), roomType, createdBy, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
+    // DB 복구 전용 메서드
+    public static ChatRoom reconstruct(Long id, RoomName roomName, RoomType roomType, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        return new ChatRoom(id, roomName, roomType, createdBy, createdAt, updatedAt, deletedAt);
+    }
+
     public String roomName() {
         return roomName.value();
     }

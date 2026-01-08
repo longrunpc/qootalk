@@ -3,7 +3,7 @@ package com.lrchan.qootalk.domain.chat.vo;
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
 
-public class Path {
+public final class Path {
     private final String value;
     
     public Path(String value) {
