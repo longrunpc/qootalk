@@ -21,7 +21,7 @@ public class Message extends BaseModel {
         this.userId = Objects.requireNonNull(userId);
         this.content = content;
         this.messageType = (messageType == null) ? MessageType.TEXT : messageType;
-        this.mentions = mentions;
+        this.mentions = mentions == null ? null : new ArrayList<>(mentions);
         this.parentMessageId = parentMessageId;
     }
 
