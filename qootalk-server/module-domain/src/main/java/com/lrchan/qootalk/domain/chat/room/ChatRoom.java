@@ -15,7 +15,7 @@ public class ChatRoom extends BaseModel {
     private ChatRoom(Long id, RoomName roomName, RoomType roomType, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         this.roomName = roomName;
-        this.roomType = roomType;
+        this.roomType = roomType == null ? RoomType.DIRECT : roomType;
         this.createdBy = Objects.requireNonNull(createdBy);
     }
 
