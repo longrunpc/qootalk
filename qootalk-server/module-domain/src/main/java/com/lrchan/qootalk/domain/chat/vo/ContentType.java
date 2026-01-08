@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
 
-public class ContentType {
+public final class ContentType {
 
     private static final Pattern MIME_TYPE_PATTERN =
             Pattern.compile("^[a-z]+/[a-z0-9.+-]+$");
