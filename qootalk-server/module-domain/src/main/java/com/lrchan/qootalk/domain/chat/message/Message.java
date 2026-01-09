@@ -11,7 +11,7 @@ public class Message extends BaseModel {
     private Long userId;
     private String content;
     private MessageType messageType;
-    private List<Long> mentions;
+    private List<Long> mentions = new ArrayList<>();
     private Long parentMessageId;
 
     private Message(Long id, Long roomId, Long userId, String content, MessageType messageType, List<Long> mentions,
@@ -21,7 +21,7 @@ public class Message extends BaseModel {
         this.userId = Objects.requireNonNull(userId);
         this.content = content;
         this.messageType = (messageType == null) ? MessageType.TEXT : messageType;
-        this.mentions = mentions == null ? null : new ArrayList<>(mentions);
+        this.mentions = mentions == null ? new ArrayList<>() : new ArrayList<>(mentions);
         this.parentMessageId = parentMessageId;
     }
 
@@ -61,7 +61,7 @@ public class Message extends BaseModel {
     }
 
     public List<Long> mentions() {
-        return mentions == null ? Collections.emptyList() : new ArrayList<>(mentions);
+        return mentions == null ? new ArrayList<>() : new ArrayList<>(mentions);
     }
 
     public Long parentMessageId() {
@@ -79,7 +79,7 @@ public class Message extends BaseModel {
     }
 
     public void changeMentions(List<Long> userIds) {
-        this.mentions = userIds == null ? Collections.emptyList() : new ArrayList<>(userIds);
+        this.mentions = userIds == null ? new ArrayList<>() : new ArrayList<>(userIds);
         update();
     }
 }
