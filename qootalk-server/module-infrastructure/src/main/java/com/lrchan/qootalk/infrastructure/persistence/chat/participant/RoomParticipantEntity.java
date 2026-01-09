@@ -1,6 +1,7 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.participant;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -38,20 +39,20 @@ public class RoomParticipantEntity extends BaseEntity {
 
     public RoomParticipantEntity(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
-        this.userId = userId;
-        this.roomId = roomId;
-        this.lastReadMessageId = lastReadMessageId;
-        this.role = role;
+        this.userId = Objects.requireNonNull(userId);
+        this.roomId = Objects.requireNonNull(roomId);
+        this.lastReadMessageId = Objects.requireNonNull(lastReadMessageId);
+        this.role = role == null ? RoomRole.MEMBER : role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
     }
     
     public RoomParticipantEntity(Long userId, Long roomId, Long lastReadMessageId, RoomRole role) {
-        this.userId = userId;
-        this.roomId = roomId;
-        this.lastReadMessageId = lastReadMessageId;
-        this.role = role;
+        this.userId = Objects.requireNonNull(userId);
+        this.roomId = Objects.requireNonNull(roomId);
+        this.lastReadMessageId = Objects.requireNonNull(lastReadMessageId);
+        this.role = role == null ? RoomRole.MEMBER : role;
     }
 
     public Long userId() {
