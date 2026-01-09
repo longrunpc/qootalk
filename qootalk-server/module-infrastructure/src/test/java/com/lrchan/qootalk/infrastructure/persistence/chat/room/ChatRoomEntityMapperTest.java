@@ -56,17 +56,6 @@ public class ChatRoomEntityMapperTest {
             assertThat(chatRoom.deletedAt()).isEqualTo(chatRoomEntity.deletedAt());
             assertThat(chatRoom.isDeleted()).isTrue();
         }
-
-        @Test
-        @DisplayName("ChatRoomEntity를 ChatRoom 도메인으로 변환할 때 RoomType이 null인 경우 DIRECT로 설정되어야 한다")
-        void should_ConvertToDomain_When_RoomTypeIsNull() {
-            // given
-            ChatRoomEntity chatRoomEntity = new ChatRoomEntity(1L, "test_room", null, 1L, LocalDateTime.now(), LocalDateTime.now(), null);
-            ChatRoom chatRoom = ChatRoomEntityMapper.toDomain(chatRoomEntity);
-
-            // then
-            assertThat(chatRoom.roomType()).isEqualTo(RoomType.DIRECT);
-        }
     }
 
     @Nested

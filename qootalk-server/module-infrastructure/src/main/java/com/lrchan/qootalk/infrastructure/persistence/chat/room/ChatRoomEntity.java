@@ -36,18 +36,18 @@ public class ChatRoomEntity extends BaseEntity {
 
     public ChatRoomEntity(String roomName, RoomType roomType, Long createdBy) {
         this.roomName = Objects.requireNonNull(roomName);
-        this.roomType = Objects.requireNonNull(roomType);
+        this.roomType = (roomType == null) ? RoomType.DIRECT : roomType;
         this.createdBy = Objects.requireNonNull(createdBy);
     }
 
     public ChatRoomEntity(Long id, String roomName, RoomType roomType, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
-        this.id = Objects.requireNonNull(id);
+        this.id = id;
         this.roomName = Objects.requireNonNull(roomName);
-        this.roomType = Objects.requireNonNull(roomType);
+        this.roomType = (roomType == null) ? RoomType.DIRECT : roomType;
         this.createdBy = Objects.requireNonNull(createdBy);
-        this.createdAt = Objects.requireNonNull(createdAt);
-        this.updatedAt = Objects.requireNonNull(updatedAt);
-        this.deletedAt = Objects.requireNonNull(deletedAt);
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
 
     public String roomName() {
