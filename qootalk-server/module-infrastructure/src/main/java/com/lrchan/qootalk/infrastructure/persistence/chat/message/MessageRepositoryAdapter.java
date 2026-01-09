@@ -13,6 +13,7 @@ public class MessageRepositoryAdapter implements MessageRepository {
 
     public MessageRepositoryAdapter(MessageJpaRepository messageJpaRepository) {
         this.messageJpaRepository = messageJpaRepository;
+    }
     
     @Override
     public Optional<Message> findById(Long id) {

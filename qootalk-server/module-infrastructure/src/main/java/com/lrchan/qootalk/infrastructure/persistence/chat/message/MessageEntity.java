@@ -59,16 +59,12 @@ public class MessageEntity extends BaseEntity {
     }
     
     public MessageEntity(Long roomId, Long userId, String content, MessageType messageType, List<Long> mentions, Long parentMessageId) {
-        this.id = null;
         this.roomId = Objects.requireNonNull(roomId);
         this.userId = Objects.requireNonNull(userId);
         this.content = content;
         this.messageType = (messageType == null) ? MessageType.TEXT : messageType;
         this.mentions = mentions == null ? null : new ArrayList<>(mentions);
         this.parentMessageId = parentMessageId;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-        this.deletedAt = null;
     }
 
     public Long roomId() {

@@ -61,7 +61,7 @@ public class Message extends BaseModel {
     }
 
     public List<Long> mentions() {
-        return mentions == null ? Collections.emptyList() : new ArrayList<>(mentions);
+        return mentions == null ? null : new ArrayList<>(mentions);
     }
 
     public Long parentMessageId() {
@@ -79,7 +79,7 @@ public class Message extends BaseModel {
     }
 
     public void changeMentions(List<Long> userIds) {
-        this.mentions = userIds == null ? Collections.emptyList() : new ArrayList<>(userIds);
+        this.mentions = userIds == null ? null : new ArrayList<>(userIds);
         update();
     }
 }
