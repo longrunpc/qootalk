@@ -10,7 +10,11 @@ import org.hibernate.annotations.SQLRestriction;
 
 import com.lrchan.qootalk.domain.chat.message.MessageType;
 import com.lrchan.qootalk.infrastructure.persistence.common.BaseEntity;
+
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -36,8 +40,10 @@ public class MessageEntity extends BaseEntity {
     private MessageType messageType;
 
     // null일때 멘션 없음을 의미(체크 유의)
-    @Column(name = "mentions")
-    private List<Long> mentions;
+    @ElementCollection
+    @CollectionTable(name = "message_mentions", joinColumns = @JoinColumn(name = "message_id"))
+    @Column(name = "user_id")
+    private List<Long> mentions = new ArrayList<>();
 
     @Column(name = "parent_message_id")
     private Long parentMessageId;
@@ -51,7 +57,7 @@ public class MessageEntity extends BaseEntity {
         this.userId = Objects.requireNonNull(userId);
         this.content = content;
         this.messageType = (messageType == null) ? MessageType.TEXT : messageType;
-        this.mentions = mentions == null ? null : new ArrayList<>(mentions);
+        this.mentions = mentions == null ? new ArrayList<>() : new ArrayList<>(mentions);
         this.parentMessageId = parentMessageId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -63,7 +69,7 @@ public class MessageEntity extends BaseEntity {
         this.userId = Objects.requireNonNull(userId);
         this.content = content;
         this.messageType = (messageType == null) ? MessageType.TEXT : messageType;
-        this.mentions = mentions == null ? null : new ArrayList<>(mentions);
+        this.mentions = mentions == null ? new ArrayList<>() : new ArrayList<>(mentions);
         this.parentMessageId = parentMessageId;
     }
 
@@ -84,7 +90,7 @@ public class MessageEntity extends BaseEntity {
     }
     
     public List<Long> mentions() {
-        return mentions == null ? null : new ArrayList<>(mentions);
+        return mentions == null ? new ArrayList<>() : new ArrayList<>(mentions);
     }
 
     public Long parentMessageId() {
