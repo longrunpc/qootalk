@@ -8,7 +8,7 @@ public class RoomParticipantEntityMapper {
     }
 
     public static RoomParticipantEntity toEntity(RoomParticipant roomParticipant) {
-        return new RoomParticipantEntity(roomParticipant.userId(), roomParticipant.roomId(), roomParticipant.lastReadMessageId(), roomParticipant.role());
+        return new RoomParticipantEntity(roomParticipant.id(), roomParticipant.userId(), roomParticipant.roomId(), roomParticipant.lastReadMessageId(), roomParticipant.role(), roomParticipant.createdAt(), roomParticipant.updatedAt(), roomParticipant.deletedAt());
     }
 
     public static RoomParticipant toDomain(RoomParticipantEntity roomParticipantEntity) {

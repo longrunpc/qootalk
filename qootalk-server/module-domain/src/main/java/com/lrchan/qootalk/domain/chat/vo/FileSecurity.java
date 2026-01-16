@@ -49,6 +49,22 @@ public final class FileSecurity {
         );
     }
 
+    // DB 복구 전용 메서드
+    public static FileSecurity reconstruct(
+            Visibility visibility,
+            DownloadPolicy downloadPolicy,
+            SharePolicy sharePolicy,
+            ScanStatus scanStatus,
+            Encryption encryption) {
+        return new FileSecurity(
+                visibility,
+                downloadPolicy,
+                sharePolicy,
+                scanStatus,
+                encryption
+        );
+    }
+
     private void validatePolicy() {
         if (scanStatus == ScanStatus.MALICIOUS) {
             if (downloadPolicy == DownloadPolicy.ALLOWED
