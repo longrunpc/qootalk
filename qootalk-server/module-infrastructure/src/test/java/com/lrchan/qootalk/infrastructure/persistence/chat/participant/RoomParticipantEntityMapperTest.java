@@ -100,7 +100,7 @@ class RoomParticipantEntityMapperTest {
             RoomParticipantEntity entity = RoomParticipantEntityMapper.toEntity(domain);
 
             // then
-            assertThat(entity.id()).isNull(); // 생성자에서 id를 받지 않음
+            assertThat(entity.id()).isEqualTo(1L);
             assertThat(entity.userId()).isEqualTo(10L);
             assertThat(entity.roomId()).isEqualTo(20L);
             assertThat(entity.lastReadMessageId()).isEqualTo(30L);
