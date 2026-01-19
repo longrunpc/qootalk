@@ -35,4 +35,36 @@ public class AuditLog {
     public static AuditLog simple(ActorType actorType, Long actorId, ActionType actionType, TargetType targetType, Long targetId) {
         return of(actorType, actorId, actionType, targetType, targetId, null);
     }
+
+    public Long id() {
+        return id;
+    }
+
+    public ActorType actorType() {
+        return actorType;
+    }
+
+    public Long actorId() {
+        return actorId;
+    }
+
+    public ActionType actionType() {
+        return actionType;
+    }
+
+    public TargetType targetType() {
+        return targetType;
+    }
+    
+    public Long targetId() {
+        return targetId;
+    }
+
+    public String reason() {
+        return reason;
+    }
+
+    public LocalDateTime occurredAt() {
+        return occurredAt;
+    }
 }
