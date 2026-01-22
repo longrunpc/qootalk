@@ -28,17 +28,17 @@ public final class UserEntityMapper {
     }
 
     public static UserEntity toEntity(User user) {
-        return new UserEntity(
-            user.id(), 
-            user.email().value(),
-            user.password().encryptedPassword(), 
-            user.name().value(), 
-            user.profileImageUrl() != null ? user.profileImageUrl().value() : null,
-            user.statusMessage().value(),
-            user.role(),
-            user.createdAt(),
-            user.updatedAt(),
-            user.deletedAt()
-        );
+        return UserEntity.builder()
+            .id(user.id())
+            .email(user.email().value())
+            .password(user.password().encryptedPassword())
+            .name(user.name().value())
+            .profileImageUrl(user.profileImageUrl() != null ? user.profileImageUrl().value() : null)
+            .statusMessage(user.statusMessage().value())
+            .role(user.role())
+            .createdAt(user.createdAt())
+            .updatedAt(user.updatedAt())
+            .deletedAt(user.deletedAt())
+            .build();
     }
 }

@@ -19,11 +19,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "messages")
 @SQLDelete(sql = "UPDATE messages SET deleted_at = now() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
+@SuperBuilder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class MessageEntity extends BaseEntity {
     @Column(name = "room_id", nullable = false)
     private Long roomId;
@@ -43,34 +49,13 @@ public class MessageEntity extends BaseEntity {
     @ElementCollection
     @CollectionTable(name = "message_mentions", joinColumns = @JoinColumn(name = "message_id"))
     @Column(name = "user_id")
+    @Builder.Default
     private List<Long> mentions = new ArrayList<>();
 
     @Column(name = "parent_message_id")
     private Long parentMessageId;
 
     protected MessageEntity() {
-    }
-
-    public MessageEntity(Long id, Long roomId, Long userId, String content, MessageType messageType, List<Long> mentions, Long parentMessageId, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
-        this.id = id;
-        this.roomId = Objects.requireNonNull(roomId);
-        this.userId = Objects.requireNonNull(userId);
-        this.content = content;
-        this.messageType = (messageType == null) ? MessageType.TEXT : messageType;
-        this.mentions = mentions == null ? new ArrayList<>() : new ArrayList<>(mentions);
-        this.parentMessageId = parentMessageId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
-    }
-    
-    public MessageEntity(Long roomId, Long userId, String content, MessageType messageType, List<Long> mentions, Long parentMessageId) {
-        this.roomId = Objects.requireNonNull(roomId);
-        this.userId = Objects.requireNonNull(userId);
-        this.content = content;
-        this.messageType = (messageType == null) ? MessageType.TEXT : messageType;
-        this.mentions = mentions == null ? new ArrayList<>() : new ArrayList<>(mentions);
-        this.parentMessageId = parentMessageId;
     }
 
     public Long roomId() {

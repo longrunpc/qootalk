@@ -8,7 +8,18 @@ public class MessageEntityMapper {
     }
 
     public static MessageEntity toEntity(Message message) {
-        return new MessageEntity(message.id(), message.roomId(), message.userId(), message.content(), message.messageType(), message.mentions(), message.parentMessageId(), message.createdAt(), message.updatedAt(), message.deletedAt());
+        return MessageEntity.builder()
+            .id(message.id())
+            .roomId(message.roomId())
+            .userId(message.userId())
+            .content(message.content())
+            .messageType(message.messageType())
+            .mentions(message.mentions())
+            .parentMessageId(message.parentMessageId())
+            .createdAt(message.createdAt())
+            .updatedAt(message.updatedAt())
+            .deletedAt(message.deletedAt())
+            .build();
     }
 
     public static Message toDomain(MessageEntity messageEntity) {

@@ -9,7 +9,15 @@ public final class ChatRoomEntityMapper {
     }
 
     public static ChatRoomEntity toEntity(ChatRoom chatRoom) {
-        return new ChatRoomEntity(chatRoom.id(), chatRoom.roomName(), chatRoom.roomType(), chatRoom.createdBy(), chatRoom.createdAt(), chatRoom.updatedAt(), chatRoom.deletedAt());
+        return ChatRoomEntity.builder()
+            .id(chatRoom.id())
+            .roomName(chatRoom.roomName())
+            .roomType(chatRoom.roomType())
+            .createdBy(chatRoom.createdBy())
+            .createdAt(chatRoom.createdAt())
+            .updatedAt(chatRoom.updatedAt())
+            .deletedAt(chatRoom.deletedAt())
+            .build();
     }
 
     public static ChatRoom toDomain(ChatRoomEntity chatRoomEntity) {

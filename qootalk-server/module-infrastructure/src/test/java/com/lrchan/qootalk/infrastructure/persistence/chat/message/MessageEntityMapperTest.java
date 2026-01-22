@@ -26,18 +26,18 @@ class MessageEntityMapperTest {
             // given
             LocalDateTime now = LocalDateTime.now();
             List<Long> mentions = Arrays.asList(1L, 2L, 3L);
-            MessageEntity messageEntity = new MessageEntity(
-                1L,
-                10L,
-                20L,
-                "hello",
-                MessageType.TEXT,
-                mentions,
-                null,
-                now,
-                now,
-                null
-            );
+            MessageEntity messageEntity = MessageEntity.builder()
+                .id(1L)
+                .roomId(10L)
+                .userId(20L)
+                .content("hello")
+                .messageType(MessageType.TEXT)
+                .mentions(mentions)
+                .parentMessageId(null)
+                .createdAt(now)
+                .updatedAt(now)
+                .deletedAt(null)
+                .build();
 
             // when
             Message message = MessageEntityMapper.toDomain(messageEntity);

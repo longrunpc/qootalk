@@ -3,8 +3,10 @@ package com.lrchan.qootalk.infrastructure.persistence.common;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass
+@SuperBuilder
 public abstract class BaseEntity {
     
     @Id
@@ -19,6 +21,9 @@ public abstract class BaseEntity {
 
     @Column(name = "deleted_at")
     protected LocalDateTime deletedAt;
+
+    protected BaseEntity() {
+    }
 
     @PrePersist
     protected void onCreate() {

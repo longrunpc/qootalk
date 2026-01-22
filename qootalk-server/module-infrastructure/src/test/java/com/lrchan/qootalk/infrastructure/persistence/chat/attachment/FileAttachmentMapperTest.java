@@ -54,17 +54,17 @@ class FileAttachmentMapperTest {
                     Encryption.NONE
             );
 
-            FileAttachmentEntity entity = new FileAttachmentEntity(
-                    1L,
-                    100L,
-                    50L,
-                    metadataEmbeddable,
-                    FileType.IMAGE,
-                    securityEmbeddable,
-                    now,
-                    now,
-                    deletedAt
-            );
+            FileAttachmentEntity entity = FileAttachmentEntity.builder()
+                    .id(1L)
+                    .messageId(100L)
+                    .uploaderId(50L)
+                    .metadata(metadataEmbeddable)
+                    .fileType(FileType.IMAGE)
+                    .security(securityEmbeddable)
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .deletedAt(deletedAt)
+                    .build();
 
             // when
             FileAttachment domain = FileAttachmentMapper.toDomain(entity);
@@ -118,17 +118,17 @@ class FileAttachmentMapperTest {
                     Encryption.NONE
             );
 
-            FileAttachmentEntity entity = new FileAttachmentEntity(
-                    1L,
-                    100L,
-                    50L,
-                    metadataEmbeddable,
-                    null,
-                    securityEmbeddable,
-                    now,
-                    now,
-                    null
-            );
+            FileAttachmentEntity entity = FileAttachmentEntity.builder()
+                    .id(1L)
+                    .messageId(100L)
+                    .uploaderId(50L)
+                    .metadata(metadataEmbeddable)
+                    .fileType(null)
+                    .security(securityEmbeddable)
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .deletedAt(null)
+                    .build();
 
             // when
             FileAttachment domain = FileAttachmentMapper.toDomain(entity);

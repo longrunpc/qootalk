@@ -14,11 +14,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "chat_rooms")
 @SQLDelete(sql = "UPDATE chat_rooms SET deleted_at = now() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
+@SuperBuilder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatRoomEntity extends BaseEntity {
 
     @Column(name = "room_name", nullable = false)
@@ -32,22 +37,6 @@ public class ChatRoomEntity extends BaseEntity {
     private Long createdBy;
 
     protected ChatRoomEntity() {
-    }
-
-    public ChatRoomEntity(String roomName, RoomType roomType, Long createdBy) {
-        this.roomName = Objects.requireNonNull(roomName);
-        this.roomType = (roomType == null) ? RoomType.DIRECT : roomType;
-        this.createdBy = Objects.requireNonNull(createdBy);
-    }
-
-    public ChatRoomEntity(Long id, String roomName, RoomType roomType, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
-        this.id = id;
-        this.roomName = Objects.requireNonNull(roomName);
-        this.roomType = (roomType == null) ? RoomType.DIRECT : roomType;
-        this.createdBy = Objects.requireNonNull(createdBy);
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
     }
 
     public String roomName() {

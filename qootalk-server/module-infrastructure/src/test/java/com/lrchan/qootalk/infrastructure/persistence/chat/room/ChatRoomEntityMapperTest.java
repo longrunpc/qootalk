@@ -22,7 +22,15 @@ public class ChatRoomEntityMapperTest {
         @DisplayName("ChatRoomEntity를 ChatRoom 도메인으로 변환할 때 기본값이 올바르게 설정되어야 한다")
         void should_ConvertToDomain_When_DefaultValues() {
             // given
-            ChatRoomEntity chatRoomEntity = new ChatRoomEntity(1L, "test_room", null, 1L, LocalDateTime.now(), LocalDateTime.now(), null);
+            ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
+                .id(1L)
+                .roomName("test_room")
+                .roomType(null)
+                .createdBy(1L)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .deletedAt(null)
+                .build();
             ChatRoom chatRoom = ChatRoomEntityMapper.toDomain(chatRoomEntity);
 
             // then
@@ -36,7 +44,15 @@ public class ChatRoomEntityMapperTest {
         @DisplayName("ChatRoomEntity를 ChatRoom 도메인으로 변환할 때 Entity의 업데이트 시간이 올바르게 설정되어야 한다")
         void should_ConvertToDomain_When_UpdatedAtIsSet() {
             // given
-            ChatRoomEntity chatRoomEntity = new ChatRoomEntity(1L, "test_room", RoomType.DIRECT, 1L, LocalDateTime.now(), LocalDateTime.now(), null);
+            ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
+                .id(1L)
+                .roomName("test_room")
+                .roomType(RoomType.DIRECT)
+                .createdBy(1L)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .deletedAt(null)
+                .build();
             ChatRoom chatRoom = ChatRoomEntityMapper.toDomain(chatRoomEntity);
 
             // then
@@ -49,7 +65,15 @@ public class ChatRoomEntityMapperTest {
         @DisplayName("ChatRoomEntity를 ChatRoom 도메인으로 변환할 때 Entity의 삭제 시간이 올바르게 설정되어야 한다")
         void should_ConvertToDomain_When_DeletedAtIsSet() {
             // given
-            ChatRoomEntity chatRoomEntity = new ChatRoomEntity(1L, "test_room", RoomType.DIRECT, 1L, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
+            ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
+                .id(1L)
+                .roomName("test_room")
+                .roomType(RoomType.DIRECT)
+                .createdBy(1L)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .deletedAt(LocalDateTime.now())
+                .build();
             ChatRoom chatRoom = ChatRoomEntityMapper.toDomain(chatRoomEntity);
 
             // then

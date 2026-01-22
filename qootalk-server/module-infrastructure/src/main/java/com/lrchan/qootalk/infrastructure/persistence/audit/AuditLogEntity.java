@@ -7,6 +7,12 @@ import com.lrchan.qootalk.domain.audit.ActionType;
 import com.lrchan.qootalk.domain.audit.ActorType;
 import com.lrchan.qootalk.domain.audit.TargetType;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+@Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuditLogEntity {
     private Long id;
     private ActorType actorType;
@@ -18,17 +24,6 @@ public class AuditLogEntity {
     private LocalDateTime occurredAt;
 
     protected AuditLogEntity() {
-    }
-
-    public AuditLogEntity(Long id, ActorType actorType, Long actorId, ActionType actionType, TargetType targetType, Long targetId, String reason, LocalDateTime occurredAt) {
-        this.id = id;
-        this.actorType = Objects.requireNonNull(actorType);
-        this.actorId = Objects.requireNonNull(actorId);
-        this.actionType = Objects.requireNonNull(actionType);
-        this.targetType = Objects.requireNonNull(targetType);
-        this.targetId = Objects.requireNonNull(targetId);
-        this.reason = reason;
-        this.occurredAt = Objects.requireNonNull(occurredAt);
     }
 
     public Long id() {

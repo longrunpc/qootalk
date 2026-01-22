@@ -28,18 +28,18 @@ class UserEntityMapperTest {
         void should_ConvertToDomain_When_ValidEntity() {
             // given
             LocalDateTime now = LocalDateTime.now();
-            UserEntity userEntity = new UserEntity(
-                1L,
-                "test@example.com",
-                "encrypted_password",
-                "홍길동",
-                "https://example.com/profile.jpg",
-                "안녕하세요!",
-                UserRole.USER,
-                now,
-                now,
-                null
-            );
+            UserEntity userEntity = UserEntity.builder()
+                .id(1L)
+                .email("test@example.com")
+                .password("encrypted_password")
+                .name("홍길동")
+                .profileImageUrl("https://example.com/profile.jpg")
+                .statusMessage("안녕하세요!")
+                .role(UserRole.USER)
+                .createdAt(now)
+                .updatedAt(now)
+                .deletedAt(null)
+                .build();
 
             // when
             User user = UserEntityMapper.toDomain(userEntity);
@@ -62,18 +62,18 @@ class UserEntityMapperTest {
         void should_ConvertToDomain_When_ProfileImageUrlIsNull() {
             // given
             LocalDateTime now = LocalDateTime.now();
-            UserEntity userEntity = new UserEntity(
-                1L,
-                "test@example.com",
-                "encrypted_password",
-                "홍길동",
-                null,
-                "안녕하세요!",
-                UserRole.USER,
-                now,
-                now,
-                null
-            );
+            UserEntity userEntity = UserEntity.builder()
+                .id(1L)
+                .email("test@example.com")
+                .password("encrypted_password")
+                .name("홍길동")
+                .profileImageUrl(null)
+                .statusMessage("안녕하세요!")
+                .role(UserRole.USER)
+                .createdAt(now)
+                .updatedAt(now)
+                .deletedAt(null)
+                .build();
 
             // when
             User user = UserEntityMapper.toDomain(userEntity);
@@ -88,18 +88,18 @@ class UserEntityMapperTest {
         void should_ConvertToDomain_When_StatusMessageIsNull() {
             // given
             LocalDateTime now = LocalDateTime.now();
-            UserEntity userEntity = new UserEntity(
-                1L,
-                "test@example.com",
-                "encrypted_password",
-                "홍길동",
-                "https://example.com/profile.jpg",
-                null,
-                UserRole.USER,
-                now,
-                now,
-                null
-            );
+            UserEntity userEntity = UserEntity.builder()
+                .id(1L)
+                .email("test@example.com")
+                .password("encrypted_password")
+                .name("홍길동")
+                .profileImageUrl("https://example.com/profile.jpg")
+                .statusMessage(null)
+                .role(UserRole.USER)
+                .createdAt(now)
+                .updatedAt(now)
+                .deletedAt(null)
+                .build();
 
             // when
             User user = UserEntityMapper.toDomain(userEntity);
@@ -115,18 +115,18 @@ class UserEntityMapperTest {
             // given
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime deletedAt = LocalDateTime.now();
-            UserEntity userEntity = new UserEntity(
-                1L,
-                "test@example.com",
-                "encrypted_password",
-                "홍길동",
-                null,
-                null,
-                UserRole.USER,
-                now,
-                now,
-                deletedAt
-            );
+            UserEntity userEntity = UserEntity.builder()
+                .id(1L)
+                .email("test@example.com")
+                .password("encrypted_password")
+                .name("홍길동")
+                .profileImageUrl(null)
+                .statusMessage(null)
+                .role(UserRole.USER)
+                .createdAt(now)
+                .updatedAt(now)
+                .deletedAt(deletedAt)
+                .build();
 
             // when
             User user = UserEntityMapper.toDomain(userEntity);

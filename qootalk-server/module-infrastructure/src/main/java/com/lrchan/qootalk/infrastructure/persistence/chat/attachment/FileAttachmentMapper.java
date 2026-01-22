@@ -34,17 +34,17 @@ public final class FileAttachmentMapper {
                 security.encryption()
         );
 
-        return new FileAttachmentEntity(
-                fileAttachment.id(),
-                fileAttachment.messageId(),
-                fileAttachment.uploaderId(),
-                metadataEmbeddable,
-                fileAttachment.fileType(),
-                securityEmbeddable,
-                fileAttachment.createdAt(),
-                fileAttachment.updatedAt(),
-                fileAttachment.deletedAt()
-        );
+        return FileAttachmentEntity.builder()
+                .id(fileAttachment.id())
+                .messageId(fileAttachment.messageId())
+                .uploaderId(fileAttachment.uploaderId())
+                .metadata(metadataEmbeddable)
+                .fileType(fileAttachment.fileType())
+                .security(securityEmbeddable)
+                .createdAt(fileAttachment.createdAt())
+                .updatedAt(fileAttachment.updatedAt())
+                .deletedAt(fileAttachment.deletedAt())
+                .build();
     }
 
     public static FileAttachment toDomain(FileAttachmentEntity entity) {

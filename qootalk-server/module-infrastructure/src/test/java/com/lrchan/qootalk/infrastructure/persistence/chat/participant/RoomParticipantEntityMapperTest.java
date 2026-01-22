@@ -24,16 +24,16 @@ class RoomParticipantEntityMapperTest {
             // given
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime deletedAt = LocalDateTime.now();
-            RoomParticipantEntity entity = new RoomParticipantEntity(
-                1L,
-                10L,
-                20L,
-                30L,
-                RoomRole.ADMIN,
-                now,
-                now,
-                deletedAt
-            );
+            RoomParticipantEntity entity = RoomParticipantEntity.builder()
+                .id(1L)
+                .userId(10L)
+                .roomId(20L)
+                .lastReadMessageId(30L)
+                .role(RoomRole.ADMIN)
+                .createdAt(now)
+                .updatedAt(now)
+                .deletedAt(deletedAt)
+                .build();
 
             // when
             RoomParticipant domain = RoomParticipantEntityMapper.toDomain(entity);
@@ -55,16 +55,16 @@ class RoomParticipantEntityMapperTest {
         void should_ConvertToDomain_When_RoleIsNull() {
             // given
             LocalDateTime now = LocalDateTime.now();
-            RoomParticipantEntity entity = new RoomParticipantEntity(
-                1L,
-                10L,
-                20L,
-                30L,
-                null,
-                now,
-                now,
-                null
-            );
+            RoomParticipantEntity entity = RoomParticipantEntity.builder()
+                .id(1L)
+                .userId(10L)
+                .roomId(20L)
+                .lastReadMessageId(30L)
+                .role(null)
+                .createdAt(now)
+                .updatedAt(now)
+                .deletedAt(null)
+                .build();
 
             // when
             RoomParticipant domain = RoomParticipantEntityMapper.toDomain(entity);
