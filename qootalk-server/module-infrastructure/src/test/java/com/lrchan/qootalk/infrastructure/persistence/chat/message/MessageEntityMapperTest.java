@@ -83,16 +83,16 @@ class MessageEntityMapperTest {
             MessageEntity messageEntity = MessageEntityMapper.toEntity(message);
 
             // then
-            assertThat(messageEntity.id()).isEqualTo(1L);
-            assertThat(messageEntity.roomId()).isEqualTo(10L);
-            assertThat(messageEntity.userId()).isEqualTo(20L);
-            assertThat(messageEntity.content()).isEqualTo("hello");
-            assertThat(messageEntity.messageType()).isEqualTo(MessageType.TEXT);
-            assertThat(messageEntity.mentions()).containsExactlyElementsOf(mentions);
-            assertThat(messageEntity.parentMessageId()).isEqualTo(100L);
-            assertThat(messageEntity.createdAt()).isEqualTo(now);
-            assertThat(messageEntity.updatedAt()).isEqualTo(now);
-            assertThat(messageEntity.deletedAt()).isNull();
+            assertThat(messageEntity.getId()).isEqualTo(1L);
+            assertThat(messageEntity.getRoomId()).isEqualTo(10L);
+            assertThat(messageEntity.getUserId()).isEqualTo(20L);
+            assertThat(messageEntity.getContent()).isEqualTo("hello");
+            assertThat(messageEntity.getMessageType()).isEqualTo(MessageType.TEXT);
+            assertThat(messageEntity.getMentions()).containsExactlyElementsOf(mentions);
+            assertThat(messageEntity.getParentMessageId()).isEqualTo(100L);
+            assertThat(messageEntity.getCreatedAt()).isEqualTo(now);
+            assertThat(messageEntity.getUpdatedAt()).isEqualTo(now);
+            assertThat(messageEntity.getDeletedAt()).isNull();
         }
     }
 

@@ -16,7 +16,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -24,7 +25,8 @@ import lombok.experimental.SuperBuilder;
 @SQLDelete(sql = "UPDATE file_attachments SET deleted_at = now() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
 @SuperBuilder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class FileAttachmentEntity extends BaseEntity {
     
     @Column(name = "message_id", nullable = false)
@@ -42,27 +44,4 @@ public class FileAttachmentEntity extends BaseEntity {
     
     @Embedded
     private FileSecurityEmbeddable security;
-
-    protected FileAttachmentEntity() {
-    }
-
-    public Long messageId() {
-        return messageId;
-    }
-
-    public Long uploaderId() {
-        return uploaderId;
-    }
-
-    public FileMetadataEmbeddable metadata() {
-        return metadata;
-    }
-
-    public FileType fileType() {
-        return fileType;
-    }
-
-    public FileSecurityEmbeddable security() {
-        return security;
-    }
 }

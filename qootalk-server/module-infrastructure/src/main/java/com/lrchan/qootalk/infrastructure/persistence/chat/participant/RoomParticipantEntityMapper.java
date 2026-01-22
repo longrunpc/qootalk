@@ -21,6 +21,6 @@ public class RoomParticipantEntityMapper {
     }
 
     public static RoomParticipant toDomain(RoomParticipantEntity roomParticipantEntity) {
-        return RoomParticipant.reconstruct(roomParticipantEntity.id(), roomParticipantEntity.userId(), roomParticipantEntity.roomId(), roomParticipantEntity.lastReadMessageId(), roomParticipantEntity.role(), roomParticipantEntity.createdAt(), roomParticipantEntity.updatedAt(), roomParticipantEntity.deletedAt());
+        return RoomParticipant.reconstruct(roomParticipantEntity.getId(), roomParticipantEntity.getUserId(), roomParticipantEntity.getRoomId(), roomParticipantEntity.getLastReadMessageId(), roomParticipantEntity.getRole(), roomParticipantEntity.getCreatedAt(), roomParticipantEntity.getUpdatedAt(), roomParticipantEntity.getDeletedAt());
     }
 }

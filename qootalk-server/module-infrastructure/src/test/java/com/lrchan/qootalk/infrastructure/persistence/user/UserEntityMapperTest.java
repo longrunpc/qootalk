@@ -163,16 +163,16 @@ class UserEntityMapperTest {
             UserEntity userEntity = UserEntityMapper.toEntity(user);
 
             // then
-            assertThat(userEntity.id()).isEqualTo(1L);
-            assertThat(userEntity.email()).isEqualTo("test@example.com");
-            assertThat(userEntity.password()).isEqualTo("encrypted_password");
-            assertThat(userEntity.name()).isEqualTo("홍길동");
-            assertThat(userEntity.profileImageUrl()).isEqualTo("https://example.com/profile.jpg");
-            assertThat(userEntity.statusMessage()).isEqualTo("안녕하세요!");
-            assertThat(userEntity.role()).isEqualTo(UserRole.USER);
-            assertThat(userEntity.createdAt()).isEqualTo(now);
-            assertThat(userEntity.updatedAt()).isEqualTo(now);
-            assertThat(userEntity.deletedAt()).isNull();
+            assertThat(userEntity.getId()).isEqualTo(1L);
+            assertThat(userEntity.getEmail()).isEqualTo("test@example.com");
+            assertThat(userEntity.getPassword()).isEqualTo("encrypted_password");
+            assertThat(userEntity.getName()).isEqualTo("홍길동");
+            assertThat(userEntity.getProfileImageUrl()).isEqualTo("https://example.com/profile.jpg");
+            assertThat(userEntity.getStatusMessage()).isEqualTo("안녕하세요!");
+            assertThat(userEntity.getRole()).isEqualTo(UserRole.USER);
+            assertThat(userEntity.getCreatedAt()).isEqualTo(now);
+            assertThat(userEntity.getUpdatedAt()).isEqualTo(now);
+            assertThat(userEntity.getDeletedAt()).isNull();
         }
 
         @Test
@@ -197,8 +197,8 @@ class UserEntityMapperTest {
             UserEntity userEntity = UserEntityMapper.toEntity(user);
 
             // then
-            assertThat(userEntity.profileImageUrl()).isNull();
-            assertThat(userEntity.statusMessage()).isEqualTo("안녕하세요!");
+            assertThat(userEntity.getProfileImageUrl()).isNull();
+            assertThat(userEntity.getStatusMessage()).isEqualTo("안녕하세요!");
         }
 
         @Test
@@ -223,8 +223,8 @@ class UserEntityMapperTest {
             UserEntity userEntity = UserEntityMapper.toEntity(user);
 
             // then
-            assertThat(userEntity.profileImageUrl()).isEqualTo("https://example.com/profile.jpg");
-            assertThat(userEntity.statusMessage()).isEqualTo("");
+            assertThat(userEntity.getProfileImageUrl()).isEqualTo("https://example.com/profile.jpg");
+            assertThat(userEntity.getStatusMessage()).isEqualTo("");
         }
 
         @Test
@@ -250,7 +250,7 @@ class UserEntityMapperTest {
             UserEntity userEntity = UserEntityMapper.toEntity(user);
 
             // then
-            assertThat(userEntity.deletedAt()).isEqualTo(deletedAt);
+            assertThat(userEntity.getDeletedAt()).isEqualTo(deletedAt);
             assertThat(userEntity.isDeleted()).isTrue();
         }
     }

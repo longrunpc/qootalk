@@ -21,6 +21,6 @@ public final class ChatRoomEntityMapper {
     }
 
     public static ChatRoom toDomain(ChatRoomEntity chatRoomEntity) {
-        return ChatRoom.reconstruct(chatRoomEntity.id(), new RoomName(chatRoomEntity.roomName()), chatRoomEntity.roomType(), chatRoomEntity.createdBy(), chatRoomEntity.createdAt(), chatRoomEntity.updatedAt(), chatRoomEntity.deletedAt());
+        return ChatRoom.reconstruct(chatRoomEntity.getId(), new RoomName(chatRoomEntity.getRoomName()), chatRoomEntity.getRoomType(), chatRoomEntity.getCreatedBy(), chatRoomEntity.getCreatedAt(), chatRoomEntity.getUpdatedAt(), chatRoomEntity.getDeletedAt());
     }
 }

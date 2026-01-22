@@ -56,8 +56,8 @@ public class ChatRoomEntityMapperTest {
             ChatRoom chatRoom = ChatRoomEntityMapper.toDomain(chatRoomEntity);
 
             // then
-            assertThat(chatRoom.createdAt()).isEqualTo(chatRoomEntity.createdAt());
-            assertThat(chatRoom.updatedAt()).isEqualTo(chatRoomEntity.updatedAt());
+            assertThat(chatRoom.createdAt()).isEqualTo(chatRoomEntity.getCreatedAt());
+            assertThat(chatRoom.updatedAt()).isEqualTo(chatRoomEntity.getUpdatedAt());
             assertThat(chatRoom.deletedAt()).isNull();
         }
 
@@ -77,7 +77,7 @@ public class ChatRoomEntityMapperTest {
             ChatRoom chatRoom = ChatRoomEntityMapper.toDomain(chatRoomEntity);
 
             // then
-            assertThat(chatRoom.deletedAt()).isEqualTo(chatRoomEntity.deletedAt());
+            assertThat(chatRoom.deletedAt()).isEqualTo(chatRoomEntity.getDeletedAt());
             assertThat(chatRoom.isDeleted()).isTrue();
         }
     }
@@ -93,10 +93,10 @@ public class ChatRoomEntityMapperTest {
             ChatRoomEntity chatRoomEntity = ChatRoomEntityMapper.toEntity(chatRoom);
 
             // then
-            assertThat(chatRoomEntity.id()).isEqualTo(chatRoom.id());
-            assertThat(chatRoomEntity.roomName()).isEqualTo(chatRoom.roomName());
-            assertThat(chatRoomEntity.roomType()).isEqualTo(chatRoom.roomType());
-            assertThat(chatRoomEntity.createdBy()).isEqualTo(chatRoom.createdBy());
+            assertThat(chatRoomEntity.getId()).isEqualTo(chatRoom.id());
+            assertThat(chatRoomEntity.getRoomName()).isEqualTo(chatRoom.roomName());
+            assertThat(chatRoomEntity.getRoomType()).isEqualTo(chatRoom.roomType());
+            assertThat(chatRoomEntity.getCreatedBy()).isEqualTo(chatRoom.createdBy());
         }
 
         @Test
@@ -108,9 +108,9 @@ public class ChatRoomEntityMapperTest {
             ChatRoomEntity chatRoomEntity = ChatRoomEntityMapper.toEntity(chatRoom);
 
             // then
-            assertThat(chatRoomEntity.createdAt()).isEqualTo(chatRoom.createdAt());
-            assertThat(chatRoomEntity.updatedAt()).isEqualTo(chatRoom.updatedAt());
-            assertThat(chatRoomEntity.deletedAt()).isNull();
+            assertThat(chatRoomEntity.getCreatedAt()).isEqualTo(chatRoom.createdAt());
+            assertThat(chatRoomEntity.getUpdatedAt()).isEqualTo(chatRoom.updatedAt());
+            assertThat(chatRoomEntity.getDeletedAt()).isNull();
         }
 
         @Test
@@ -121,7 +121,7 @@ public class ChatRoomEntityMapperTest {
             ChatRoomEntity chatRoomEntity = ChatRoomEntityMapper.toEntity(chatRoom);
 
             // then
-            assertThat(chatRoomEntity.deletedAt()).isEqualTo(chatRoom.deletedAt());
+            assertThat(chatRoomEntity.getDeletedAt()).isEqualTo(chatRoom.deletedAt());
             assertThat(chatRoomEntity.isDeleted()).isTrue();
         }
     }

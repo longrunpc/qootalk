@@ -23,6 +23,6 @@ public class MessageEntityMapper {
     }
 
     public static Message toDomain(MessageEntity messageEntity) {
-        return Message.reconstruct(messageEntity.id(), messageEntity.roomId(), messageEntity.userId(), messageEntity.content(), messageEntity.messageType(), messageEntity.mentions(), messageEntity.parentMessageId(), messageEntity.createdAt(), messageEntity.updatedAt(), messageEntity.deletedAt());
+        return Message.reconstruct(messageEntity.getId(), messageEntity.getRoomId(), messageEntity.getUserId(), messageEntity.getContent(), messageEntity.getMessageType(), messageEntity.getMentions(), messageEntity.getParentMessageId(), messageEntity.getCreatedAt(), messageEntity.getUpdatedAt(), messageEntity.getDeletedAt());
     }
 }

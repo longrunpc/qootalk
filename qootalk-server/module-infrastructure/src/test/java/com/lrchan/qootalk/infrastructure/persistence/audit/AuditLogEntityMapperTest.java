@@ -127,14 +127,14 @@ class AuditLogEntityMapperTest {
             AuditLogEntity entity = AuditLogEntityMapper.toEntity(domain);
 
             // then
-            assertThat(entity.id()).isEqualTo(1L);
-            assertThat(entity.actorType()).isEqualTo(ActorType.USER);
-            assertThat(entity.actorId()).isEqualTo(100L);
-            assertThat(entity.actionType()).isEqualTo(ActionType.USER_UPDATED);
-            assertThat(entity.targetType()).isEqualTo(TargetType.USER);
-            assertThat(entity.targetId()).isEqualTo(200L);
-            assertThat(entity.reason()).isEqualTo("사용자 정보 수정");
-            assertThat(entity.occurredAt()).isEqualTo(occurredAt);
+            assertThat(entity.getId()).isEqualTo(1L);
+            assertThat(entity.getActorType()).isEqualTo(ActorType.USER);
+            assertThat(entity.getActorId()).isEqualTo(100L);
+            assertThat(entity.getActionType()).isEqualTo(ActionType.USER_UPDATED);
+            assertThat(entity.getTargetType()).isEqualTo(TargetType.USER);
+            assertThat(entity.getTargetId()).isEqualTo(200L);
+            assertThat(entity.getReason()).isEqualTo("사용자 정보 수정");
+            assertThat(entity.getOccurredAt()).isEqualTo(occurredAt);
         }
 
         @Test
@@ -157,10 +157,10 @@ class AuditLogEntityMapperTest {
             AuditLogEntity entity = AuditLogEntityMapper.toEntity(domain);
 
             // then
-            assertThat(entity.id()).isEqualTo(1L);
-            assertThat(entity.actorType()).isEqualTo(ActorType.ADMIN);
-            assertThat(entity.reason()).isNull();
-            assertThat(entity.occurredAt()).isEqualTo(occurredAt);
+            assertThat(entity.getId()).isEqualTo(1L);
+            assertThat(entity.getActorType()).isEqualTo(ActorType.ADMIN);
+            assertThat(entity.getReason()).isNull();
+            assertThat(entity.getOccurredAt()).isEqualTo(occurredAt);
         }
 
         @Test
@@ -183,8 +183,8 @@ class AuditLogEntityMapperTest {
             AuditLogEntity entity = AuditLogEntityMapper.toEntity(domain);
 
             // then
-            assertThat(entity.actionType()).isEqualTo(ActionType.ROOM_PARTICIPANT_ADDED);
-            assertThat(entity.targetType()).isEqualTo(TargetType.ROOM);
+            assertThat(entity.getActionType()).isEqualTo(ActionType.ROOM_PARTICIPANT_ADDED);
+            assertThat(entity.getTargetType()).isEqualTo(TargetType.ROOM);
         }
     }
 

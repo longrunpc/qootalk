@@ -20,8 +20,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -29,7 +30,8 @@ import lombok.experimental.SuperBuilder;
 @SQLDelete(sql = "UPDATE messages SET deleted_at = now() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
 @SuperBuilder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class MessageEntity extends BaseEntity {
     @Column(name = "room_id", nullable = false)
     private Long roomId;
@@ -55,30 +57,7 @@ public class MessageEntity extends BaseEntity {
     @Column(name = "parent_message_id")
     private Long parentMessageId;
 
-    protected MessageEntity() {
-    }
-
-    public Long roomId() {
-        return roomId;
-    }
-
-    public Long userId() {
-        return userId;
-    }
-    
-    public String content() {
-        return content;
-    }
-
-    public MessageType messageType() {
-        return messageType;
-    }
-    
-    public List<Long> mentions() {
+    public List<Long> getMentions() {
         return mentions == null ? new ArrayList<>() : new ArrayList<>(mentions);
-    }
-
-    public Long parentMessageId() {
-        return parentMessageId;
     }
 }

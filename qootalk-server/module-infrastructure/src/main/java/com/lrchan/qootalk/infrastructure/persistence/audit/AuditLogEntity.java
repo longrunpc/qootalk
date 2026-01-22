@@ -10,9 +10,13 @@ import com.lrchan.qootalk.domain.audit.TargetType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class AuditLogEntity {
     private Long id;
     private ActorType actorType;
@@ -22,39 +26,4 @@ public class AuditLogEntity {
     private Long targetId;
     private String reason;
     private LocalDateTime occurredAt;
-
-    protected AuditLogEntity() {
-    }
-
-    public Long id() {
-        return id;
-    }
-
-    public ActorType actorType() {
-        return actorType;
-    }
-
-    public Long actorId() {
-        return actorId;
-    }
-
-    public ActionType actionType() {
-        return actionType;
-    }
-
-    public TargetType targetType() {
-        return targetType;
-    }
-
-    public Long targetId() {
-        return targetId;
-    }
-
-    public String reason() {
-        return reason;
-    }
-
-    public LocalDateTime occurredAt() {
-        return occurredAt;
-    }
 }

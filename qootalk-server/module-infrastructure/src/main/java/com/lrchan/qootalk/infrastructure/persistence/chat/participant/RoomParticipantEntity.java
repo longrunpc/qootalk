@@ -15,7 +15,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -23,7 +24,8 @@ import lombok.experimental.SuperBuilder;
 @SQLDelete(sql = "UPDATE room_participants SET deleted_at = now() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
 @SuperBuilder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class RoomParticipantEntity extends BaseEntity {
     
     @Column(name = "user_id", nullable = false)
@@ -38,23 +40,4 @@ public class RoomParticipantEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private RoomRole role;
-
-    protected RoomParticipantEntity() {
-    }
-
-    public Long userId() {
-        return userId;
-    }
-
-    public Long roomId() {
-        return roomId;
-    }
-    
-    public Long lastReadMessageId() {
-        return lastReadMessageId;
-    }
-
-    public RoomRole role() {
-        return role;
-    }
 }

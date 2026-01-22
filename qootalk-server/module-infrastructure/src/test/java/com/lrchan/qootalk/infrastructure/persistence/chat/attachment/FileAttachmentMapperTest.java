@@ -183,28 +183,28 @@ class FileAttachmentMapperTest {
             FileAttachmentEntity entity = FileAttachmentMapper.toEntity(domain);
 
             // then
-            assertThat(entity.id()).isEqualTo(1L);
-            assertThat(entity.messageId()).isEqualTo(100L);
-            assertThat(entity.uploaderId()).isEqualTo(50L);
-            assertThat(entity.fileType()).isEqualTo(FileType.VIDEO);
-            assertThat(entity.createdAt()).isEqualTo(now);
-            assertThat(entity.updatedAt()).isEqualTo(now);
-            assertThat(entity.deletedAt()).isNull();
+            assertThat(entity.getId()).isEqualTo(1L);
+            assertThat(entity.getMessageId()).isEqualTo(100L);
+            assertThat(entity.getUploaderId()).isEqualTo(50L);
+            assertThat(entity.getFileType()).isEqualTo(FileType.VIDEO);
+            assertThat(entity.getCreatedAt()).isEqualTo(now);
+            assertThat(entity.getUpdatedAt()).isEqualTo(now);
+            assertThat(entity.getDeletedAt()).isNull();
 
             // FileMetadataEmbeddable 검증
-            assertThat(entity.metadata().originalFileName()).isEqualTo("video.mp4");
-            assertThat(entity.metadata().storedFileName()).isEqualTo("ghi789.mp4");
-            assertThat(entity.metadata().contentType()).isEqualTo("video/mp4");
-            assertThat(entity.metadata().fileSize()).isEqualTo(5120000L);
-            assertThat(entity.metadata().storagePath()).isEqualTo("uploads/2024/01/");
-            assertThat(entity.metadata().storageType()).isEqualTo(StorageType.LOCAL);
+            assertThat(entity.getMetadata().originalFileName()).isEqualTo("video.mp4");
+            assertThat(entity.getMetadata().storedFileName()).isEqualTo("ghi789.mp4");
+            assertThat(entity.getMetadata().contentType()).isEqualTo("video/mp4");
+            assertThat(entity.getMetadata().fileSize()).isEqualTo(5120000L);
+            assertThat(entity.getMetadata().storagePath()).isEqualTo("uploads/2024/01/");
+            assertThat(entity.getMetadata().storageType()).isEqualTo(StorageType.LOCAL);
 
             // FileSecurityEmbeddable 검증
-            assertThat(entity.security().visibility()).isEqualTo(Visibility.PUBLIC);
-            assertThat(entity.security().downloadPolicy()).isEqualTo(DownloadPolicy.ALLOWED);
-            assertThat(entity.security().sharePolicy()).isEqualTo(SharePolicy.READ_ONLY);
-            assertThat(entity.security().scanStatus()).isEqualTo(ScanStatus.CLEAN);
-            assertThat(entity.security().encryption()).isEqualTo(Encryption.NONE);
+            assertThat(entity.getSecurity().visibility()).isEqualTo(Visibility.PUBLIC);
+            assertThat(entity.getSecurity().downloadPolicy()).isEqualTo(DownloadPolicy.ALLOWED);
+            assertThat(entity.getSecurity().sharePolicy()).isEqualTo(SharePolicy.READ_ONLY);
+            assertThat(entity.getSecurity().scanStatus()).isEqualTo(ScanStatus.CLEAN);
+            assertThat(entity.getSecurity().encryption()).isEqualTo(Encryption.NONE);
         }
 
         @Test
@@ -240,7 +240,7 @@ class FileAttachmentMapperTest {
             FileAttachmentEntity entity = FileAttachmentMapper.toEntity(domain);
 
             // then
-            assertThat(entity.fileType()).isEqualTo(FileType.DOCUMENT);
+            assertThat(entity.getFileType()).isEqualTo(FileType.DOCUMENT);
         }
     }
 

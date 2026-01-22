@@ -10,7 +10,8 @@ import com.lrchan.qootalk.infrastructure.persistence.common.BaseEntity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -18,7 +19,8 @@ import lombok.experimental.SuperBuilder;
 @SQLDelete(sql = "UPDATE users SET deleted_at = now() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
 @SuperBuilder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class UserEntity extends BaseEntity {
 
     @Column(name = "email", nullable = false, unique = true)
@@ -39,31 +41,4 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private UserRole role;
-
-    protected UserEntity() {
-    }
-
-    public String email() {
-        return email;
-    }
-
-    public String password() {
-        return password;
-    }
-
-    public String name() {
-        return name;
-    }
-
-    public String profileImageUrl() {
-        return profileImageUrl;
-    }
-
-    public String statusMessage() {
-        return statusMessage;
-    }
-
-    public UserRole role() {
-        return role;
-    }
 }

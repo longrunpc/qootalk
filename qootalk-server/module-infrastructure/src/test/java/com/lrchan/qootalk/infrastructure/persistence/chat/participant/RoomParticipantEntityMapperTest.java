@@ -100,11 +100,11 @@ class RoomParticipantEntityMapperTest {
             RoomParticipantEntity entity = RoomParticipantEntityMapper.toEntity(domain);
 
             // then
-            assertThat(entity.id()).isEqualTo(1L);
-            assertThat(entity.userId()).isEqualTo(10L);
-            assertThat(entity.roomId()).isEqualTo(20L);
-            assertThat(entity.lastReadMessageId()).isEqualTo(30L);
-            assertThat(entity.role()).isEqualTo(RoomRole.OWNER);
+            assertThat(entity.getId()).isEqualTo(1L);
+            assertThat(entity.getUserId()).isEqualTo(10L);
+            assertThat(entity.getRoomId()).isEqualTo(20L);
+            assertThat(entity.getLastReadMessageId()).isEqualTo(30L);
+            assertThat(entity.getRole()).isEqualTo(RoomRole.OWNER);
         }
 
         @Test
@@ -127,7 +127,7 @@ class RoomParticipantEntityMapperTest {
             RoomParticipantEntity entity = RoomParticipantEntityMapper.toEntity(domain);
 
             // then
-            assertThat(entity.role()).isEqualTo(RoomRole.MEMBER);
+            assertThat(entity.getRole()).isEqualTo(RoomRole.MEMBER);
         }
     }
 

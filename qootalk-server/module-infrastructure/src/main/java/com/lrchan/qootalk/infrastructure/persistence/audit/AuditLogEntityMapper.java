@@ -21,6 +21,6 @@ public class AuditLogEntityMapper {
     }
 
     public static AuditLog toDomain(AuditLogEntity auditLogEntity) {
-        return AuditLog.reconstruct(auditLogEntity.id(), auditLogEntity.actorType(), auditLogEntity.actorId(), auditLogEntity.actionType(), auditLogEntity.targetType(), auditLogEntity.targetId(), auditLogEntity.reason(), auditLogEntity.occurredAt());
+        return AuditLog.reconstruct(auditLogEntity.getId(), auditLogEntity.getActorType(), auditLogEntity.getActorId(), auditLogEntity.getActionType(), auditLogEntity.getTargetType(), auditLogEntity.getTargetId(), auditLogEntity.getReason(), auditLogEntity.getOccurredAt());
     }
 }
