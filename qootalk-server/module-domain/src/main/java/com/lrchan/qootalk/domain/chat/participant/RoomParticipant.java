@@ -7,6 +7,8 @@ import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
 import com.lrchan.qootalk.domain.common.BaseModel;
 
+import lombok.Builder;
+
 public class RoomParticipant extends BaseModel {
 
     private Long userId;
@@ -14,7 +16,8 @@ public class RoomParticipant extends BaseModel {
     private Long lastReadMessageId;
     private RoomRole role;
 
-    private RoomParticipant(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role, LocalDateTime createdAt,
+    @Builder
+    protected RoomParticipant(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role, LocalDateTime createdAt,
             LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         this.userId = Objects.requireNonNull(userId);
@@ -24,12 +27,28 @@ public class RoomParticipant extends BaseModel {
     }
 
     public static RoomParticipant create(Long userId, Long roomId, Long lastReadMessageId, RoomRole role) {
-        return new RoomParticipant(null, userId, roomId, lastReadMessageId, role, LocalDateTime.now(), LocalDateTime.now(), null);
+        return RoomParticipant.builder()
+                .userId(userId)
+                .roomId(roomId)
+                .lastReadMessageId(lastReadMessageId)
+                .role(role)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
     }
 
     // DB 복구 전용 메서드
     public static RoomParticipant reconstruct(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
-        return new RoomParticipant(id, userId, roomId, lastReadMessageId, role, createdAt, updatedAt, deletedAt);
+        return RoomParticipant.builder()
+                .id(id)
+                .userId(userId)
+                .roomId(roomId)
+                .lastReadMessageId(lastReadMessageId)
+                .role(role)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .deletedAt(deletedAt)
+                .build();
     }   
 
     public Long userId() {

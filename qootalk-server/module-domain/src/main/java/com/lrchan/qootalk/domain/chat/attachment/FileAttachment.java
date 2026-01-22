@@ -7,6 +7,8 @@ import com.lrchan.qootalk.domain.chat.vo.FileMetadata;
 import com.lrchan.qootalk.domain.chat.vo.FileSecurity;
 import com.lrchan.qootalk.domain.common.BaseModel;
 
+import lombok.Builder;
+
 public class FileAttachment extends BaseModel {
 
     private final Long messageId;
@@ -16,7 +18,8 @@ public class FileAttachment extends BaseModel {
     private final FileType fileType;
     private final FileSecurity fileSecurity;
 
-    private FileAttachment(
+    @Builder
+    protected FileAttachment(
             Long id,
             Long messageId,
             Long uploaderId,
@@ -40,16 +43,15 @@ public class FileAttachment extends BaseModel {
             FileMetadata metadata,
             FileType fileType,
             FileSecurity fileSecurity) {
-        return new FileAttachment(
-                null,
-                messageId,
-                uploaderId,
-                metadata,
-                fileType,
-                fileSecurity,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                null);
+        return FileAttachment.builder()
+                .messageId(messageId)
+                .uploaderId(uploaderId)
+                .metadata(metadata)
+                .fileType(fileType)
+                .fileSecurity(fileSecurity)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
     }
 
     // DB 복구 전용 메서드
@@ -63,16 +65,17 @@ public class FileAttachment extends BaseModel {
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
             LocalDateTime deletedAt) {
-        return new FileAttachment(
-                id,
-                messageId,
-                uploaderId,
-                metadata,
-                fileType,
-                fileSecurity,
-                createdAt,
-                updatedAt,
-                deletedAt);
+        return FileAttachment.builder()
+                .id(id)
+                .messageId(messageId)
+                .uploaderId(uploaderId)
+                .metadata(metadata)
+                .fileType(fileType)
+                .fileSecurity(fileSecurity)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .deletedAt(deletedAt)
+                .build();
     }
 
     public Long messageId() {

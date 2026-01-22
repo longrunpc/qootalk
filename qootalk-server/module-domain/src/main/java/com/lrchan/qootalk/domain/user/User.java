@@ -9,6 +9,8 @@ import com.lrchan.qootalk.domain.user.vo.ProfileImageUrl;
 import com.lrchan.qootalk.domain.user.vo.StatusMessage;
 import com.lrchan.qootalk.domain.user.vo.UserName;
 
+import lombok.Builder;
+
 public class User extends BaseModel {
     
     private Email email;
@@ -18,7 +20,8 @@ public class User extends BaseModel {
     private StatusMessage statusMessage;
     private UserRole role;
 
-    private User(
+    @Builder
+    protected User(
             Long id,
             Email email,
             Password password,
@@ -40,12 +43,30 @@ public class User extends BaseModel {
     }
 
     public static User create(Email email, Password password, UserName name) {
-        return new User(null, email, password, name, null, null, UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
+        return User.builder()
+                .email(email)
+                .password(password)
+                .name(name)
+                .role(UserRole.USER)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
     }
 
     // DB 복구 전용 메서드
     public static User reconstruct(Long id, Email email, Password password, UserName name, ProfileImageUrl profileImageUrl, StatusMessage statusMessage, UserRole role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
-        return new User(id, email, password, name, profileImageUrl, statusMessage, role, createdAt, updatedAt, deletedAt);
+        return User.builder()
+                .id(id)
+                .email(email)
+                .password(password)
+                .name(name)
+                .profileImageUrl(profileImageUrl)
+                .statusMessage(statusMessage)
+                .role(role)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .deletedAt(deletedAt)
+                .build();
     }
 
     public Email email() {

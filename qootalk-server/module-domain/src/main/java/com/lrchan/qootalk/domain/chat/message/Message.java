@@ -5,6 +5,8 @@ import java.util.*;
 
 import com.lrchan.qootalk.domain.common.BaseModel;
 
+import lombok.Builder;
+
 public class Message extends BaseModel {
 
     private Long roomId;
@@ -14,7 +16,8 @@ public class Message extends BaseModel {
     private List<Long> mentions = new ArrayList<>();
     private Long parentMessageId;
 
-    private Message(Long id, Long roomId, Long userId, String content, MessageType messageType, List<Long> mentions,
+    @Builder
+    protected Message(Long id, Long roomId, Long userId, String content, MessageType messageType, List<Long> mentions,
             Long parentMessageId, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         this.roomId = Objects.requireNonNull(roomId);
@@ -32,16 +35,34 @@ public class Message extends BaseModel {
 
     public static Message createReply(Long roomId, Long userId, String content, MessageType messageType,
             List<Long> mentions, Long parentMessageId) {
-        return new Message(null, roomId, userId, content, messageType, mentions, parentMessageId,
-                LocalDateTime.now(), LocalDateTime.now(), null);
+        return Message.builder()
+                .roomId(roomId)
+                .userId(userId)
+                .content(content)
+                .messageType(messageType)
+                .mentions(mentions)
+                .parentMessageId(parentMessageId)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
     }
 
     // DB 복구 전용 메서드
     public static Message reconstruct(Long id, Long roomId, Long userId, String content, MessageType messageType,
             List<Long> mentions, Long parentMessageId, LocalDateTime createdAt, LocalDateTime updatedAt,
             LocalDateTime deletedAt) {
-        return new Message(id, roomId, userId, content, messageType, mentions, parentMessageId, createdAt, updatedAt,
-                deletedAt);
+        return Message.builder()
+                .id(id)
+                .roomId(roomId)
+                .userId(userId)
+                .content(content)
+                .messageType(messageType)
+                .mentions(mentions)
+                .parentMessageId(parentMessageId)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .deletedAt(deletedAt)
+                .build();
     }
 
     public Long roomId() {
