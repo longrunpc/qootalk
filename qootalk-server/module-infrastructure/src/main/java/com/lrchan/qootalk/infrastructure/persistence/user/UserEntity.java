@@ -1,7 +1,5 @@
 package com.lrchan.qootalk.infrastructure.persistence.user;
 
-import java.time.LocalDateTime;
-
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 

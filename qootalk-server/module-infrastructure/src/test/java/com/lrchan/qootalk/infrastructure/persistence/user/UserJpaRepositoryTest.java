@@ -22,40 +22,40 @@ public class UserJpaRepositoryTest {
     @DisplayName("UserEntity 저장 및 조회 테스트")
     void should_saveAndFind_when_validUser() {
         // given
-        UserEntity userEntity = new UserEntity(
-            "test@example.com",
-            "password123",
-            "홍길동",
-            UserRole.USER
-        );
+        UserEntity userEntity = UserEntity.builder()
+            .email("test@example.com")
+            .password("password123")
+            .name("홍길동")
+            .role(UserRole.USER)
+            .build();
 
         // when
         UserEntity savedUserEntity = userJpaRepository.save(userEntity);
 
         // then
-        assertThat(savedUserEntity.id()).isNotNull();
-        assertThat(savedUserEntity.email()).isEqualTo("test@example.com");
-        assertThat(savedUserEntity.password()).isEqualTo("password123");
-        assertThat(savedUserEntity.name()).isEqualTo("홍길동");
-        assertThat(savedUserEntity.role()).isEqualTo(UserRole.USER);
+        assertThat(savedUserEntity.getId()).isNotNull();
+        assertThat(savedUserEntity.getEmail()).isEqualTo("test@example.com");
+        assertThat(savedUserEntity.getPassword()).isEqualTo("password123");
+        assertThat(savedUserEntity.getName()).isEqualTo("홍길동");
+        assertThat(savedUserEntity.getRole()).isEqualTo(UserRole.USER);
     }
 
     @Test
     @DisplayName("이메일 중복 시 예외 발생")
     void should_throwException_when_duplicateEmail() {
         // given
-        UserEntity userEntity1 = new UserEntity(
-            "test@example.com",
-            "password123",
-            "홍길동",
-            UserRole.USER
-        );
-        UserEntity userEntity2 = new UserEntity(
-            "test@example.com",
-            "password123",
-            "김동동",
-            UserRole.USER
-        ); // 빌더 패턴으로 사용할까 고민
+        UserEntity userEntity1 = UserEntity.builder()
+            .email("test@example.com")
+            .password("password123")
+            .name("홍길동")
+            .role(UserRole.USER)
+            .build();
+        UserEntity userEntity2 = UserEntity.builder()
+            .email("test@example.com")
+            .password("password123")
+            .name("김동동")
+            .role(UserRole.USER)
+            .build();
         userJpaRepository.save(userEntity1);
 
         // when & then
@@ -70,23 +70,23 @@ public class UserJpaRepositoryTest {
         @DisplayName("이메일 존재 시")
         void should_findByEmail_when_validEmail() {
             // given
-            UserEntity userEntity = new UserEntity(
-                "test@example.com",
-                "password123",
-                "홍길동",
-                UserRole.USER
-            );
+            UserEntity userEntity = UserEntity.builder()
+                .email("test@example.com")
+                .password("password123")
+                .name("홍길동")
+                .role(UserRole.USER)
+                .build();
             userJpaRepository.save(userEntity);
 
             // when
             UserEntity foundUserEntity = userJpaRepository.findByEmail("test@example.com").orElseThrow();
 
             // then
-            assertThat(foundUserEntity.id()).isNotNull();
-            assertThat(foundUserEntity.email()).isEqualTo("test@example.com");
-            assertThat(foundUserEntity.password()).isEqualTo("password123");
-            assertThat(foundUserEntity.name()).isEqualTo("홍길동");
-            assertThat(foundUserEntity.role()).isEqualTo(UserRole.USER);
+            assertThat(foundUserEntity.getId()).isNotNull();
+            assertThat(foundUserEntity.getEmail()).isEqualTo("test@example.com");
+            assertThat(foundUserEntity.getPassword()).isEqualTo("password123");
+            assertThat(foundUserEntity.getName()).isEqualTo("홍길동");
+            assertThat(foundUserEntity.getRole()).isEqualTo(UserRole.USER);
         }
 
         @Test
@@ -104,12 +104,12 @@ public class UserJpaRepositoryTest {
         @DisplayName("이메일 존재 시")
         void should_existsByEmail_when_validEmail() {
             // given
-            UserEntity userEntity = new UserEntity(
-                "test@example.com",
-                "password123",
-                "홍길동",
-                UserRole.USER
-            );
+            UserEntity userEntity = UserEntity.builder()
+                .email("test@example.com")
+                .password("password123")
+                .name("홍길동")
+                .role(UserRole.USER)
+                .build();
 
             userJpaRepository.save(userEntity);
 
