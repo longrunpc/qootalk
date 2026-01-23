@@ -3,8 +3,15 @@ package com.lrchan.qootalk.infrastructure.persistence.common;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass
+@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public abstract class BaseEntity {
     
     @Id
@@ -30,22 +37,6 @@ public abstract class BaseEntity {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
-    }
-
-    public Long id() {
-        return id;
-    }
-
-    public LocalDateTime createdAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime updatedAt() {
-        return updatedAt;
-    }
-
-    public LocalDateTime deletedAt() {
-        return deletedAt;
     }
 
     public boolean isDeleted() {

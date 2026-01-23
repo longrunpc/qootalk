@@ -25,16 +25,16 @@ class AuditLogEntityMapperTest {
         void should_ConvertToDomain_When_ValidEntity() {
             // given
             LocalDateTime occurredAt = LocalDateTime.now();
-            AuditLogEntity entity = new AuditLogEntity(
-                    1L,
-                    ActorType.USER,
-                    100L,
-                    ActionType.USER_CREATED,
-                    TargetType.USER,
-                    200L,
-                    "사용자 생성",
-                    occurredAt
-            );
+            AuditLogEntity entity = AuditLogEntity.builder()
+                    .id(1L)
+                    .actorType(ActorType.USER)
+                    .actorId(100L)
+                    .actionType(ActionType.USER_CREATED)
+                    .targetType(TargetType.USER)
+                    .targetId(200L)
+                    .reason("사용자 생성")
+                    .occurredAt(occurredAt)
+                    .build();
 
             // when
             AuditLog domain = AuditLogEntityMapper.toDomain(entity);
@@ -55,16 +55,16 @@ class AuditLogEntityMapperTest {
         void should_ConvertToDomain_When_ReasonIsNull() {
             // given
             LocalDateTime occurredAt = LocalDateTime.now();
-            AuditLogEntity entity = new AuditLogEntity(
-                    1L,
-                    ActorType.ADMIN,
-                    50L,
-                    ActionType.MESSAGE_DELETED,
-                    TargetType.MESSAGE,
-                    300L,
-                    null,
-                    occurredAt
-            );
+            AuditLogEntity entity = AuditLogEntity.builder()
+                    .id(1L)
+                    .actorType(ActorType.ADMIN)
+                    .actorId(50L)
+                    .actionType(ActionType.MESSAGE_DELETED)
+                    .targetType(TargetType.MESSAGE)
+                    .targetId(300L)
+                    .reason(null)
+                    .occurredAt(occurredAt)
+                    .build();
 
             // when
             AuditLog domain = AuditLogEntityMapper.toDomain(entity);
@@ -81,16 +81,16 @@ class AuditLogEntityMapperTest {
         void should_ConvertToDomain_When_ActorTypeIsSystem() {
             // given
             LocalDateTime occurredAt = LocalDateTime.now();
-            AuditLogEntity entity = new AuditLogEntity(
-                    1L,
-                    ActorType.SYSTEM,
-                    0L,
-                    ActionType.ROOM_CREATED,
-                    TargetType.ROOM,
-                    400L,
-                    "시스템 자동 생성",
-                    occurredAt
-            );
+            AuditLogEntity entity = AuditLogEntity.builder()
+                    .id(1L)
+                    .actorType(ActorType.SYSTEM)
+                    .actorId(0L)
+                    .actionType(ActionType.ROOM_CREATED)
+                    .targetType(TargetType.ROOM)
+                    .targetId(400L)
+                    .reason("시스템 자동 생성")
+                    .occurredAt(occurredAt)
+                    .build();
 
             // when
             AuditLog domain = AuditLogEntityMapper.toDomain(entity);
@@ -127,14 +127,14 @@ class AuditLogEntityMapperTest {
             AuditLogEntity entity = AuditLogEntityMapper.toEntity(domain);
 
             // then
-            assertThat(entity.id()).isEqualTo(1L);
-            assertThat(entity.actorType()).isEqualTo(ActorType.USER);
-            assertThat(entity.actorId()).isEqualTo(100L);
-            assertThat(entity.actionType()).isEqualTo(ActionType.USER_UPDATED);
-            assertThat(entity.targetType()).isEqualTo(TargetType.USER);
-            assertThat(entity.targetId()).isEqualTo(200L);
-            assertThat(entity.reason()).isEqualTo("사용자 정보 수정");
-            assertThat(entity.occurredAt()).isEqualTo(occurredAt);
+            assertThat(entity.getId()).isEqualTo(1L);
+            assertThat(entity.getActorType()).isEqualTo(ActorType.USER);
+            assertThat(entity.getActorId()).isEqualTo(100L);
+            assertThat(entity.getActionType()).isEqualTo(ActionType.USER_UPDATED);
+            assertThat(entity.getTargetType()).isEqualTo(TargetType.USER);
+            assertThat(entity.getTargetId()).isEqualTo(200L);
+            assertThat(entity.getReason()).isEqualTo("사용자 정보 수정");
+            assertThat(entity.getOccurredAt()).isEqualTo(occurredAt);
         }
 
         @Test
@@ -157,10 +157,10 @@ class AuditLogEntityMapperTest {
             AuditLogEntity entity = AuditLogEntityMapper.toEntity(domain);
 
             // then
-            assertThat(entity.id()).isEqualTo(1L);
-            assertThat(entity.actorType()).isEqualTo(ActorType.ADMIN);
-            assertThat(entity.reason()).isNull();
-            assertThat(entity.occurredAt()).isEqualTo(occurredAt);
+            assertThat(entity.getId()).isEqualTo(1L);
+            assertThat(entity.getActorType()).isEqualTo(ActorType.ADMIN);
+            assertThat(entity.getReason()).isNull();
+            assertThat(entity.getOccurredAt()).isEqualTo(occurredAt);
         }
 
         @Test
@@ -183,8 +183,8 @@ class AuditLogEntityMapperTest {
             AuditLogEntity entity = AuditLogEntityMapper.toEntity(domain);
 
             // then
-            assertThat(entity.actionType()).isEqualTo(ActionType.ROOM_PARTICIPANT_ADDED);
-            assertThat(entity.targetType()).isEqualTo(TargetType.ROOM);
+            assertThat(entity.getActionType()).isEqualTo(ActionType.ROOM_PARTICIPANT_ADDED);
+            assertThat(entity.getTargetType()).isEqualTo(TargetType.ROOM);
         }
     }
 

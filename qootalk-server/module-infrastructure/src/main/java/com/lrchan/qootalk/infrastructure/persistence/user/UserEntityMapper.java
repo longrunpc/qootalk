@@ -14,31 +14,31 @@ public final class UserEntityMapper {
 
     public static User toDomain(UserEntity userEntity) {
         return User.reconstruct(
-            userEntity.id(),
-            new Email(userEntity.email()),
-            new Password(userEntity.password()),
-            new UserName(userEntity.name()),
-            userEntity.profileImageUrl() != null ? new ProfileImageUrl(userEntity.profileImageUrl()) : null,
-            new StatusMessage(userEntity.statusMessage()),
-            userEntity.role(),
-            userEntity.createdAt(),
-            userEntity.updatedAt(),
-            userEntity.deletedAt()
+            userEntity.getId(),
+            new Email(userEntity.getEmail()),
+            new Password(userEntity.getPassword()),
+            new UserName(userEntity.getName()),
+            userEntity.getProfileImageUrl() != null ? new ProfileImageUrl(userEntity.getProfileImageUrl()) : null,
+            new StatusMessage(userEntity.getStatusMessage()),
+            userEntity.getRole(),
+            userEntity.getCreatedAt(),
+            userEntity.getUpdatedAt(),
+            userEntity.getDeletedAt()
         );
     }
 
     public static UserEntity toEntity(User user) {
-        return new UserEntity(
-            user.id(), 
-            user.email().value(),
-            user.password().encryptedPassword(), 
-            user.name().value(), 
-            user.profileImageUrl() != null ? user.profileImageUrl().value() : null,
-            user.statusMessage().value(),
-            user.role(),
-            user.createdAt(),
-            user.updatedAt(),
-            user.deletedAt()
-        );
+        return UserEntity.builder()
+            .id(user.id())
+            .email(user.email().value())
+            .password(user.password().encryptedPassword())
+            .name(user.name().value())
+            .profileImageUrl(user.profileImageUrl() != null ? user.profileImageUrl().value() : null)
+            .statusMessage(user.statusMessage().value())
+            .role(user.role())
+            .createdAt(user.createdAt())
+            .updatedAt(user.updatedAt())
+            .deletedAt(user.deletedAt())
+            .build();
     }
 }

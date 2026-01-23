@@ -14,11 +14,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "room_participants")
 @SQLDelete(sql = "UPDATE room_participants SET deleted_at = now() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
+@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class RoomParticipantEntity extends BaseEntity {
     
     @Column(name = "user_id", nullable = false)
@@ -33,41 +40,4 @@ public class RoomParticipantEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private RoomRole role;
-
-    protected RoomParticipantEntity() {
-    }
-
-    public RoomParticipantEntity(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
-        this.id = id;
-        this.userId = Objects.requireNonNull(userId);
-        this.roomId = Objects.requireNonNull(roomId);
-        this.lastReadMessageId = Objects.requireNonNull(lastReadMessageId);
-        this.role = role == null ? RoomRole.MEMBER : role;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
-    }
-    
-    public RoomParticipantEntity(Long userId, Long roomId, Long lastReadMessageId, RoomRole role) {
-        this.userId = Objects.requireNonNull(userId);
-        this.roomId = Objects.requireNonNull(roomId);
-        this.lastReadMessageId = Objects.requireNonNull(lastReadMessageId);
-        this.role = role == null ? RoomRole.MEMBER : role;
-    }
-
-    public Long userId() {
-        return userId;
-    }
-
-    public Long roomId() {
-        return roomId;
-    }
-    
-    public Long lastReadMessageId() {
-        return lastReadMessageId;
-    }
-
-    public RoomRole role() {
-        return role;
-    }
 }
