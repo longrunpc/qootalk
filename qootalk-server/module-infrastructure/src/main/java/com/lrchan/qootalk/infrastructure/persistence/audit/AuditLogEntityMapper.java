@@ -8,10 +8,19 @@ public class AuditLogEntityMapper {
     }
 
     public static AuditLogEntity toEntity(AuditLog auditLog) {
-        return new AuditLogEntity(auditLog.id(), auditLog.actorType(), auditLog.actorId(), auditLog.actionType(), auditLog.targetType(), auditLog.targetId(), auditLog.reason(), auditLog.occurredAt());
+        return AuditLogEntity.builder()
+                .id(auditLog.id())
+                .actorType(auditLog.actorType())
+                .actorId(auditLog.actorId())
+                .actionType(auditLog.actionType())
+                .targetType(auditLog.targetType())
+                .targetId(auditLog.targetId())
+                .reason(auditLog.reason())
+                .occurredAt(auditLog.occurredAt())
+                .build();
     }
 
     public static AuditLog toDomain(AuditLogEntity auditLogEntity) {
-        return AuditLog.reconstruct(auditLogEntity.id(), auditLogEntity.actorType(), auditLogEntity.actorId(), auditLogEntity.actionType(), auditLogEntity.targetType(), auditLogEntity.targetId(), auditLogEntity.reason(), auditLogEntity.occurredAt());
+        return AuditLog.reconstruct(auditLogEntity.getId(), auditLogEntity.getActorType(), auditLogEntity.getActorId(), auditLogEntity.getActionType(), auditLogEntity.getTargetType(), auditLogEntity.getTargetId(), auditLogEntity.getReason(), auditLogEntity.getOccurredAt());
     }
 }

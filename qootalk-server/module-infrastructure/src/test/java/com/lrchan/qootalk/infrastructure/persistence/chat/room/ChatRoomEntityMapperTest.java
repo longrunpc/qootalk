@@ -22,7 +22,15 @@ public class ChatRoomEntityMapperTest {
         @DisplayName("ChatRoomEntity를 ChatRoom 도메인으로 변환할 때 기본값이 올바르게 설정되어야 한다")
         void should_ConvertToDomain_When_DefaultValues() {
             // given
-            ChatRoomEntity chatRoomEntity = new ChatRoomEntity(1L, "test_room", null, 1L, LocalDateTime.now(), LocalDateTime.now(), null);
+            ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
+                .id(1L)
+                .roomName("test_room")
+                .roomType(null)
+                .createdBy(1L)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .deletedAt(null)
+                .build();
             ChatRoom chatRoom = ChatRoomEntityMapper.toDomain(chatRoomEntity);
 
             // then
@@ -36,12 +44,20 @@ public class ChatRoomEntityMapperTest {
         @DisplayName("ChatRoomEntity를 ChatRoom 도메인으로 변환할 때 Entity의 업데이트 시간이 올바르게 설정되어야 한다")
         void should_ConvertToDomain_When_UpdatedAtIsSet() {
             // given
-            ChatRoomEntity chatRoomEntity = new ChatRoomEntity(1L, "test_room", RoomType.DIRECT, 1L, LocalDateTime.now(), LocalDateTime.now(), null);
+            ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
+                .id(1L)
+                .roomName("test_room")
+                .roomType(RoomType.DIRECT)
+                .createdBy(1L)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .deletedAt(null)
+                .build();
             ChatRoom chatRoom = ChatRoomEntityMapper.toDomain(chatRoomEntity);
 
             // then
-            assertThat(chatRoom.createdAt()).isEqualTo(chatRoomEntity.createdAt());
-            assertThat(chatRoom.updatedAt()).isEqualTo(chatRoomEntity.updatedAt());
+            assertThat(chatRoom.createdAt()).isEqualTo(chatRoomEntity.getCreatedAt());
+            assertThat(chatRoom.updatedAt()).isEqualTo(chatRoomEntity.getUpdatedAt());
             assertThat(chatRoom.deletedAt()).isNull();
         }
 
@@ -49,11 +65,19 @@ public class ChatRoomEntityMapperTest {
         @DisplayName("ChatRoomEntity를 ChatRoom 도메인으로 변환할 때 Entity의 삭제 시간이 올바르게 설정되어야 한다")
         void should_ConvertToDomain_When_DeletedAtIsSet() {
             // given
-            ChatRoomEntity chatRoomEntity = new ChatRoomEntity(1L, "test_room", RoomType.DIRECT, 1L, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
+            ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
+                .id(1L)
+                .roomName("test_room")
+                .roomType(RoomType.DIRECT)
+                .createdBy(1L)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .deletedAt(LocalDateTime.now())
+                .build();
             ChatRoom chatRoom = ChatRoomEntityMapper.toDomain(chatRoomEntity);
 
             // then
-            assertThat(chatRoom.deletedAt()).isEqualTo(chatRoomEntity.deletedAt());
+            assertThat(chatRoom.deletedAt()).isEqualTo(chatRoomEntity.getDeletedAt());
             assertThat(chatRoom.isDeleted()).isTrue();
         }
     }
@@ -69,10 +93,10 @@ public class ChatRoomEntityMapperTest {
             ChatRoomEntity chatRoomEntity = ChatRoomEntityMapper.toEntity(chatRoom);
 
             // then
-            assertThat(chatRoomEntity.id()).isEqualTo(chatRoom.id());
-            assertThat(chatRoomEntity.roomName()).isEqualTo(chatRoom.roomName());
-            assertThat(chatRoomEntity.roomType()).isEqualTo(chatRoom.roomType());
-            assertThat(chatRoomEntity.createdBy()).isEqualTo(chatRoom.createdBy());
+            assertThat(chatRoomEntity.getId()).isEqualTo(chatRoom.id());
+            assertThat(chatRoomEntity.getRoomName()).isEqualTo(chatRoom.roomName());
+            assertThat(chatRoomEntity.getRoomType()).isEqualTo(chatRoom.roomType());
+            assertThat(chatRoomEntity.getCreatedBy()).isEqualTo(chatRoom.createdBy());
         }
 
         @Test
@@ -84,9 +108,9 @@ public class ChatRoomEntityMapperTest {
             ChatRoomEntity chatRoomEntity = ChatRoomEntityMapper.toEntity(chatRoom);
 
             // then
-            assertThat(chatRoomEntity.createdAt()).isEqualTo(chatRoom.createdAt());
-            assertThat(chatRoomEntity.updatedAt()).isEqualTo(chatRoom.updatedAt());
-            assertThat(chatRoomEntity.deletedAt()).isNull();
+            assertThat(chatRoomEntity.getCreatedAt()).isEqualTo(chatRoom.createdAt());
+            assertThat(chatRoomEntity.getUpdatedAt()).isEqualTo(chatRoom.updatedAt());
+            assertThat(chatRoomEntity.getDeletedAt()).isNull();
         }
 
         @Test
@@ -97,7 +121,7 @@ public class ChatRoomEntityMapperTest {
             ChatRoomEntity chatRoomEntity = ChatRoomEntityMapper.toEntity(chatRoom);
 
             // then
-            assertThat(chatRoomEntity.deletedAt()).isEqualTo(chatRoom.deletedAt());
+            assertThat(chatRoomEntity.getDeletedAt()).isEqualTo(chatRoom.deletedAt());
             assertThat(chatRoomEntity.isDeleted()).isTrue();
         }
     }

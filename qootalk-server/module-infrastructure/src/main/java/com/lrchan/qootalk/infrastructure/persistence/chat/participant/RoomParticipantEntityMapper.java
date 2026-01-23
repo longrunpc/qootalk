@@ -8,10 +8,19 @@ public class RoomParticipantEntityMapper {
     }
 
     public static RoomParticipantEntity toEntity(RoomParticipant roomParticipant) {
-        return new RoomParticipantEntity(roomParticipant.id(), roomParticipant.userId(), roomParticipant.roomId(), roomParticipant.lastReadMessageId(), roomParticipant.role(), roomParticipant.createdAt(), roomParticipant.updatedAt(), roomParticipant.deletedAt());
+        return RoomParticipantEntity.builder()
+            .id(roomParticipant.id())
+            .userId(roomParticipant.userId())
+            .roomId(roomParticipant.roomId())
+            .lastReadMessageId(roomParticipant.lastReadMessageId())
+            .role(roomParticipant.role())
+            .createdAt(roomParticipant.createdAt())
+            .updatedAt(roomParticipant.updatedAt())
+            .deletedAt(roomParticipant.deletedAt())
+            .build();
     }
 
     public static RoomParticipant toDomain(RoomParticipantEntity roomParticipantEntity) {
-        return RoomParticipant.reconstruct(roomParticipantEntity.id(), roomParticipantEntity.userId(), roomParticipantEntity.roomId(), roomParticipantEntity.lastReadMessageId(), roomParticipantEntity.role(), roomParticipantEntity.createdAt(), roomParticipantEntity.updatedAt(), roomParticipantEntity.deletedAt());
+        return RoomParticipant.reconstruct(roomParticipantEntity.getId(), roomParticipantEntity.getUserId(), roomParticipantEntity.getRoomId(), roomParticipantEntity.getLastReadMessageId(), roomParticipantEntity.getRole(), roomParticipantEntity.getCreatedAt(), roomParticipantEntity.getUpdatedAt(), roomParticipantEntity.getDeletedAt());
     }
 }

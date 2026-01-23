@@ -34,22 +34,22 @@ public final class FileAttachmentMapper {
                 security.encryption()
         );
 
-        return new FileAttachmentEntity(
-                fileAttachment.id(),
-                fileAttachment.messageId(),
-                fileAttachment.uploaderId(),
-                metadataEmbeddable,
-                fileAttachment.fileType(),
-                securityEmbeddable,
-                fileAttachment.createdAt(),
-                fileAttachment.updatedAt(),
-                fileAttachment.deletedAt()
-        );
+        return FileAttachmentEntity.builder()
+                .id(fileAttachment.id())
+                .messageId(fileAttachment.messageId())
+                .uploaderId(fileAttachment.uploaderId())
+                .metadata(metadataEmbeddable)
+                .fileType(fileAttachment.fileType())
+                .security(securityEmbeddable)
+                .createdAt(fileAttachment.createdAt())
+                .updatedAt(fileAttachment.updatedAt())
+                .deletedAt(fileAttachment.deletedAt())
+                .build();
     }
 
     public static FileAttachment toDomain(FileAttachmentEntity entity) {
-        FileMetadataEmbeddable metadataEmbeddable = entity.metadata();
-        FileSecurityEmbeddable securityEmbeddable = entity.security();
+        FileMetadataEmbeddable metadataEmbeddable = entity.getMetadata();
+        FileSecurityEmbeddable securityEmbeddable = entity.getSecurity();
 
         FileMetadata metadata = new FileMetadata(
                 new FileName(metadataEmbeddable.originalFileName()),
@@ -69,15 +69,15 @@ public final class FileAttachmentMapper {
         );
 
         return FileAttachment.reconstruct(
-                entity.id(),
-                entity.messageId(),
-                entity.uploaderId(),
+                entity.getId(),
+                entity.getMessageId(),
+                entity.getUploaderId(),
                 metadata,
-                entity.fileType(),
+                entity.getFileType(),
                 security,
-                entity.createdAt(),
-                entity.updatedAt(),
-                entity.deletedAt()
+                entity.getCreatedAt(),
+                entity.getUpdatedAt(),
+                entity.getDeletedAt()
         );
     }
 }
