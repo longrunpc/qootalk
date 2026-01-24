@@ -34,6 +34,8 @@ public class ChatRoomJpaRepositoryTest {
         assertThat(savedChatRoomEntity.getRoomName()).isEqualTo("test_room");
         assertThat(savedChatRoomEntity.getRoomType()).isEqualTo(RoomType.DIRECT);
         assertThat(savedChatRoomEntity.getCreatedBy()).isEqualTo(1L);
+        assertThat(savedChatRoomEntity.getCreatedAt()).isNotNull();
+        assertThat(savedChatRoomEntity.getUpdatedAt()).isNotNull();
     }
 
     @Nested
