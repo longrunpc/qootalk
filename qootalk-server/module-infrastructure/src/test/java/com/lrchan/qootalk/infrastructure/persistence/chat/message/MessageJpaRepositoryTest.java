@@ -35,5 +35,7 @@ public class MessageJpaRepositoryTest {
         assertThat(savedMessageEntity.getUserId()).isEqualTo(2L);
         assertThat(savedMessageEntity.getContent()).isEqualTo("안녕하세요");
         assertThat(savedMessageEntity.getMessageType()).isEqualTo(MessageType.TEXT);
+        assertThat(savedMessageEntity.getCreatedAt()).isNotNull();
+        assertThat(savedMessageEntity.getUpdatedAt()).isNotNull();
     }
 }

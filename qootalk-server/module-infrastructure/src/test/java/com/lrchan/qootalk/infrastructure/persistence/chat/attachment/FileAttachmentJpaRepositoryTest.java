@@ -57,6 +57,8 @@ public class FileAttachmentJpaRepositoryTest {
         assertThat(savedEntity.getFileType()).isEqualTo(FileType.IMAGE);
         assertThat(savedEntity.getMetadata().originalFileName()).isEqualTo("origin.png");
         assertThat(savedEntity.getSecurity().visibility()).isEqualTo(Visibility.PRIVATE);
+        assertThat(savedEntity.getCreatedAt()).isNotNull();
+        assertThat(savedEntity.getUpdatedAt()).isNotNull();
     }
 
     @Nested

@@ -36,6 +36,8 @@ public class RoomParticipantJpaRepositoryTest {
         assertThat(savedEntity.getRoomId()).isEqualTo(10L);
         assertThat(savedEntity.getLastReadMessageId()).isEqualTo(100L);
         assertThat(savedEntity.getRole()).isEqualTo(RoomRole.MEMBER);
+        assertThat(savedEntity.getCreatedAt()).isNotNull();
+        assertThat(savedEntity.getUpdatedAt()).isNotNull();
     }
 
     @Nested
