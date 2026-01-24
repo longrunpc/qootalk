@@ -10,7 +10,6 @@ import com.lrchan.qootalk.domain.chat.room.RoomType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings({ "null", "nullness" })
 @DataJpaTest
 public class ChatRoomJpaRepositoryTest {
 

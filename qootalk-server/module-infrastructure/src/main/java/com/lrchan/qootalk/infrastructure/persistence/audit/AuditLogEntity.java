@@ -1,7 +1,6 @@
 package com.lrchan.qootalk.infrastructure.persistence.audit;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import com.lrchan.qootalk.domain.audit.ActionType;
 import com.lrchan.qootalk.domain.audit.ActorType;
@@ -44,6 +43,7 @@ public class AuditLogEntity {
     @Column(name = "action_type", nullable = false)
     private ActionType actionType;
     
+    @Enumerated(EnumType.STRING)
     @Column(name = "target_type", nullable = false)
     private TargetType targetType;
 

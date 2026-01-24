@@ -10,7 +10,6 @@ import com.lrchan.qootalk.domain.chat.participant.RoomRole;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings({ "null", "nullness" })
 @DataJpaTest
 public class RoomParticipantJpaRepositoryTest {
 

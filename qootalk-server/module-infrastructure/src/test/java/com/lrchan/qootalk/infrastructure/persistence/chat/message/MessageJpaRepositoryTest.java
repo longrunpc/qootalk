@@ -9,7 +9,6 @@ import com.lrchan.qootalk.domain.chat.message.MessageType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings({ "null", "nullness" })
 @DataJpaTest
 public class MessageJpaRepositoryTest {
 
