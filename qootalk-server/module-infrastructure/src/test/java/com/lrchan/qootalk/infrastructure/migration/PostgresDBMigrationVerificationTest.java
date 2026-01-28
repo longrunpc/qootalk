@@ -80,10 +80,8 @@ class PostgresDBMigrationVerificationTest extends PostgresDBIntegrationTestSuppo
     }
 
     @Test
-    @DisplayName("마이그레이션 스크립트에 문제가 있다면 Flyway 검증 단계에서 실패해야 한다")
-    void verifyMigrationFailureBehavior() {
-        // 이 테스트는 보통 '의도적인 실패'를 만들기 위해 
-        // 잘못된 파일 경로를 설정하거나 체크섬(Checksum)을 임의로 변경하여 테스트합니다.
+    @DisplayName("현재 마이그레이션이 Flyway validate를 통과해야 한다")
+    void verifyMigrationValidationSucceeds() {
         
         // Flyway의 validate 기능을 실행하여 현재 상태와 스크립트가 일치하는지 확인
         // 스크립트가 임의로 수정되었다면 예외가 발생함
