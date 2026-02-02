@@ -1,5 +1,5 @@
 -- chat_rooms
-create table if not exists chat_rooms (
+create table chat_rooms (
   id bigserial primary key,
   room_name varchar(255) not null,
   room_type varchar(255) not null,
@@ -9,4 +9,4 @@ create table if not exists chat_rooms (
   deleted_at timestamp
 );
 
-create index if not exists idx_chat_rooms_created_by on chat_rooms(created_by);
+create index idx_chat_rooms_created_by on chat_rooms(created_by);

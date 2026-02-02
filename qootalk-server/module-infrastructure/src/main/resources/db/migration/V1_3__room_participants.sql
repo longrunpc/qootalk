@@ -1,5 +1,5 @@
 -- room_participants
-create table if not exists room_participants (
+create table room_participants (
   id bigserial primary key,
   user_id bigint not null,
   room_id bigint not null,
@@ -10,5 +10,5 @@ create table if not exists room_participants (
   deleted_at timestamp
 );
 
-create index if not exists idx_room_participants_user_id on room_participants(user_id);
-create index if not exists idx_room_participants_room_id on room_participants(room_id);
+create index idx_room_participants_user_id on room_participants(user_id);
+create index idx_room_participants_room_id on room_participants(room_id);

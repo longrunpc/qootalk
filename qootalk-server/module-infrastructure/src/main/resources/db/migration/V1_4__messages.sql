@@ -1,5 +1,5 @@
 -- messages
-create table if not exists messages (
+create table messages (
   id bigserial primary key,
   room_id bigint not null,
   user_id bigint not null,
@@ -11,5 +11,5 @@ create table if not exists messages (
   deleted_at timestamp
 );
 
-create index if not exists idx_messages_room_id on messages(room_id);
-create index if not exists idx_messages_user_id on messages(user_id);
+create index idx_messages_room_id on messages(room_id);
+create index idx_messages_user_id on messages(user_id);

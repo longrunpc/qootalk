@@ -1,5 +1,5 @@
 -- audit_logs
-create table if not exists audit_logs (
+create table audit_logs (
   id bigserial primary key,
   actor_type varchar(255) not null,
   actor_id bigint not null,

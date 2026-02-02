@@ -22,5 +22,9 @@ dependencies {
 
 	testImplementation "org.testcontainers:postgresql:1.19.0"
     testImplementation "org.testcontainers:junit-jupiter:1.19.0"
+
+	testFixturesImplementation 'org.testcontainers:postgresql'
+    testFixturesImplementation 'org.testcontainers:junit-jupiter'
+    testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

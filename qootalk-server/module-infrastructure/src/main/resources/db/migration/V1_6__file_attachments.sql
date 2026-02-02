@@ -1,5 +1,5 @@
 -- file_attachments (includes @Embedded metadata + security columns)
-create table if not exists file_attachments (
+create table file_attachments (
   id bigserial primary key,
   message_id bigint not null,
   uploader_id bigint not null,
@@ -24,4 +24,4 @@ create table if not exists file_attachments (
   deleted_at timestamp
 );
 
-create index if not exists idx_file_attachments_message_id on file_attachments(message_id);
+create index idx_file_attachments_message_id on file_attachments(message_id);
