@@ -8,14 +8,13 @@ import com.lrchan.qootalk.application.user.port.out.SaveUserPort;
 import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class UserRepositoryAdapter implements UserRepository, SaveUserPort {
     
     private final UserJpaRepository userJpaRepository;
-
-    public UserRepositoryAdapter(UserJpaRepository userJpaRepository) {
-        this.userJpaRepository = userJpaRepository;
-    }
 
     @Override
     public Optional<User> findByEmail(String email) {
