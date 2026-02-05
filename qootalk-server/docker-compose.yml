@@ -11,3 +11,4 @@ services:
       - PORT=4566
     volumes:
       - "./localstack_data:/var/lib/localstack"
+      - "./scripts/localstack/init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh"
