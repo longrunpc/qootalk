@@ -33,6 +33,7 @@ dependencies {
 	// TestFixtures
 	testFixturesImplementation 'org.testcontainers:postgresql'
     testFixturesImplementation 'org.testcontainers:junit-jupiter'
+    testFixturesImplementation "org.testcontainers:localstack:1.19.8"
     testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// AWS S3
