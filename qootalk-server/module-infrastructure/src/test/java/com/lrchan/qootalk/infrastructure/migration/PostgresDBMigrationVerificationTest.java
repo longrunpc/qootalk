@@ -12,6 +12,7 @@ import com.lrchan.qootalk.infrastructure.PostgresDBIntegrationTestSupport;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.output.ValidateResult;
 
+@DisplayName("PostgresDBMigrationVerification 테스트")
 class PostgresDBMigrationVerificationTest extends PostgresDBIntegrationTestSupport {
 
     @Autowired
