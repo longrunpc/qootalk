@@ -4,11 +4,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.lrchan.qootalk.application.user.port.out.SaveUserPort;
 import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.UserRepository;
 
 @Component
-public class UserRepositoryAdapter implements UserRepository {
+public class UserRepositoryAdapter implements UserRepository, SaveUserPort {
     
     private final UserJpaRepository userJpaRepository;
 
