@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lrchan.qootalk.domain.chat.participant.RoomRole;
-import com.lrchan.qootalk.infrastructure.PostgresDBIntegrationTestSupport;
+import com.lrchan.qootalk.infrastructure.IntegrationTestSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
-public class RoomParticipantJpaRepositoryTest extends PostgresDBIntegrationTestSupport {
+public class RoomParticipantJpaRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private RoomParticipantJpaRepository roomParticipantJpaRepository;

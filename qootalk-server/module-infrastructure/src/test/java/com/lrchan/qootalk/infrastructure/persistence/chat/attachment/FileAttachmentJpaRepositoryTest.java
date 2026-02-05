@@ -13,12 +13,12 @@ import com.lrchan.qootalk.domain.chat.vo.ScanStatus;
 import com.lrchan.qootalk.domain.chat.vo.SharePolicy;
 import com.lrchan.qootalk.domain.chat.vo.StorageType;
 import com.lrchan.qootalk.domain.chat.vo.Visibility;
-import com.lrchan.qootalk.infrastructure.PostgresDBIntegrationTestSupport;
+import com.lrchan.qootalk.infrastructure.IntegrationTestSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
-public class FileAttachmentJpaRepositoryTest extends PostgresDBIntegrationTestSupport {
+public class FileAttachmentJpaRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private FileAttachmentJpaRepository fileAttachmentJpaRepository;
