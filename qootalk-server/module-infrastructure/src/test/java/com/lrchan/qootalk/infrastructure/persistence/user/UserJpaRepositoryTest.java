@@ -2,27 +2,29 @@ package com.lrchan.qootalk.infrastructure.persistence.user;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.EntityManager;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lrchan.qootalk.domain.user.UserRole;
+import com.lrchan.qootalk.infrastructure.PostgresDBIntegrationTestSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DataJpaTest
-public class UserJpaRepositoryTest {
+@Transactional
+public class UserJpaRepositoryTest extends PostgresDBIntegrationTestSupport {
 
     @Autowired
     private UserJpaRepository userJpaRepository;
 
     @Autowired
-    private TestEntityManager entityManager;
+    private EntityManager entityManager;
 
     @Test
     @DisplayName("UserEntity 저장 및 조회 테스트")

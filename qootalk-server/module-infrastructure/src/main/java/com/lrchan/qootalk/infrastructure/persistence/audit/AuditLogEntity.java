@@ -56,3 +56,4 @@ public class AuditLogEntity {
     @Column(name = "occurred_at", nullable = false, updatable = false)
     private LocalDateTime occurredAt;
 }
+

@@ -3,6 +3,8 @@ plugins {
 }
 
 dependencies {
+	testImplementation testFixtures(project(':module-infrastructure'))
+	
 	implementation project(':module-domain')
 	implementation project(':module-application')
 	implementation project(':module-infrastructure')
@@ -11,5 +13,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
 }
 

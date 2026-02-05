@@ -4,14 +4,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lrchan.qootalk.domain.chat.room.RoomType;
+import com.lrchan.qootalk.infrastructure.PostgresDBIntegrationTestSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-public class ChatRoomJpaRepositoryTest {
+@Transactional
+public class ChatRoomJpaRepositoryTest extends PostgresDBIntegrationTestSupport {
 
     @Autowired
     private ChatRoomJpaRepository chatRoomJpaRepository;

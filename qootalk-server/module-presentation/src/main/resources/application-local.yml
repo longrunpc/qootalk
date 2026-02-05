@@ -1,0 +1,23 @@
+spring:
+  config:
+    import: "optional:file:.env[.properties],optional:file:../.env[.properties]"
+
+  datasource:
+    url: ${LOCAL_DB_URL}
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    
+  jpa:
+    hibernate:
+      ddl-auto: ${LOCAL_JPA_DDL_AUTO}
+    show-sql: ${LOCAL_JPA_SHOW_SQL}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
