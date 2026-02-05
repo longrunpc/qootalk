@@ -14,6 +14,7 @@ import com.lrchan.qootalk.domain.chat.vo.FileName;
 import com.lrchan.qootalk.domain.chat.vo.FileUploadCommand;
 import com.lrchan.qootalk.domain.chat.vo.Path;
 import com.lrchan.qootalk.domain.chat.vo.StorageType;
+import com.lrchan.qootalk.infrastructure.persistence.common.error.S3ErrorCode;
 
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.core.sync.RequestBody;
