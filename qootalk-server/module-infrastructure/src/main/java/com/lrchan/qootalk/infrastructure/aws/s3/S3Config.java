@@ -18,7 +18,7 @@ public class S3Config {
     private String endpoint;
 
     @Value("${aws.s3.region}")
-    private Region region;
+    private String region;
 
     @Value("${aws.s3.access-key}")
     private String accessKey;
@@ -30,7 +30,7 @@ public class S3Config {
     public S3Client s3Client() {
         return S3Client.builder()
             .endpointOverride(URI.create(endpoint))
-            .region(region)
+            .region(Region.of(region))
             .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
             .forcePathStyle(true)
             .build();
