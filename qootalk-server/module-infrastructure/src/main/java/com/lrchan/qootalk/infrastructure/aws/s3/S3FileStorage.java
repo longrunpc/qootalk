@@ -30,10 +30,12 @@ public class S3FileStorage implements FileStorage {
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
 
+    @Value("${aws.s3.storage.path}")
+    private String storagePath;
+
     @Override
     public FileMetadata upload(InputStream inputStream, FileUploadCommand command) {
         String storedFileName = UUID.randomUUID() + "_" + command.originalFileName().value();
-        String storagePath = "s3/chats/attachments/";
         String fullKey = storagePath + storedFileName;
 
         try {

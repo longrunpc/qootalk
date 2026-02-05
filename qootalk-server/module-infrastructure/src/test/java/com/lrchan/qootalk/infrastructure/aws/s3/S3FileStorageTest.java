@@ -36,6 +36,9 @@ public class S3FileStorageTest extends IntegrationTestSupport {
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
 
+    @Value("${aws.s3.storage.path}")
+    private String storagePath;
+
     @Test
     @DisplayName("파일 저장 테스트")
     void should_uploadFile_when_validFile() {
@@ -55,7 +58,7 @@ public class S3FileStorageTest extends IntegrationTestSupport {
         assertThat(metadata.storedFileName()).isNotNull();
         assertThat(metadata.contentType()).isEqualTo(new ContentType("text/plain"));
         assertThat(metadata.fileSize()).isEqualTo(new FileSize((long) content.length));
-        assertThat(metadata.storagePath()).isEqualTo(new Path("s3/chats/attachments/"));
+        assertThat(metadata.storagePath()).isEqualTo(new Path(storagePath));
         assertThat(metadata.storageType()).isEqualTo(StorageType.S3);
     }
 

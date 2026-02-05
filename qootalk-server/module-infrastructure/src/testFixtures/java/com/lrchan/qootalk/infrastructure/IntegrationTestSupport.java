@@ -23,7 +23,7 @@ public abstract class IntegrationTestSupport {
         postgres.start();
         localstack.start();
         
-        // 초기 버킷 추가
+        // 
         try {
             localstack.execInContainer("awslocal", "s3", "mb", "s3://qootalk-s3-local");
         } catch (Exception e) { /* ignore */ }
@@ -50,5 +50,6 @@ public abstract class IntegrationTestSupport {
         registry.add("aws.s3.region", () -> "ap-northeast-2");
         registry.add("aws.s3.access-key", () -> "accessKey");
         registry.add("aws.s3.secret-key", () -> "secretKey");
+        registry.add("aws.s3.storage.path", () -> "s3/chats/attachments/");
     }
 }
