@@ -1,5 +1,11 @@
 dependencies {
 	implementation project(':module-domain')
 	implementation project(':module-common')
+
+	implementation 'org.springframework.boot:spring-boot-starter'
+
+	// Lombok
+	implementation 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 }
 
