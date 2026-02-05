@@ -62,14 +62,9 @@ public class S3FileStorage implements FileStorage {
     @Override
     public void delete(FileMetadata metadata) {
         String key = metadata.storagePath().value() + metadata.storedFileName().value();
-        try {
-            s3Client.deleteObject(DeleteObjectRequest.builder()
-                .bucket(bucketName)
-                .key(key)
-                .build());
-        }
-        catch (Exception e) {
-            throw new InfrastructureException(S3ErrorCode.S3_FILE_DELETE_FAILED, e);
-        }
+        s3Client.deleteObject(DeleteObjectRequest.builder()
+            .bucket(bucketName)
+            .key(key)
+            .build());
     }
 }
