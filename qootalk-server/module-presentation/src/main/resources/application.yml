@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: qootalk
+  # 운영환경 빌드 시 프로필 주입
+  profiles:
+    active: local
+    

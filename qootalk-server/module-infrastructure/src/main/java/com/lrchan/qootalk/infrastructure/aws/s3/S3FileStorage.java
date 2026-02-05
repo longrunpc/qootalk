@@ -1,0 +1,72 @@
+package com.lrchan.qootalk.infrastructure.aws.s3;
+
+import java.io.InputStream;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.lrchan.qootalk.common.exception.InfrastructureException;
+import com.lrchan.qootalk.domain.chat.attachment.FileStorage;
+import com.lrchan.qootalk.domain.chat.vo.FileMetadata;
+import com.lrchan.qootalk.domain.chat.vo.FileName;
+import com.lrchan.qootalk.domain.chat.vo.FileUploadCommand;
+import com.lrchan.qootalk.domain.chat.vo.Path;
+import com.lrchan.qootalk.domain.chat.vo.StorageType;
+import com.lrchan.qootalk.infrastructure.persistence.common.error.S3ErrorCode;
+
+import lombok.RequiredArgsConstructor;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+
+@Component
+@RequiredArgsConstructor
+public class S3FileStorage implements FileStorage {
+
+    private final S3Client s3Client;
+
+    @Value("${aws.s3.bucket.name}")
+    private String bucketName;
+
+    @Value("${aws.s3.storage.path}")
+    private String storagePath;
+
+    @Override
+    public FileMetadata upload(InputStream inputStream, FileUploadCommand command) {
+        String storedFileName = UUID.randomUUID() + "_" + command.originalFileName().value();
+        String fullKey = storagePath + storedFileName;
+
+        try {
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fullKey)
+                .contentType(command.contentType().value())
+                .contentLength(command.fileSize().value())
+                .build();
+            s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, command.fileSize().value()));
+
+            return new FileMetadata(
+                command.originalFileName(),
+                new FileName(storedFileName),
+                command.contentType(),
+                command.fileSize(),
+                new Path(storagePath),
+                StorageType.S3
+            );
+        }
+        catch (Exception e) {
+            throw new InfrastructureException(S3ErrorCode.S3_FILE_UPLOAD_FAILED, e);
+        }
+    }
+
+    @Override
+    public void delete(FileMetadata metadata) {
+        String key = metadata.storagePath().value() + metadata.storedFileName().value();
+        s3Client.deleteObject(DeleteObjectRequest.builder()
+            .bucket(bucketName)
+            .key(key)
+            .build());
+    }
+}

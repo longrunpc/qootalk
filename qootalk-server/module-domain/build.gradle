@@ -1,4 +1,7 @@
 dependencies {
-	// Domain 모듈은 순수 Java 모듈로 외부 의존성 없음
+	implementation project(':module-common')
+
+	testImplementation 'org.junit.jupiter:junit-jupiter'
+	testImplementation 'org.assertj:assertj-core'
 }
 
