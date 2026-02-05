@@ -18,3 +18,5 @@ spring:
     enabled: true
     baseline-on-migrate: true
     clean-disabled: true
+
+# 추후 aws s3 설정 추가
