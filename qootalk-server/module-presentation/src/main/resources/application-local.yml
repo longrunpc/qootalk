@@ -25,4 +25,10 @@ spring:
 aws:
   s3:
     bucket:
+      endpoint: http://localhost:4566
+      region: ap-northeast-2
+      access-key: accessKey
+      secret-key: secretKey
       name: qootalk-s3-local
+    storage:
+      path: s3/chats/attachments/
