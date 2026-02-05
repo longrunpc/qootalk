@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lrchan.qootalk.domain.chat.attachment.FileType;
 import com.lrchan.qootalk.domain.chat.vo.DownloadPolicy;
@@ -13,11 +13,12 @@ import com.lrchan.qootalk.domain.chat.vo.ScanStatus;
 import com.lrchan.qootalk.domain.chat.vo.SharePolicy;
 import com.lrchan.qootalk.domain.chat.vo.StorageType;
 import com.lrchan.qootalk.domain.chat.vo.Visibility;
+import com.lrchan.qootalk.infrastructure.PostgresDBIntegrationTestSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-public class FileAttachmentJpaRepositoryTest {
+@Transactional
+public class FileAttachmentJpaRepositoryTest extends PostgresDBIntegrationTestSupport {
 
     @Autowired
     private FileAttachmentJpaRepository fileAttachmentJpaRepository;

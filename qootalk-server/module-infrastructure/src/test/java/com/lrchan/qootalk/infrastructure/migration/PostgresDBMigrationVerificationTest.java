@@ -2,9 +2,12 @@ package com.lrchan.qootalk.infrastructure.migration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.lrchan.qootalk.infrastructure.PostgresDBIntegrationTestSupport;
 
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.output.ValidateResult;
@@ -17,6 +20,12 @@ class PostgresDBMigrationVerificationTest extends PostgresDBIntegrationTestSuppo
     @Autowired
     private Flyway flyway;
 
+    @BeforeEach
+    void setUp() {
+        flyway.clean();
+        flyway.migrate();
+    }
+    
     @Test
     @DisplayName("Flyway 마이그레이션이 성공적으로 수행되어 테이블이 존재해야 한다")
     void verifyMigration() {

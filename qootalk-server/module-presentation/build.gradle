@@ -3,6 +3,8 @@ plugins {
 }
 
 dependencies {
+	testImplementation testFixtures(project(':module-infrastructure'))
+	
 	implementation project(':module-domain')
 	implementation project(':module-application')
 	implementation project(':module-infrastructure')
