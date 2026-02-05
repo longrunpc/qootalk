@@ -31,8 +31,8 @@ dependencies {
 	testImplementation "org.testcontainers:localstack:1.19.8"
 
 	// TestFixtures
-	testFixturesImplementation 'org.testcontainers:postgresql'
-    testFixturesImplementation 'org.testcontainers:junit-jupiter'
+	testFixturesImplementation 'org.testcontainers:postgresql:1.19.8'
+    testFixturesImplementation 'org.testcontainers:junit-jupiter:1.19.8'
     testFixturesImplementation "org.testcontainers:localstack:1.19.8"
     testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
 
