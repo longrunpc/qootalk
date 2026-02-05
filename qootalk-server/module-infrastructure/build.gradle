@@ -23,6 +23,7 @@ dependencies {
 	testImplementation 'org.junit.jupiter:junit-jupiter'
 	testImplementation 'org.assertj:assertj-core'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'jakarta.servlet:jakarta.servlet-api'
 
 	// Flyway
 	implementation 'org.flywaydb:flyway-core'
@@ -38,6 +39,7 @@ dependencies {
     testFixturesImplementation 'org.testcontainers:junit-jupiter:1.19.8'
     testFixturesImplementation "org.testcontainers:localstack:1.19.8"
     testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testFixturesImplementation 'jakarta.servlet:jakarta.servlet-api'
 
 	// AWS S3
 	implementation 'software.amazon.awssdk:s3:2.41.13'
