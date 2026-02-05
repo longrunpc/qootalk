@@ -12,13 +12,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lrchan.qootalk.domain.user.UserRole;
-import com.lrchan.qootalk.infrastructure.PostgresDBIntegrationTestSupport;
+import com.lrchan.qootalk.infrastructure.IntegrationTestSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
-public class UserJpaRepositoryTest extends PostgresDBIntegrationTestSupport {
+public class UserJpaRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private UserJpaRepository userJpaRepository;

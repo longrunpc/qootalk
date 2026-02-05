@@ -7,13 +7,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.lrchan.qootalk.infrastructure.PostgresDBIntegrationTestSupport;
+import com.lrchan.qootalk.infrastructure.IntegrationTestSupport;
 
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.output.ValidateResult;
 
 @DisplayName("PostgresDBMigrationVerification 테스트")
-class PostgresDBMigrationVerificationTest extends PostgresDBIntegrationTestSupport {
+class PostgresDBMigrationVerificationTest extends IntegrationTestSupport {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

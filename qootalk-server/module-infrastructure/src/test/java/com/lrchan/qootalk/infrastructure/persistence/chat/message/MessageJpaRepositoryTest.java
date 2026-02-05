@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lrchan.qootalk.domain.chat.message.MessageType;
-import com.lrchan.qootalk.infrastructure.PostgresDBIntegrationTestSupport;
+import com.lrchan.qootalk.infrastructure.IntegrationTestSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
-public class MessageJpaRepositoryTest extends PostgresDBIntegrationTestSupport {
+public class MessageJpaRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private MessageJpaRepository messageJpaRepository;

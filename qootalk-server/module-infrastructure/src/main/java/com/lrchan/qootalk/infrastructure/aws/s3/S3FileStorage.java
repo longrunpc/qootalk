@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.ContentType;
 import com.lrchan.qootalk.common.exception.InfrastructureException;
 import com.lrchan.qootalk.domain.chat.attachment.FileStorage;
 import com.lrchan.qootalk.domain.chat.vo.FileMetadata;
