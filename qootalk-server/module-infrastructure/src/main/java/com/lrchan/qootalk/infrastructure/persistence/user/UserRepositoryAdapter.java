@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.lrchan.qootalk.application.user.port.out.SaveUserPort;
+import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
 import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.UserRepository;
 
@@ -12,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class UserRepositoryAdapter implements UserRepository, SaveUserPort {
+public class UserRepositoryAdapter implements UserRepository, SaveUserPort, LoadUserPort {
     
     private final UserJpaRepository userJpaRepository;
 
