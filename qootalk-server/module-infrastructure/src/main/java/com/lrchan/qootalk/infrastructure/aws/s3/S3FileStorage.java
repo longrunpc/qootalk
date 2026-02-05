@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.ContentType;
+import com.lrchan.qootalk.common.exception.InfrastructureException;
 import com.lrchan.qootalk.domain.chat.attachment.FileStorage;
 import com.lrchan.qootalk.domain.chat.vo.FileMetadata;
 import com.lrchan.qootalk.domain.chat.vo.FileName;
@@ -54,7 +55,7 @@ public class S3FileStorage implements FileStorage {
             );
         }
         catch (Exception e) {
-            throw new InfrastructureException("Failed to upload file to S3", e);
+            throw new InfrastructureException(S3ErrorCode.S3_FILE_UPLOAD_FAILED, e);
         }
     }
 
