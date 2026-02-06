@@ -50,6 +50,5 @@ public abstract class IntegrationTestSupport {
         registry.add("aws.s3.region", () -> "ap-northeast-2");
         registry.add("aws.s3.access-key", () -> "accessKey");
         registry.add("aws.s3.secret-key", () -> "secretKey");
-        registry.add("aws.s3.storage.path", () -> "s3/chats/attachments/");
     }
 }

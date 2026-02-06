@@ -7,12 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.lrchan.qootalk.common.exception.InfrastructureException;
-import com.lrchan.qootalk.domain.chat.attachment.FileStorage;
-import com.lrchan.qootalk.domain.chat.vo.FileMetadata;
-import com.lrchan.qootalk.domain.chat.vo.FileName;
-import com.lrchan.qootalk.domain.chat.vo.FileUploadCommand;
-import com.lrchan.qootalk.domain.chat.vo.Path;
-import com.lrchan.qootalk.domain.chat.vo.StorageType;
+import com.lrchan.qootalk.common.storage.port.FileStorage;
+import com.lrchan.qootalk.common.storage.vo.StorageResource;
 import com.lrchan.qootalk.infrastructure.persistence.common.error.S3ErrorCode;
 
 import lombok.RequiredArgsConstructor;
@@ -30,43 +26,59 @@ public class S3FileStorage implements FileStorage {
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
 
-    @Value("${aws.s3.storage.path}")
-    private String storagePath;
+    @Value("${aws.s3.bucket.endpoint}")
+    private String endpoint;
 
+    // {버킷이름}/{경로}/{파일이름} 형식의 URI 반환
     @Override
-    public FileMetadata upload(InputStream inputStream, FileUploadCommand command) {
-        String storedFileName = UUID.randomUUID() + "_" + command.originalFileName().value();
-        String fullKey = storagePath + storedFileName;
+    public String upload(InputStream inputStream, StorageResource command) {
+        String fullKey = generateFullKey(command.path(), command.fileName());
 
         try {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(fullKey)
-                .contentType(command.contentType().value())
-                .contentLength(command.fileSize().value())
+                .contentType(command.contentType())
+                .contentLength(command.fileSize())
                 .build();
-            s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, command.fileSize().value()));
+                
+            s3Client.putObject(putObjectRequest, 
+                RequestBody.fromInputStream(inputStream, command.fileSize()));
 
-            return new FileMetadata(
-                command.originalFileName(),
-                new FileName(storedFileName),
-                command.contentType(),
-                command.fileSize(),
-                new Path(storagePath),
-                StorageType.S3
-            );
+            return s3Client.utilities()
+                    .getUrl(b -> b.bucket(bucketName).key(fullKey))
+                    .toExternalForm();
         }
         catch (Exception e) {
             throw new InfrastructureException(S3ErrorCode.S3_FILE_UPLOAD_FAILED, e);
         }
     }
 
+    private String generateFullKey(String path, String fileName) {
+        String normalizedPath = path.endsWith("/") ? path.substring(0, path.length() - 1) : path;
+        String storedFileName = UUID.randomUUID() + "_" + fileName;
+        return normalizedPath + "/" + storedFileName;
+    }
+
     @Override
-    public void delete(FileMetadata metadata) {
-        String key = metadata.storagePath().value() + metadata.storedFileName().value();
-        s3Client.deleteObject(DeleteObjectRequest.builder()
-            .bucket(bucketName)
-            .key(key)
-            .build());
+    public void delete(String uri) {
+        String key = extractKeyFromUri(uri);
+
+        try {
+            s3Client.deleteObject(DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build());
+        } catch (Exception e) {
+            throw new InfrastructureException(S3ErrorCode.S3_FILE_DELETE_FAILED, e);
+        }
+    }
+
+    private String extractKeyFromUri(String uri) {
+        String prefix = endpoint + "/" + bucketName + "/";
+        if (uri.contains(prefix)) {
+            return uri.substring(uri.indexOf(prefix) + prefix.length());
+        }
+        return uri; 
     }
 }
