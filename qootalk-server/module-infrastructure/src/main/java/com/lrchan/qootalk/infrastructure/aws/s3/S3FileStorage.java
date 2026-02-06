@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.lrchan.qootalk.application.user.port.out.DeleteProfileImagePort;
 import com.lrchan.qootalk.common.exception.InfrastructureException;
 import com.lrchan.qootalk.common.storage.port.FileStorage;
 import com.lrchan.qootalk.common.storage.vo.StorageResource;
@@ -19,7 +20,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Component
 @RequiredArgsConstructor
-public class S3FileStorage implements FileStorage {
+public class S3FileStorage implements FileStorage, DeleteProfileImagePort {
 
     private final S3Client s3Client;
 
