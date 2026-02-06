@@ -5,9 +5,14 @@ import org.springframework.stereotype.Service;
 import com.lrchan.qootalk.application.user.dto.command.UploadProfileImageCommand;
 import com.lrchan.qootalk.application.user.dto.result.UserQueryResult;
 import com.lrchan.qootalk.application.user.port.in.UploadprofileImageUsecase;
+import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
+import com.lrchan.qootalk.application.user.port.out.SaveUserPort;
 import com.lrchan.qootalk.application.user.port.out.UploadProfileImagePort;
+import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.common.storage.vo.StorageResource;
 import com.lrchan.qootalk.domain.user.User;
+import com.lrchan.qootalk.domain.user.error.UserErrorCode;
+import com.lrchan.qootalk.domain.user.vo.ProfileImageUrl;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,20 +23,28 @@ import lombok.RequiredArgsConstructor;
 public class UploadProfileImageService implements UploadprofileImageUsecase {
 
     private final UploadProfileImagePort uploadProfileImagePort;
-
+    private final LoadUserPort loadUserPort;
+    private final SaveUserPort saveUserPort;
+    
     @Override
     public UserQueryResult upload(UploadProfileImageCommand command) {
         String path = "profile/" + command.userId();
         StorageResource resource = new StorageResource(
-            "",
+            path,
             command.originalFileName(),
             command.contentType(),
             command.fileSize());
         String uri = uploadProfileImagePort.upload(command.inputStream(), resource);
 
-        // 유저 프로필 이미지 URL 업데이트 후 반환
+        User user = loadUserPort.findById(command.userId())
+                        .orElseThrow(() -> new DomainException(UserErrorCode.USER_NOT_FOUND));
+                        
+        if (user.profileImageUrl().value() != null) {
+            // TODO: 이전 프로필 삭제 로직 추가
+        }
+        user.changeProfileImageUrl(new ProfileImageUrl(uri));
+        saveUserPort.save(user);
 
-        return null;
+        return UserQueryResult.of(user);
     }
-    
 }
