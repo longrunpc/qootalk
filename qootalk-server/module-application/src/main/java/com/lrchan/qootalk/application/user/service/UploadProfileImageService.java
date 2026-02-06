@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.lrchan.qootalk.application.user.dto.command.UploadProfileImageCommand;
 import com.lrchan.qootalk.application.user.dto.result.UserQueryResult;
-import com.lrchan.qootalk.application.user.port.in.UploadprofileImageUsecase;
+import com.lrchan.qootalk.application.user.port.in.UploadProfileImageUsecase;
 import com.lrchan.qootalk.application.user.port.out.DeleteProfileImagePort;
 import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
 import com.lrchan.qootalk.application.user.port.out.SaveUserPort;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UploadProfileImageService implements UploadprofileImageUsecase {
+public class UploadProfileImageService implements UploadProfileImageUsecase {
 
     private final UploadProfileImagePort uploadProfileImagePort;
     private final DeleteProfileImagePort deleteProfileImagePort;
@@ -46,7 +46,7 @@ public class UploadProfileImageService implements UploadprofileImageUsecase {
         }
 
         user.changeProfileImageUrl(new ProfileImageUrl(uri));
-        
+
         saveUserPort.save(user);
 
         return UserQueryResult.of(user);
