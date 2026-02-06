@@ -6,6 +6,7 @@ public record UploadProfileImageCommand(
     Long userId,
     InputStream inputStream,
     String originalFileName,
+    String contentType,
     long fileSize
 ) {
 }

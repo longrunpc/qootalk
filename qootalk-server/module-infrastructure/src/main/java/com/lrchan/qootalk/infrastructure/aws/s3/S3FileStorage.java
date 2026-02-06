@@ -26,7 +26,7 @@ public class S3FileStorage implements FileStorage {
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
 
-    @Value("${aws.s3.bucket.endpoint}")
+    @Value("${aws.s3.endpoint}")
     private String endpoint;
 
     // {버킷이름}/{경로}/{파일이름} 형식의 URI 반환
