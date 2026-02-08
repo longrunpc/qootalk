@@ -1,5 +1,5 @@
 package com.lrchan.qootalk.application.user.port.out;
 
-public interface DeleteProfileImagePort {
+public interface DeleteFilePort {
     void delete(String uri);
 }
