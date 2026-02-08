@@ -1,10 +1,12 @@
 package com.lrchan.qootalk.application.user.service;
 
 import com.lrchan.qootalk.application.user.dto.command.DeleateProfileImageCommand;
+import com.lrchan.qootalk.application.user.error.UserApplicationErrorCode;
 import com.lrchan.qootalk.application.user.port.in.DeleteProfileImageUsecase;
 import com.lrchan.qootalk.application.user.port.out.DeleteProfileImagePort;
 import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
 import com.lrchan.qootalk.application.user.port.out.SaveUserPort;
+import com.lrchan.qootalk.common.exception.ApplicationException;
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
@@ -35,7 +37,6 @@ public class DeleteProfileImageService implements DeleteProfileImageUsecase {
 
         if (!user.profileImageUrl().value().equals(command.profileImageUrl().value())) {
             throw new ApplicationException(UserApplicationErrorCode.USER_PROFILE_IMAGE_URL_MISMATCH);
-            return;
         }
 
         deleteProfileImagePort.delete(command.profileImageUrl().value());
