@@ -1,9 +1,10 @@
 package com.lrchan.qootalk.application.user.service;
 
 import com.lrchan.qootalk.application.user.dto.command.DeleateProfileImageCommand;
+import com.lrchan.qootalk.application.user.dto.result.UserQueryResult;
 import com.lrchan.qootalk.application.user.error.UserApplicationErrorCode;
 import com.lrchan.qootalk.application.user.port.in.DeleteProfileImageUsecase;
-import com.lrchan.qootalk.application.user.port.out.DeleteProfileImagePort;
+import com.lrchan.qootalk.application.user.port.out.DeleteFilePort;
 import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
 import com.lrchan.qootalk.application.user.port.out.SaveUserPort;
 import com.lrchan.qootalk.common.exception.ApplicationException;
@@ -22,17 +23,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DeleteProfileImageService implements DeleteProfileImageUsecase {
     
-    private final DeleteProfileImagePort deleteProfileImagePort;
+    private final DeleteFilePort deleteProfileImagePort;
     private final SaveUserPort saveUserPort;
     private final LoadUserPort loadUserPort;
 
     @Override
-    public void delete(DeleateProfileImageCommand command) {
+    public UserQueryResult delete(DeleateProfileImageCommand command) {
         User user = loadUserPort.findById(command.userId())
             .orElseThrow(() -> new DomainException(UserErrorCode.USER_NOT_FOUND));
         
         if (user.profileImageUrl().value() == null) {
-            return;
+            return UserQueryResult.of(user);
         }
 
         if (!user.profileImageUrl().value().equals(command.profileImageUrl().value())) {
@@ -43,6 +44,8 @@ public class DeleteProfileImageService implements DeleteProfileImageUsecase {
 
         user.changeProfileImageUrl(new ProfileImageUrl(null));
 
-        saveUserPort.save(user);
+        User updatedUser = saveUserPort.save(user);
+
+        return UserQueryResult.of(updatedUser);
     }
 }
