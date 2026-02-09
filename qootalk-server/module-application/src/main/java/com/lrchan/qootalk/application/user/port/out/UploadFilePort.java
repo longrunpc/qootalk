@@ -4,6 +4,6 @@ import java.io.InputStream;
 
 import com.lrchan.qootalk.common.storage.vo.StorageResource;
 
-public interface UploadProfileImagePort {
+public interface UploadFilePort {
     String upload(InputStream inputStream, StorageResource resource);
 }

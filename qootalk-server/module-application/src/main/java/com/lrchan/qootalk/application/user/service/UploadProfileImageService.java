@@ -8,7 +8,7 @@ import com.lrchan.qootalk.application.user.port.in.UploadProfileImageUsecase;
 import com.lrchan.qootalk.application.user.port.out.DeleteFilePort;
 import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
 import com.lrchan.qootalk.application.user.port.out.SaveUserPort;
-import com.lrchan.qootalk.application.user.port.out.UploadProfileImagePort;
+import com.lrchan.qootalk.application.user.port.out.UploadFilePort;
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.common.storage.vo.StorageResource;
 import com.lrchan.qootalk.domain.user.User;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UploadProfileImageService implements UploadProfileImageUsecase {
 
-    private final UploadProfileImagePort uploadProfileImagePort;
+    private final UploadFilePort uploadProfileImagePort;
     private final DeleteFilePort deleteProfileImagePort;
     private final LoadUserPort loadUserPort;
     private final SaveUserPort saveUserPort;
@@ -41,7 +41,7 @@ public class UploadProfileImageService implements UploadProfileImageUsecase {
             command.fileSize());
         String uri = uploadProfileImagePort.upload(command.inputStream(), resource);
                         
-        if (user.profileImageUrl().value() != null) {
+        if (user.profileImageUrl() != null) {
             deleteProfileImagePort.delete(user.profileImageUrl().value());
         }
 

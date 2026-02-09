@@ -42,7 +42,7 @@ public class DeleteProfileImageService implements DeleteProfileImageUsecase {
 
         deleteProfileImagePort.delete(command.profileImageUrl().value());
 
-        user.changeProfileImageUrl(new ProfileImageUrl(null));
+        user.changeProfileImageUrl(null);
 
         User updatedUser = saveUserPort.save(user);
 
