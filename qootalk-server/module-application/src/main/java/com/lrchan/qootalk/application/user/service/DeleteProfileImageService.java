@@ -11,7 +11,6 @@ import com.lrchan.qootalk.common.exception.ApplicationException;
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
-import com.lrchan.qootalk.domain.user.vo.ProfileImageUrl;
 
 import lombok.RequiredArgsConstructor;
 
