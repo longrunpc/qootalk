@@ -1,6 +1,7 @@
 package com.lrchan.qootalk.infrastructure.aws.s3;
 
 import java.io.InputStream;
+import java.net.URI;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -76,11 +77,22 @@ public class S3FileStorage implements FileStorage, UploadFilePort, DeleteFilePor
         }
     }
 
-    private String extractKeyFromUri(String uri) {
-        String prefix = endpoint + "/" + bucketName + "/";
-        if (uri.contains(prefix)) {
-            return uri.substring(uri.indexOf(prefix) + prefix.length());
+    private String extractKeyFromUri(String uriString) {
+        try {
+            URI uri = URI.create(uriString);
+            String path = uri.getPath();
+            
+            if (path.startsWith("/")) {
+                path = path.substring(1);
+            }
+            
+            if (path.startsWith(bucketName + "/")) {
+                return path.substring(bucketName.length() + 1);
+            }
+            
+            return path;
+        } catch (Exception e) {
+            return uriString;
         }
-        return uri; 
     }
 }
