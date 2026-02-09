@@ -4,17 +4,18 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.lrchan.qootalk.application.user.port.out.SaveUserPort;
+import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
 import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
-public class UserRepositoryAdapter implements UserRepository {
+@RequiredArgsConstructor
+public class UserRepositoryAdapter implements UserRepository, SaveUserPort, LoadUserPort {
     
     private final UserJpaRepository userJpaRepository;
-
-    public UserRepositoryAdapter(UserJpaRepository userJpaRepository) {
-        this.userJpaRepository = userJpaRepository;
-    }
 
     @Override
     public Optional<User> findByEmail(String email) {
