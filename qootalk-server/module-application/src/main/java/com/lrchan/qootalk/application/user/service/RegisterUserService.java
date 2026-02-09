@@ -21,21 +21,22 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class RegisterUserService implements RegisterUserUseCase {
     
-    private final SaveUserPort SaveUserPort;
-    private final LoadUserPort LoadUserPort;
+    private final SaveUserPort saveUserPort;
+    private final LoadUserPort loadUserPort;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserQueryResult register(RegisterUserCommand command) {
-        if (LoadUserPort.findByEmail(command.email().value()).isPresent()) {
+        if (loadUserPort.findByEmail(command.email().value()).isPresent()) {
             throw new DomainException(UserErrorCode.USER_ALREADY_EXISTS);
         }
         
         String encodedPassword = passwordEncoder.encode(command.password().encryptedPassword());
         
         User user = User.create(command.email(), new Password(encodedPassword), command.name());
-        SaveUserPort.save(user);
         
-        return UserQueryResult.of(user);
+        User registeredUser = saveUserPort.save(user);
+
+        return UserQueryResult.of(registeredUser);
     }
 }
