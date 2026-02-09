@@ -1,6 +1,7 @@
 package com.lrchan.qootalk.application.user.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lrchan.qootalk.application.user.dto.command.UpdateStatusMessageCommand;
 import com.lrchan.qootalk.application.user.dto.result.UserQueryResult;
@@ -12,7 +13,6 @@ import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
 import com.lrchan.qootalk.domain.user.vo.StatusMessage;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
