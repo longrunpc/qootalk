@@ -11,6 +11,7 @@ import com.lrchan.qootalk.common.exception.ApplicationException;
 import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
+import com.lrchan.qootalk.domain.user.vo.ProfileImageUrl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,7 +42,7 @@ public class DeleteProfileImageService implements DeleteProfileImageUsecase {
 
         deleteProfileImagePort.delete(command.profileImageUrl().value());
 
-        user.changeProfileImageUrl(null);
+        user.changeProfileImageUrl(new ProfileImageUrl(null));
 
         User updatedUser = saveUserPort.save(user);
 

@@ -34,13 +34,13 @@ public class User extends BaseModel {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.profileImageUrl = profileImageUrl;
+        this.profileImageUrl = (profileImageUrl == null) ? new ProfileImageUrl(null) : profileImageUrl;
         this.statusMessage = (statusMessage == null) ? new StatusMessage("") : statusMessage;
         this.role = role == null ? UserRole.USER : role;
     }
 
     public static User create(Email email, Password password, UserName name) {
-        return new User(null, email, password, name, null, null, UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
+        return new User(null, email, password, name, new ProfileImageUrl(null), null, UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
     // DB 복구 전용 메서드

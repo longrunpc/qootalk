@@ -20,7 +20,7 @@ public record UserQueryResult(
             user.id(),
             user.email().value(),
             user.name().value(),
-            user.profileImageUrl() == null ? null : user.profileImageUrl().value(),
+            user.profileImageUrl().value(),
             user.statusMessage().value(),
             user.role().name(),
             user.createdAt(),

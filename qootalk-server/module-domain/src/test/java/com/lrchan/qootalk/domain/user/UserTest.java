@@ -35,7 +35,7 @@ class UserTest {
             assertThat(user.name().value()).isEqualTo("홍길동");
             assertThat(user.role()).isEqualTo(UserRole.USER);
             assertThat(user.statusMessage()).isEqualTo(new StatusMessage(""));
-            assertThat(user.profileImageUrl()).isNull();
+            assertThat(user.profileImageUrl().value()).isNull();
             assertThat(user.id()).isNull();
             assertThat(user.isDeleted()).isFalse();
         }
