@@ -18,7 +18,7 @@ public final class UserEntityMapper {
             new Email(userEntity.getEmail()),
             new Password(userEntity.getPassword()),
             new UserName(userEntity.getName()),
-            userEntity.getProfileImageUrl() != null ? new ProfileImageUrl(userEntity.getProfileImageUrl()) : null,
+            new ProfileImageUrl(userEntity.getProfileImageUrl()),
             new StatusMessage(userEntity.getStatusMessage()),
             userEntity.getRole(),
             userEntity.getCreatedAt(),
@@ -33,7 +33,7 @@ public final class UserEntityMapper {
             .email(user.email().value())
             .password(user.password().encryptedPassword())
             .name(user.name().value())
-            .profileImageUrl(user.profileImageUrl() != null ? user.profileImageUrl().value() : null)
+            .profileImageUrl(user.profileImageUrl().value())
             .statusMessage(user.statusMessage().value())
             .role(user.role())
             .createdAt(user.createdAt())

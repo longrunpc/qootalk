@@ -41,14 +41,14 @@ public class UploadProfileImageService implements UploadProfileImageUsecase {
             command.fileSize());
         String uri = uploadProfileImagePort.upload(command.inputStream(), resource);
                         
-        if (user.profileImageUrl() != null) {
+        if (user.profileImageUrl().value() != null) {
             deleteProfileImagePort.delete(user.profileImageUrl().value());
         }
 
         user.changeProfileImageUrl(new ProfileImageUrl(uri));
 
-        saveUserPort.save(user);
+        User updatedUser = saveUserPort.save(user);
 
-        return UserQueryResult.of(user);
+        return UserQueryResult.of(updatedUser);
     }
 }

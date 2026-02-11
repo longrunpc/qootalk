@@ -79,7 +79,7 @@ class UserEntityMapperTest {
             User user = UserEntityMapper.toDomain(userEntity);
 
             // then
-            assertThat(user.profileImageUrl()).isNull();
+            assertThat(user.profileImageUrl().value()).isNull();
             assertThat(user.statusMessage().value()).isEqualTo("안녕하세요!");
         }
 
@@ -185,7 +185,7 @@ class UserEntityMapperTest {
                 new Email("test@example.com"),
                 new Password("encrypted_password"),
                 new UserName("홍길동"),
-                null,
+                new ProfileImageUrl(null),
                 new StatusMessage("안녕하세요!"),
                 UserRole.USER,
                 now,
@@ -304,7 +304,7 @@ class UserEntityMapperTest {
                 new Email("test@example.com"),
                 new Password("encrypted_password"),
                 new UserName("홍길동"),
-                null,
+                new ProfileImageUrl(null),
                 null,
                 UserRole.USER,
                 now,
@@ -317,7 +317,7 @@ class UserEntityMapperTest {
             User convertedUser = UserEntityMapper.toDomain(userEntity);
 
             // then
-            assertThat(convertedUser.profileImageUrl()).isNull();
+            assertThat(convertedUser.profileImageUrl().value()).isNull();
             assertThat(convertedUser.statusMessage().value()).isEqualTo("");
         }
     }

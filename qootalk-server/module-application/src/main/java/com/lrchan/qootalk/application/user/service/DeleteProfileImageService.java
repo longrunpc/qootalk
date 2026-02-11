@@ -1,6 +1,6 @@
 package com.lrchan.qootalk.application.user.service;
 
-import com.lrchan.qootalk.application.user.dto.command.DeleateProfileImageCommand;
+import com.lrchan.qootalk.application.user.dto.command.DeleteProfileImageCommand;
 import com.lrchan.qootalk.application.user.dto.result.UserQueryResult;
 import com.lrchan.qootalk.application.user.error.UserApplicationErrorCode;
 import com.lrchan.qootalk.application.user.port.in.DeleteProfileImageUsecase;
@@ -28,7 +28,7 @@ public class DeleteProfileImageService implements DeleteProfileImageUsecase {
     private final LoadUserPort loadUserPort;
 
     @Override
-    public UserQueryResult delete(DeleateProfileImageCommand command) {
+    public UserQueryResult delete(DeleteProfileImageCommand command) {
         User user = loadUserPort.findById(command.userId())
             .orElseThrow(() -> new DomainException(UserErrorCode.USER_NOT_FOUND));
         
@@ -42,7 +42,7 @@ public class DeleteProfileImageService implements DeleteProfileImageUsecase {
 
         deleteProfileImagePort.delete(command.profileImageUrl().value());
 
-        user.changeProfileImageUrl(null);
+        user.changeProfileImageUrl(new ProfileImageUrl(null));
 
         User updatedUser = saveUserPort.save(user);
 
