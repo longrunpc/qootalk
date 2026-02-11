@@ -47,8 +47,8 @@ public class UploadProfileImageService implements UploadProfileImageUsecase {
 
         user.changeProfileImageUrl(new ProfileImageUrl(uri));
 
-        saveUserPort.save(user);
+        User updatedUser = saveUserPort.save(user);
 
-        return UserQueryResult.of(user);
+        return UserQueryResult.of(updatedUser);
     }
 }

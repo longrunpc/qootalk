@@ -17,7 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.lrchan.qootalk.application.user.dto.command.DeleateProfileImageCommand;
+import com.lrchan.qootalk.application.user.dto.command.DeleteProfileImageCommand;
 import com.lrchan.qootalk.application.user.dto.result.UserQueryResult;
 import com.lrchan.qootalk.application.user.error.UserApplicationErrorCode;
 import com.lrchan.qootalk.application.user.port.out.DeleteFilePort;
@@ -55,7 +55,7 @@ public class DeleteProfileImageServiceTest {
     public void should_DeleteProfileImage_When_ProfileImageIsDeleted() {
         // given
         User user = User.reconstruct(1L, new Email("test@example.com"), new Password("password123"), new UserName("홍길동"), new ProfileImageUrl("https://example.com/profile.jpg"), new StatusMessage(""), UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
-        DeleateProfileImageCommand command = new DeleateProfileImageCommand(
+        DeleteProfileImageCommand command = new DeleteProfileImageCommand(
             1L,
             new ProfileImageUrl("https://example.com/profile.jpg")
         );
@@ -82,7 +82,7 @@ public class DeleteProfileImageServiceTest {
     public void should_FailToDeleteProfileImage_When_ProfileImageIsNotFound() {
         // given
         User user = User.reconstruct(1L, new Email("test@example.com"), new Password("password123"), new UserName("홍길동"), new ProfileImageUrl(null), new StatusMessage(""), UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
-        DeleateProfileImageCommand command = new DeleateProfileImageCommand(
+        DeleteProfileImageCommand command = new DeleteProfileImageCommand(
             1L,
             new ProfileImageUrl(null)
         );
@@ -107,7 +107,7 @@ public class DeleteProfileImageServiceTest {
     @DisplayName("프로필 이미지 삭제 실패: 사용자가 존재하지 않는 경우")
     public void should_FailToDeleteProfileImage_When_UserNotFound() {
         // given
-        DeleateProfileImageCommand command = new DeleateProfileImageCommand(
+        DeleteProfileImageCommand command = new DeleteProfileImageCommand(
             1L,
             new ProfileImageUrl("https://example.com/profile.jpg")
         );
@@ -129,7 +129,7 @@ public class DeleteProfileImageServiceTest {
     public void should_FailToDeleteProfileImage_When_ProfileImageUrlIsNotMatched() {
         // given
         User user = User.reconstruct(1L, new Email("test@example.com"), new Password("password123"), new UserName("홍길동"), new ProfileImageUrl("https://example.com/profile.jpg"), new StatusMessage(""), UserRole.USER, LocalDateTime.now(), LocalDateTime.now(), null);
-        DeleateProfileImageCommand command = new DeleateProfileImageCommand(
+        DeleteProfileImageCommand command = new DeleteProfileImageCommand(
             1L,
             new ProfileImageUrl("https://example.com/wrong.jpg")
         );

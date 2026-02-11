@@ -105,6 +105,7 @@ public class RegisterUserServiceTest {
         
         given(loadUserPort.findByEmail(command.email().value())).willReturn(Optional.empty());
         given(passwordEncoder.encode(command.password().encryptedPassword())).willReturn("encodedPassword");
+        given(saveUserPort.save(any(User.class))).willReturn(User.create(command.email(), new Password("encodedPassword"), command.name()));
         
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 
