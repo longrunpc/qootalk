@@ -78,7 +78,7 @@ public class User extends BaseModel {
     }
 
     public void changeProfileImageUrl(ProfileImageUrl profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+        this.profileImageUrl = (profileImageUrl == null) ? new ProfileImageUrl(null) : profileImageUrl;
         update();
     }
 
