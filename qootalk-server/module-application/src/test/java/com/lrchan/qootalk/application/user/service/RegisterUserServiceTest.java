@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -90,5 +91,28 @@ public class RegisterUserServiceTest {
         verify(loadUserPort, times(1)).findByEmail(command.email().value());
         verify(passwordEncoder, times(0)).encode(command.password().encryptedPassword());
         verify(saveUserPort, times(0)).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("비밀번호가 인코딩되어 저장된다")
+    public void should_PasswordBeEncodedAndSaved() {
+        // given
+        RegisterUserCommand command = new RegisterUserCommand(
+            new Email("test@example.com"),
+            new Password("password123"),
+            new UserName("홍길동")
+        );
+        
+        given(loadUserPort.findByEmail(command.email().value())).willReturn(Optional.empty());
+        given(passwordEncoder.encode(command.password().encryptedPassword())).willReturn("encodedPassword");
+        
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+
+        // when
+        registerUserService.register(command);
+
+        // then
+        verify(saveUserPort, times(1)).save(userCaptor.capture());
+        assertThat(userCaptor.getValue().password().encryptedPassword()).isEqualTo("encodedPassword");
     }
 }
