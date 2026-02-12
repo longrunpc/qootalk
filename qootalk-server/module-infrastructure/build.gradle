@@ -30,17 +30,16 @@ dependencies {
 	implementation 'org.flywaydb:flyway-database-postgresql'
 
 	// TestContainers
-	testImplementation "org.testcontainers:postgresql:1.19.8"
-	testImplementation "org.testcontainers:redis:1.19.8"
-    testImplementation "org.testcontainers:junit-jupiter:1.19.8"
-	testImplementation "org.testcontainers:localstack:1.19.8"
-	testImplementation "org.testcontainers:junit-jupiter:1.19.8"
+	testImplementation "org.testcontainers:testcontainers-postgresql:2.0.1"
+	testImplementation "com.redis:testcontainers-redis:2.2.2"
+	testImplementation "org.testcontainers:testcontainers-localstack:2.0.1"
+	testImplementation "org.testcontainers:junit-jupiter:1.20.1"
 
 	// TestFixtures
-	testFixturesImplementation 'org.testcontainers:postgresql:1.19.8'
-    testFixturesImplementation 'org.testcontainers:junit-jupiter:1.19.8'
-    testFixturesImplementation "org.testcontainers:localstack:1.19.8"
-	testFixturesImplementation "org.testcontainers:junit-jupiter:1.19.8"
+	testFixturesImplementation 'org.testcontainers:testcontainers-postgresql:2.0.1'
+	testFixturesImplementation 'com.redis:testcontainers-redis:2.2.2'
+    testFixturesImplementation "org.testcontainers:testcontainers-localstack:2.0.1"
+    testFixturesImplementation "org.testcontainers:junit-jupiter:1.20.1"
     testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// AWS S3

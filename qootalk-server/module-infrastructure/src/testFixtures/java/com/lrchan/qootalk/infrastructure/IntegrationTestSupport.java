@@ -3,26 +3,24 @@ package com.lrchan.qootalk.infrastructure;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.containers.localstack.LocalStackContainer;
+import com.redis.testcontainers.RedisContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.localstack.LocalStackContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest
 @Testcontainers
 public abstract class IntegrationTestSupport {
 
-    static final PostgreSQLContainer<?> postgres;
-    static final GenericContainer<?> redis;
+    static final PostgreSQLContainer postgres;
+    static final RedisContainer redis;
     static final LocalStackContainer localstack;
 
     static {
-        postgres = new PostgreSQLContainer<>("postgres:17-alpine");
-        localstack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest"))
-                .withServices(LocalStackContainer.Service.S3);
-        redis = new GenericContainer<>(DockerImageName.parse("redis:7-alpine"))
-                .withExposedPorts(6379);
+        postgres = new PostgreSQLContainer(DockerImageName.parse("postgres:17-alpine"));
+        localstack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.11.3"));
+        redis = new RedisContainer(DockerImageName.parse("redis:7-alpine"));
 
         redis.start();
         postgres.start();
@@ -49,7 +47,7 @@ public abstract class IntegrationTestSupport {
         registry.add("spring.jpa.hibernate.ddl-auto", () -> "validate");
 
         // --- S3 (LocalStack) 설정 ---
-        registry.add("aws.s3.endpoint", () -> localstack.getEndpointOverride(LocalStackContainer.Service.S3).toString());
+        registry.add("aws.s3.endpoint", () -> localstack.getEndpoint().toString());
         registry.add("aws.s3.bucket.name", () -> "qootalk-s3-local");
         registry.add("aws.s3.region", () -> "ap-northeast-2");
         registry.add("aws.s3.access-key", () -> "accessKey");
