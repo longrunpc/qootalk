@@ -19,7 +19,8 @@ public abstract class IntegrationTestSupport {
 
     static {
         postgres = new PostgreSQLContainer(DockerImageName.parse("postgres:17-alpine"));
-        localstack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.11.3"));
+        localstack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:3.0.0"))
+            .withEnv("DEFAULT_REGION", "ap-northeast-2");
         redis = new RedisContainer(DockerImageName.parse("redis:7-alpine"));
 
         redis.start();
@@ -54,7 +55,7 @@ public abstract class IntegrationTestSupport {
         registry.add("aws.s3.secret-key", () -> "secretKey");
 
         // --- Redis (Testcontainers) 설정 ---
-        registry.add("spring.data.redis.host", () -> redis.getHost());
-        registry.add("spring.data.redis.port", () -> redis.getMappedPort(6379));
+        registry.add("spring.data.redis.host", redis::getHost);
+        registry.add("spring.data.redis.port", redis::getFirstMappedPort);
     }
 }
