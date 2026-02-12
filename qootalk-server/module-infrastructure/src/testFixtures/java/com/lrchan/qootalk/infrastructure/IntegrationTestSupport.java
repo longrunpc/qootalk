@@ -28,7 +28,6 @@ public abstract class IntegrationTestSupport {
         postgres.start();
         localstack.start();
         
-        // 
         try {
             localstack.execInContainer("awslocal", "s3", "mb", "s3://qootalk-s3-local");
         } catch (Exception e) { /* ignore */ }
