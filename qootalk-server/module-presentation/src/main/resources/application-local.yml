@@ -22,6 +22,11 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
 
+  data:
+    redis:
+      host: ${LOCAL_REDIS_HOST}
+      port: ${LOCAL_REDIS_PORT}
+
 aws:
   s3:
     endpoint: ${LOCAL_S3_ENDPOINT}

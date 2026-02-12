@@ -3,6 +3,7 @@ package com.lrchan.qootalk.infrastructure;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -13,13 +14,17 @@ import org.testcontainers.utility.DockerImageName;
 public abstract class IntegrationTestSupport {
 
     static final PostgreSQLContainer<?> postgres;
+    static final GenericContainer<?> redis;
     static final LocalStackContainer localstack;
 
     static {
         postgres = new PostgreSQLContainer<>("postgres:17-alpine");
         localstack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest"))
                 .withServices(LocalStackContainer.Service.S3);
+        redis = new GenericContainer<>(DockerImageName.parse("redis:7-alpine"))
+                .withExposedPorts(6379);
 
+        redis.start();
         postgres.start();
         localstack.start();
         
@@ -50,5 +55,9 @@ public abstract class IntegrationTestSupport {
         registry.add("aws.s3.region", () -> "ap-northeast-2");
         registry.add("aws.s3.access-key", () -> "accessKey");
         registry.add("aws.s3.secret-key", () -> "secretKey");
+
+        // --- Redis (Testcontainers) 설정 ---
+        registry.add("spring.data.redis.host", () -> redis.getHost());
+        registry.add("spring.data.redis.port", () -> redis.getMappedPort(6379));
     }
 }
