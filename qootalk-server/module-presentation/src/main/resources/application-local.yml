@@ -35,3 +35,7 @@ aws:
     secret-key: ${LOCAL_S3_SECRET_KEY}
     bucket:
       name: ${LOCAL_S3_BUCKET_NAME}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION}
