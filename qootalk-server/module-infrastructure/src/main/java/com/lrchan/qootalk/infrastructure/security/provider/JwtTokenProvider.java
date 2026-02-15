@@ -23,6 +23,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtTokenProvider {
+    
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String BEARER_PREFIX = "Bearer ";
 
     @Value("${jwt.secret}")
     private String salt;
@@ -44,11 +47,11 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String userPk, String role) {
-        Claims claims = Jwts.claims().subject(userPk).build();
-
         Date now = new Date();
         return Jwts.builder()
-            .claims(claims)
+            .subject(userPk)
+            .issuer("qootalk")
+            .claim("role", role)
             .issuedAt(now)
             .expiration(new Date(now.getTime() + expiration))
             .signWith(secretKey)
@@ -61,28 +64,20 @@ public class JwtTokenProvider {
     }
     
     public String getUserPk(String token) {
-        return Jwts.parser()
-            .verifyWith(secretKey)
-            .build()
-            .parseSignedClaims(token)
-            .getPayload()
-            .getSubject();
+        return parseClaims(token).getSubject();
     }
 
     public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(BEARER_PREFIX.length());
         }
         return null;
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token);
+            parseClaims(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             // 잘못된 JWT 서명일 때 (추후 로깅 처리)
@@ -94,5 +89,13 @@ public class JwtTokenProvider {
             // JWT 토큰이 잘못되었을 때
         }
         return false;
+    }
+
+    private Claims parseClaims(String token) {
+        return Jwts.parser()
+            .verifyWith(secretKey)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
     }
 }
