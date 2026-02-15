@@ -85,7 +85,7 @@ public class JwtTokenProvider {
                 .parseSignedClaims(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
-            // 잘못된 JWT 서명일 때
+            // 잘못된 JWT 서명일 때 (추후 로깅 처리)
         } catch (ExpiredJwtException e) {
             // 만료된 JWT 토큰일 때
         } catch (UnsupportedJwtException e) {
