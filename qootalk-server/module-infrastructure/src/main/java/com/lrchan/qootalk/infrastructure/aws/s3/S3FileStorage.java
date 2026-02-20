@@ -12,7 +12,7 @@ import com.lrchan.qootalk.application.user.port.out.UploadFilePort;
 import com.lrchan.qootalk.common.exception.InfrastructureException;
 import com.lrchan.qootalk.common.storage.port.FileStorage;
 import com.lrchan.qootalk.common.storage.vo.StorageResource;
-import com.lrchan.qootalk.infrastructure.persistence.common.error.S3ErrorCode;
+import com.lrchan.qootalk.infrastructure.common.error.S3ErrorCode;
 
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.core.sync.RequestBody;
