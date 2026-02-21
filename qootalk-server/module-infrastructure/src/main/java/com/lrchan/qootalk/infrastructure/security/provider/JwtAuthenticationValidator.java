@@ -22,7 +22,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component
-public class JwtTokenProvider {
+public class JwtAuthenticationValidator {
     
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
@@ -32,30 +32,15 @@ public class JwtTokenProvider {
 
     private SecretKey secretKey;
 
-    @Value("${jwt.expiration}")
-    private long expiration;
-
     private final UserDetailsService userDetailsService;
 
-    public JwtTokenProvider(UserDetailsService userDetailsService) {
+    public JwtAuthenticationValidator(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     @PostConstruct
     protected void init() {
         secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public String createToken(String userPk, String role) {
-        Date now = new Date();
-        return Jwts.builder()
-            .subject(userPk)
-            .issuer("qootalk")
-            .claim("role", role)
-            .issuedAt(now)
-            .expiration(new Date(now.getTime() + expiration))
-            .signWith(secretKey)
-            .compact();
     }
 
     public Authentication getAuthentication(String token) {

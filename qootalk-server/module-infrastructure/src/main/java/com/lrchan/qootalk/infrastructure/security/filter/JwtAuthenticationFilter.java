@@ -8,7 +8,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.lrchan.qootalk.common.error.GlobalErrorCode;
 import com.lrchan.qootalk.common.exception.InfrastructureException;
-import com.lrchan.qootalk.infrastructure.security.provider.JwtTokenProvider;
+import com.lrchan.qootalk.infrastructure.security.provider.JwtAuthenticationValidator;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,23 +17,22 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAuthenticationValidator jwtAuthenticationValidator;
 
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtAuthenticationFilter(JwtAuthenticationValidator jwtAuthenticationValidator) {
+        this.jwtAuthenticationValidator = jwtAuthenticationValidator;
     }
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = jwtTokenProvider.resolveToken(request);
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtAuthenticationValidator.resolveToken(request);
+
+        if (token == null || !jwtAuthenticationValidator.validateToken(token)) {
+            throw new InfrastructureException(GlobalErrorCode.UNAUTHORIZED);
         }
-        try {
-            filterChain.doFilter(request, response);
-        } catch (IOException | ServletException e) { // TODO: 추후 예외 처리
-            throw new InfrastructureException(GlobalErrorCode.INTERNAL_ERROR);
-        }
+        
+        Authentication authentication = jwtAuthenticationValidator.getAuthentication(token);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        filterChain.doFilter(request, response);
     }
 }

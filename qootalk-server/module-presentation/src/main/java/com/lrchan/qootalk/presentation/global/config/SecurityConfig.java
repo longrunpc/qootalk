@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.lrchan.qootalk.infrastructure.security.filter.JwtAuthenticationFilter;
-import com.lrchan.qootalk.infrastructure.security.provider.JwtTokenProvider;
+import com.lrchan.qootalk.infrastructure.security.provider.JwtAuthenticationValidator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,13 +27,13 @@ public class SecurityConfig {
     
     // TODO: 추후 인가 규칙, 필터 추가 필요
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtTokenProvider jwtTokenProvider) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationValidator jwtAuthenticationValidator) throws Exception {
         return http
             .csrf(csrf -> csrf.disable())
             .httpBasic(httpBasic -> httpBasic.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) 
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new JwtAuthenticationFilter(jwtAuthenticationValidator), UsernamePasswordAuthenticationFilter.class)
             .build();
     }
     
