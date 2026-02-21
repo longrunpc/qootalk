@@ -60,6 +60,7 @@ public abstract class IntegrationTestSupport {
 
         // --- JWT 설정 ---
         registry.add("jwt.secret", () -> "BZ8uxA8V9Iz//+hgMZ9j+TZBWNfytwMoJU3QkkcT/aQ=");
-        registry.add("jwt.expiration", () -> "86400000");
+        registry.add("jwt.access-expiration", () -> "86400000");
+        registry.add("jwt.refresh-expiration", () -> "604800000");
     }
 }

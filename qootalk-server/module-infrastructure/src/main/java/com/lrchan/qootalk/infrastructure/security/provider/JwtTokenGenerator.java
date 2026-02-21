@@ -2,6 +2,7 @@ package com.lrchan.qootalk.infrastructure.security.provider;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 
 import io.jsonwebtoken.Jwts;
 import com.lrchan.qootalk.application.user.port.out.TokenProvider;
@@ -18,8 +19,8 @@ public class JwtTokenGenerator implements TokenProvider {
     @Value("${jwt.secret}")
     private String salt;
 
-    @Value("${jwt.expiration}")
-    private long expiration;
+    @Value("${jwt.access-expiration}")
+    private long accessExpiration;
 
     @Value("${jwt.refresh-expiration}")
     private long refreshExpiration;
@@ -39,7 +40,7 @@ public class JwtTokenGenerator implements TokenProvider {
             .issuer("qootalk")
             .claim("role", role)
             .issuedAt(now)
-            .expiration(new Date(now.getTime() + expiration))
+            .expiration(new Date(now.getTime() + accessExpiration))
             .signWith(secretKey)
             .compact();
     }
@@ -49,6 +50,7 @@ public class JwtTokenGenerator implements TokenProvider {
         Date now = new Date();
         return Jwts.builder()
             .subject(userPk)
+            .id(UUID.randomUUID().toString())
             .issuer("qootalk")
             .issuedAt(now)
             .expiration(new Date(now.getTime() + refreshExpiration))

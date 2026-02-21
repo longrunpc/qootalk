@@ -35,8 +35,8 @@ public class LoginUserService implements LoginUserUseCase {
             throw new ApplicationException(UserApplicationErrorCode.LOGIN_FAILED);
         }
 
-        String accessToken = tokenProvider.createToken(user.id().toString(), user.role().name());
-        String refreshToken = tokenProvider.createRefreshToken(user.id().toString());
+        String accessToken = tokenProvider.createToken(String.valueOf(user.id()), user.role().name());
+        String refreshToken = tokenProvider.createRefreshToken(String.valueOf(user.id()));
 
         return LoginResult.of(UserQueryResult.of(user), new TokenResponse(accessToken, refreshToken));
     }
