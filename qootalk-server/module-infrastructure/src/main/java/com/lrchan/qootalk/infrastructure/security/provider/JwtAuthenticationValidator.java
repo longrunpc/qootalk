@@ -1,7 +1,6 @@
 package com.lrchan.qootalk.infrastructure.security.provider;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 
 import javax.crypto.SecretKey;
 
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -31,20 +29,24 @@ public class JwtAuthenticationValidator {
     private String salt;
 
     private SecretKey secretKey;
-
-    private final UserDetailsService userDetailsService;
-
-    public JwtAuthenticationValidator(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
+    
     @PostConstruct
     protected void init() {
         secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        Claims claims = parseClaims(token);
+
+        String email = claims.getSubject();
+        String role = claims.get("role", String.class);
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+            .username(email)
+            .password(null)
+            .authorities(role)
+            .build();
+
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
     
