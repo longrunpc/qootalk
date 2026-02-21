@@ -1,8 +1,8 @@
 package com.lrchan.qootalk.application.user.port.in;
 
 import com.lrchan.qootalk.application.user.dto.command.LoginUserCommand;
-import com.lrchan.qootalk.application.user.dto.result.UserQueryResult;
+import com.lrchan.qootalk.application.user.dto.result.LoginResult;
 
 public interface LoginUserUseCase {
-    UserQueryResult login(LoginUserCommand command);
+    LoginResult login(LoginUserCommand command);
 }
