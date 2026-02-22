@@ -36,8 +36,13 @@ public class RefreshTokenRedisAdapter implements RefreshTokenPort {
     public Optional<Token> findByUserPk(String userPk) {
         String key = REFRESH_TOKEN_PREFIX + userPk;
         String token = redisTemplate.opsForValue().get(key);
+
+        if (token == null) {
+            return Optional.empty();
+        }
+
         long expiresIn = redisTemplate.getExpire(key, TimeUnit.MILLISECONDS);
-        return Optional.ofNullable(new Token(token, Math.max(expiresIn, 0)));
+        return Optional.of(new Token(token, Math.max(expiresIn, 0)));
     }
 
     @Override
