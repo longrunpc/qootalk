@@ -7,9 +7,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 
+import com.lrchan.qootalk.common.exception.InfrastructureException;
 import com.lrchan.qootalk.infrastructure.security.provider.JwtAuthenticationValidator;
 
 import jakarta.servlet.FilterChain;
@@ -37,13 +41,21 @@ public class JwtAuthenticationFilterTest {
     private JwtAuthenticationValidator jwtAuthenticationValidator;
 
     @Mock
-    private MockHttpServletRequest request;
+    private FilterChain filterChain;
 
-    @Mock
+    private MockHttpServletRequest request;
     private MockHttpServletResponse response;
 
-    @Mock
-    private FilterChain filterChain;
+    @BeforeEach
+    public void setUp() {
+        request = new MockHttpServletRequest();
+        response = new MockHttpServletResponse();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        SecurityContextHolder.clearContext();
+    }
     
 
     @Test
@@ -67,5 +79,36 @@ public class JwtAuthenticationFilterTest {
         verify(jwtAuthenticationValidator, times(1)).resolveToken(request);
         verify(jwtAuthenticationValidator, times(1)).validateToken(token);
         verify(jwtAuthenticationValidator, times(1)).getAuthentication(token);
+    }
+
+    @Test
+    @DisplayName("유효하지 않은 토큰일 경우 InfrastructureException이 발생해야 한다")
+    public void should_ThrowInfrastructureException_When_InvalidToken() {
+        // given
+        String token = "invalidToken";
+
+        given(jwtAuthenticationValidator.resolveToken(request)).willReturn(token);
+        given(jwtAuthenticationValidator.validateToken(token)).willReturn(false);
+
+        // when & then
+        assertThatThrownBy(() -> jwtAuthenticationFilter.doFilterInternal(request, response, filterChain))
+            .isInstanceOf(InfrastructureException.class);
+            
+        assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
+    }
+
+    @Test
+    @DisplayName("토큰이 존재하지 않으면 InfrastructureException이 발생해야 한다")
+    public void should_ThrowInfrastructureException_When_TokenNotFound() {
+        // given
+        String token = null;
+
+        given(jwtAuthenticationValidator.resolveToken(request)).willReturn(token);
+
+        // when & then
+        assertThatThrownBy(() -> jwtAuthenticationFilter.doFilterInternal(request, response, filterChain))
+            .isInstanceOf(InfrastructureException.class);
+            
+        assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
     }
 }
