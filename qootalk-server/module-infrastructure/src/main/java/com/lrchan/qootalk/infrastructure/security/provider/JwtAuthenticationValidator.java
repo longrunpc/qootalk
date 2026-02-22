@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -43,7 +44,7 @@ public class JwtAuthenticationValidator {
 
         UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
             .username(email)
-            .password(null)
+            .password("")
             .authorities(role)
             .build();
 
@@ -72,7 +73,7 @@ public class JwtAuthenticationValidator {
             // 만료된 JWT 토큰일 때
         } catch (UnsupportedJwtException e) {
             // 지원되지 않는 JWT 토큰일 때
-        } catch (IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             // JWT 토큰이 잘못되었을 때
         }
         return false;
