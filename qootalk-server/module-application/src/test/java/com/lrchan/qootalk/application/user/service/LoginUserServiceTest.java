@@ -57,7 +57,7 @@ public class LoginUserServiceTest {
 
         given(loadUserPort.findByEmail(command.email().value())).willReturn(Optional.of(user));
         given(passwordEncoder.matches(command.password().encryptedPassword(), user.password().encryptedPassword())).willReturn(true);
-        given(tokenProvider.createToken(String.valueOf(user.id()), user.role().name())).willReturn("accessToken");
+        given(tokenProvider.createAccessToken(String.valueOf(user.id()), user.role().name())).willReturn("accessToken");
         given(tokenProvider.createRefreshToken(String.valueOf(user.id()))).willReturn("refreshToken");
         
         // when
@@ -72,7 +72,7 @@ public class LoginUserServiceTest {
 
         verify(loadUserPort, times(1)).findByEmail(command.email().value());
         verify(passwordEncoder, times(1)).matches(command.password().encryptedPassword(), user.password().encryptedPassword());
-        verify(tokenProvider, times(1)).createToken(String.valueOf(user.id()), user.role().name());
+        verify(tokenProvider, times(1)).createAccessToken(String.valueOf(user.id()), user.role().name());
         verify(tokenProvider, times(1)).createRefreshToken(String.valueOf(user.id()));
     }
 

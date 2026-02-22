@@ -33,7 +33,7 @@ public class JwtTokenGenerator implements TokenProvider {
     }
 
     @Override
-    public String createToken(String userPk, String role) {
+    public String createAccessToken(String userPk, String role) {
         Date now = new Date();
         return Jwts.builder()
             .subject(userPk)
