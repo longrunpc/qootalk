@@ -20,11 +20,13 @@ import com.lrchan.qootalk.application.user.dto.command.LoginUserCommand;
 import com.lrchan.qootalk.application.user.dto.result.LoginResult;
 import com.lrchan.qootalk.application.user.error.UserApplicationErrorCode;
 import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
+import com.lrchan.qootalk.application.user.port.out.RefreshTokenPort;
 import com.lrchan.qootalk.application.user.port.out.TokenProvider;
 import com.lrchan.qootalk.common.exception.ApplicationException;
 import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.vo.Email;
 import com.lrchan.qootalk.domain.user.vo.Password;
+import com.lrchan.qootalk.domain.user.vo.Token;
 import com.lrchan.qootalk.domain.user.vo.UserName;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,6 +42,9 @@ public class LoginUserServiceTest {
 
     @Mock
     private TokenProvider tokenProvider;
+
+    @Mock
+    private RefreshTokenPort refreshTokenPort;
 
     @InjectMocks
     private LoginUserService loginUserService;
@@ -57,8 +62,8 @@ public class LoginUserServiceTest {
 
         given(loadUserPort.findByEmail(command.email().value())).willReturn(Optional.of(user));
         given(passwordEncoder.matches(command.password().encryptedPassword(), user.password().encryptedPassword())).willReturn(true);
-        given(tokenProvider.createAccessToken(String.valueOf(user.id()), user.role().name())).willReturn("accessToken");
-        given(tokenProvider.createRefreshToken(String.valueOf(user.id()))).willReturn("refreshToken");
+        given(tokenProvider.createAccessToken(String.valueOf(user.id()), user.role().name())).willReturn(new Token("accessToken", 1000 * 60));
+        given(tokenProvider.createRefreshToken(String.valueOf(user.id()))).willReturn(new Token("refreshToken", 1000 * 60 * 60 * 24));
         
         // when
         LoginResult result = loginUserService.login(command);
@@ -67,8 +72,8 @@ public class LoginUserServiceTest {
         assertThat(result).isNotNull();
         assertThat(result.user().email()).isEqualTo(command.email().value());
         assertThat(result.user().name()).isEqualTo(user.name().value());
-        assertThat(result.token().accessToken()).isEqualTo("accessToken");
-        assertThat(result.token().refreshToken()).isEqualTo("refreshToken");
+        assertThat(result.token().accessToken().token()).isEqualTo("accessToken");
+        assertThat(result.token().refreshToken().token()).isEqualTo("refreshToken");
 
         verify(loadUserPort, times(1)).findByEmail(command.email().value());
         verify(passwordEncoder, times(1)).matches(command.password().encryptedPassword(), user.password().encryptedPassword());

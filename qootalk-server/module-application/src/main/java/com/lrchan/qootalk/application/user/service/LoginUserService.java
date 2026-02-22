@@ -15,6 +15,7 @@ import com.lrchan.qootalk.application.user.port.out.RefreshTokenPort;
 import com.lrchan.qootalk.application.user.port.out.TokenProvider;
 import com.lrchan.qootalk.common.exception.ApplicationException;
 import com.lrchan.qootalk.domain.user.User;
+import com.lrchan.qootalk.domain.user.vo.Token;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,8 +38,8 @@ public class LoginUserService implements LoginUserUseCase {
             throw new ApplicationException(UserApplicationErrorCode.LOGIN_FAILED);
         }
 
-        String accessToken = tokenProvider.createAccessToken(String.valueOf(user.id()), user.role().name());
-        String refreshToken = tokenProvider.createRefreshToken(String.valueOf(user.id()));
+        Token accessToken = tokenProvider.createAccessToken(String.valueOf(user.id()), user.role().name());
+        Token refreshToken = tokenProvider.createRefreshToken(String.valueOf(user.id()));
 
         refreshTokenPort.save(String.valueOf(user.id()), refreshToken);
 

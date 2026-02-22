@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import io.jsonwebtoken.Jwts;
 import com.lrchan.qootalk.application.user.port.out.TokenProvider;
+import com.lrchan.qootalk.domain.user.vo.Token;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -33,9 +35,9 @@ public class JwtTokenGenerator implements TokenProvider {
     }
 
     @Override
-    public String createAccessToken(String userPk, String role) {
+    public Token createAccessToken(String userPk, String role) {
         Date now = new Date();
-        return Jwts.builder()
+        String token = Jwts.builder()
             .subject(userPk)
             .issuer("qootalk")
             .claim("role", role)
@@ -43,12 +45,14 @@ public class JwtTokenGenerator implements TokenProvider {
             .expiration(new Date(now.getTime() + accessExpiration))
             .signWith(secretKey)
             .compact();
+            
+        return new Token(token, accessExpiration);
     }
 
     @Override
-    public String createRefreshToken(String userPk) {
+    public Token createRefreshToken(String userPk) {
         Date now = new Date();
-        return Jwts.builder()
+        String token = Jwts.builder()
             .subject(userPk)
             .id(UUID.randomUUID().toString())
             .issuer("qootalk")
@@ -56,5 +60,7 @@ public class JwtTokenGenerator implements TokenProvider {
             .expiration(new Date(now.getTime() + refreshExpiration))
             .signWith(secretKey)
             .compact();
+
+        return new Token(token, refreshExpiration);
     }
 }
