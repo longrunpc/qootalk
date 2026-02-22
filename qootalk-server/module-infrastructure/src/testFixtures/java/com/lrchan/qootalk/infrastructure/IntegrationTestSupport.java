@@ -57,5 +57,11 @@ public abstract class IntegrationTestSupport {
         // --- Redis (Testcontainers) 설정 ---
         registry.add("spring.data.redis.host", redis::getHost);
         registry.add("spring.data.redis.port", redis::getFirstMappedPort);
+
+        // --- JWT 설정 ---
+        // 이 값은 테스트 코드에서 사용되는 임시 값이므로, 실제 개발 환경에서는 사용하지 않습니다.
+        registry.add("jwt.secret", () -> "BZ8uxA8V9Iz//+hgMZ9j+TZBWNfytwMoJU3QkkcT/aQ=");
+        registry.add("jwt.access-expiration", () -> "86400000");
+        registry.add("jwt.refresh-expiration", () -> "604800000");
     }
 }

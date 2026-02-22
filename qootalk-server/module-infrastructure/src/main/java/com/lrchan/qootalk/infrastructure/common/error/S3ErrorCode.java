@@ -1,4 +1,4 @@
-package com.lrchan.qootalk.infrastructure.persistence.common.error;
+package com.lrchan.qootalk.infrastructure.common.error;
 
 import com.lrchan.qootalk.common.error.ErrorCode;
 

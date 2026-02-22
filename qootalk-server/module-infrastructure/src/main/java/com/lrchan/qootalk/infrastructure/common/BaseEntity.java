@@ -1,4 +1,4 @@
-package com.lrchan.qootalk.infrastructure.persistence.common;
+package com.lrchan.qootalk.infrastructure.common;
 
 import java.time.LocalDateTime;
 

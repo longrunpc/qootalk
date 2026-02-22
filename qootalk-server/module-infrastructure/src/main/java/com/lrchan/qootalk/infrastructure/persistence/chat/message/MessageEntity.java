@@ -9,7 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import com.lrchan.qootalk.domain.chat.message.MessageType;
-import com.lrchan.qootalk.infrastructure.persistence.common.BaseEntity;
+import com.lrchan.qootalk.infrastructure.common.BaseEntity;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;

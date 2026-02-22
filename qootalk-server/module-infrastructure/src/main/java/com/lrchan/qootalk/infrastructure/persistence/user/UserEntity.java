@@ -4,7 +4,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import com.lrchan.qootalk.domain.user.UserRole;
-import com.lrchan.qootalk.infrastructure.persistence.common.BaseEntity;
+import com.lrchan.qootalk.infrastructure.common.BaseEntity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
