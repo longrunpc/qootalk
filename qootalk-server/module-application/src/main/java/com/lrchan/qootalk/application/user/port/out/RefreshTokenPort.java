@@ -7,5 +7,5 @@ import com.lrchan.qootalk.domain.user.vo.Token;
 public interface RefreshTokenPort {
     void save(String userPk, Token refreshToken);
     Optional<Token> findByUserPk(String userPk);
-    void deleteByUserPk(String userPk);
+    void deleteByUsersPk(String userPk);
 }
