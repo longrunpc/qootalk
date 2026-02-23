@@ -25,13 +25,15 @@ public class JwtTokenGeneratorTest {
     private JwtTokenGenerator jwtTokenGenerator;
     
     private final String testSalt = "testSecretKeyForJwtAuthenticationValidator1234567890";
+    private final long testAccessExpiration = 1000 * 60;
+    private final long testRefreshExpiration = 1000 * 60 * 60 * 24;
 
     @BeforeEach
     void setUp() {
         jwtTokenGenerator = new JwtTokenGenerator();
         ReflectionTestUtils.setField(jwtTokenGenerator, "salt", testSalt);
-        ReflectionTestUtils.setField(jwtTokenGenerator, "accessExpiration", 1000 * 60);
-        ReflectionTestUtils.setField(jwtTokenGenerator, "refreshExpiration", 1000 * 60 * 60 * 24);
+        ReflectionTestUtils.setField(jwtTokenGenerator, "accessExpiration", testAccessExpiration);
+        ReflectionTestUtils.setField(jwtTokenGenerator, "refreshExpiration", testRefreshExpiration);
         jwtTokenGenerator.init();
     }
 
