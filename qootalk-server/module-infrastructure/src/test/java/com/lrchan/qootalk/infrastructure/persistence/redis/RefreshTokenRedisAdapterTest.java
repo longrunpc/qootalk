@@ -3,6 +3,8 @@ package com.lrchan.qootalk.infrastructure.persistence.redis;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +21,7 @@ public class RefreshTokenRedisAdapterTest extends IntegrationTestSupport {
 
     @AfterEach
     void cleanUp() {
-        refreshTokenRedisAdapter.deleteByUsersPk("test@example.com");
+        refreshTokenRedisAdapter.deleteByUserPk("test@example.com");
     }
 
     @Test
@@ -33,9 +35,10 @@ public class RefreshTokenRedisAdapterTest extends IntegrationTestSupport {
         refreshTokenRedisAdapter.save(userPk, refreshToken);
 
         // then
-        assertThat(refreshTokenRedisAdapter.findByUserPk(userPk)).isPresent();
-        assertThat(refreshTokenRedisAdapter.findByUserPk(userPk).get().token()).isEqualTo(refreshToken.token());
-        assertThat(refreshTokenRedisAdapter.findByUserPk(userPk).get().expiresIn()).isCloseTo(refreshToken.expiresIn(), within(1000L));
+        Optional<Token> foundToken = refreshTokenRedisAdapter.findByUserPk(userPk);
+        assertThat(foundToken).isPresent();
+        assertThat(foundToken.get().token()).isEqualTo(refreshToken.token());
+        assertThat(foundToken.get().expiresIn()).isCloseTo(refreshToken.expiresIn(), within(1000L));
     }
 
     @Test
@@ -47,7 +50,7 @@ public class RefreshTokenRedisAdapterTest extends IntegrationTestSupport {
         refreshTokenRedisAdapter.save(userPk, refreshToken);
 
         // when
-        refreshTokenRedisAdapter.deleteByUsersPk(userPk);
+        refreshTokenRedisAdapter.deleteByUserPk(userPk);
 
         // then
         assertThat(refreshTokenRedisAdapter.findByUserPk(userPk)).isNotPresent();

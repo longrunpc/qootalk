@@ -46,7 +46,7 @@ public class RefreshTokenRedisAdapter implements RefreshTokenPort {
     }
 
     @Override
-    public void deleteByUsersPk(String userPk) {
+    public void deleteByUserPk(String userPk) {
         String key = REFRESH_TOKEN_PREFIX + userPk;
         redisTemplate.delete(key);
     }
