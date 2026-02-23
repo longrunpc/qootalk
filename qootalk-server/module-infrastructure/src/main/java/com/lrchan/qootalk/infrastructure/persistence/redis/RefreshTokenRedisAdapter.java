@@ -25,7 +25,7 @@ public class RefreshTokenRedisAdapter implements RefreshTokenPort {
         String key = REFRESH_TOKEN_PREFIX + userPk;
 
         redisTemplate.opsForValue().set(
-            Objects.requireNonNull(key), 
+            key, 
             Objects.requireNonNull(refreshToken.token()),
             refreshToken.expiresIn(),
             TimeUnit.MILLISECONDS
@@ -42,7 +42,7 @@ public class RefreshTokenRedisAdapter implements RefreshTokenPort {
         }
 
         long expiresIn = redisTemplate.getExpire(key, TimeUnit.MILLISECONDS);
-        return Optional.of(new Token(token, Math.max(expiresIn, 0)));
+        return Optional.of(new Token(token, expiresIn));
     }
 
     @Override

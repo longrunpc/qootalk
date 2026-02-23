@@ -13,10 +13,10 @@ public record Token(
         return Duration.ofMillis(expiresIn);
     }
     public Token {
-        if(token == null || token.isBlank()) {
+        if (token == null || token.isBlank()) {
             throw new DomainException(UserErrorCode.USER_INVALID_ISSUED_TOKEN);
         }
-        if(expiresIn <= 0) {
+        if (expiresIn <= 0) {
             throw new DomainException(UserErrorCode.USER_INVALID_EXPIRED_TOKEN);
         }
     }
