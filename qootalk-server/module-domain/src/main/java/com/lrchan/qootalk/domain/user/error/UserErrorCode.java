@@ -11,7 +11,9 @@ public enum UserErrorCode implements ErrorCode {
     USER_INVALID_PROFILE_IMAGE_URL("USER_006", "프로필 이미지 URL 형식이 올바르지 않습니다."),
     USER_INVALID_STATUS_MESSAGE("USER_007", "상태 메시지 형식이 올바르지 않습니다."),
     USER_INVALID_ROLE("USER_008", "역할 형식이 올바르지 않습니다."),
-    USER_DELETED("USER_009", "삭제된 사용자입니다.");
+    USER_DELETED("USER_009", "삭제된 사용자입니다."),
+    USER_INVALID_ISSUED_TOKEN("USER_010", "발급된 토큰이 올바르지 않습니다."),
+    USER_INVALID_EXPIRED_TOKEN("USER_011", "만료된 토큰입니다.");
 
     private final String code;
     private final String message;

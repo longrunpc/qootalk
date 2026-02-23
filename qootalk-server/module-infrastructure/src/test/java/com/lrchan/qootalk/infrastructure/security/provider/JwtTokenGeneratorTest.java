@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import com.lrchan.qootalk.domain.user.vo.Token;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -41,12 +43,12 @@ public class JwtTokenGeneratorTest {
         String role = "ROLE_USER";
 
         // when
-        String accessToken = jwtTokenGenerator.createAccessToken(userPk, role);
+        Token accessToken = jwtTokenGenerator.createAccessToken(userPk, role);
 
         // then
         assertThat(accessToken).isNotNull();
         SecretKey secretKey = Keys.hmacShaKeyFor(testSalt.getBytes(StandardCharsets.UTF_8));
-        Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(accessToken).getPayload();
+        Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(accessToken.token()).getPayload();
         assertThat(claims.getSubject()).isEqualTo(userPk);
         assertThat(claims.get("role")).isEqualTo(role);
         assertThat(claims.getIssuedAt()).isBefore(new Date());
@@ -60,12 +62,12 @@ public class JwtTokenGeneratorTest {
         String userPk = "test@example.com";
 
         // when
-        String refreshToken = jwtTokenGenerator.createRefreshToken(userPk);
+        Token refreshToken = jwtTokenGenerator.createRefreshToken(userPk);
 
         // then
         assertThat(refreshToken).isNotNull();
         SecretKey secretKey = Keys.hmacShaKeyFor(testSalt.getBytes(StandardCharsets.UTF_8));
-        Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(refreshToken).getPayload();
+        Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(refreshToken.token()).getPayload();
         assertThat(claims.getSubject()).isEqualTo(userPk);
         assertThat(claims.getId()).isNotNull();
         assertThat(claims.getIssuedAt()).isBefore(new Date());

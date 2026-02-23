@@ -1,4 +1,4 @@
-package com.lrchan.qootalk.infrastructure.redis;
+package com.lrchan.qootalk.infrastructure.persistence.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
