@@ -16,5 +16,8 @@ public record Token(
         if(token == null || token.isBlank()) {
             throw new DomainException(UserErrorCode.USER_INVALID_ISSUED_TOKEN);
         }
+        if(expiresIn <= 0) {
+            throw new DomainException(UserErrorCode.USER_INVALID_EXPIRED_TOKEN);
+        }
     }
 }
