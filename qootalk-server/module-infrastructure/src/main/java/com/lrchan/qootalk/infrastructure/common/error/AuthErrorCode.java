@@ -2,16 +2,19 @@ package com.lrchan.qootalk.infrastructure.common.error;
 
 import com.lrchan.qootalk.common.error.ErrorCode;
 
-public enum S3ErrorCode implements ErrorCode {
+public enum AuthErrorCode implements ErrorCode {
     
-    S3_FILE_UPLOAD_FAILED("S3_001", "S3 파일 업로드 실패하였습니다.", 500),
-    S3_FILE_DELETE_FAILED("S3_002", "S3 파일 삭제 실패하였습니다.", 500);
+    INVALID_JWT_SIGNATURE("AUTH_001", "잘못된 JWT 서명입니다.", 401),
+    INVALID_JWT_EXPIRED("AUTH_002", "만료된 JWT 토큰입니다.", 401),
+    INVALID_JWT_UNSUPPORTED("AUTH_003", "지원되지 않는 JWT 토큰입니다.", 401),
+    INVALID_JWT_ILLEGAL_ARGUMENT("AUTH_004", "잘못된 JWT 토큰입니다.", 401),
+    INVALID_JWT_MALFORMED("AUTH_005", "잘못된 JWT 형식입니다.", 401);
 
     private final String code;
     private final String message;
     private final int httpStatus;
 
-    S3ErrorCode(String code, String message, int httpStatus) {
+    AuthErrorCode(String code, String message, int httpStatus) {
         this.code = code;
         this.message = message;
         this.httpStatus = httpStatus;

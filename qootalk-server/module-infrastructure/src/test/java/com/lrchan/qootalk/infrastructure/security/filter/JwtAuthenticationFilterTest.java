@@ -66,7 +66,6 @@ public class JwtAuthenticationFilterTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken("user@test.com", "", null);
 
         given(jwtAuthenticationValidator.resolveToken(request)).willReturn(token);
-        given(jwtAuthenticationValidator.validateToken(token)).willReturn(true);
         given(jwtAuthenticationValidator.getAuthentication(token)).willReturn(authentication);
 
         // when
@@ -79,36 +78,5 @@ public class JwtAuthenticationFilterTest {
         verify(jwtAuthenticationValidator, times(1)).resolveToken(request);
         verify(jwtAuthenticationValidator, times(1)).validateToken(token);
         verify(jwtAuthenticationValidator, times(1)).getAuthentication(token);
-    }
-
-    @Test
-    @DisplayName("유효하지 않은 토큰일 경우 InfrastructureException이 발생해야 한다")
-    public void should_ThrowInfrastructureException_When_InvalidToken() {
-        // given
-        String token = "invalidToken";
-
-        given(jwtAuthenticationValidator.resolveToken(request)).willReturn(token);
-        given(jwtAuthenticationValidator.validateToken(token)).willReturn(false);
-
-        // when & then
-        assertThatThrownBy(() -> jwtAuthenticationFilter.doFilterInternal(request, response, filterChain))
-            .isInstanceOf(InfrastructureException.class);
-            
-        assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
-    }
-
-    @Test
-    @DisplayName("토큰이 존재하지 않으면 InfrastructureException이 발생해야 한다")
-    public void should_ThrowInfrastructureException_When_TokenNotFound() {
-        // given
-        String token = null;
-
-        given(jwtAuthenticationValidator.resolveToken(request)).willReturn(token);
-
-        // when & then
-        assertThatThrownBy(() -> jwtAuthenticationFilter.doFilterInternal(request, response, filterChain))
-            .isInstanceOf(InfrastructureException.class);
-            
-        assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
     }
 }

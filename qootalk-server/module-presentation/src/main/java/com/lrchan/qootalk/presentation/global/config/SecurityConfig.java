@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.lrchan.qootalk.infrastructure.security.filter.JwtAuthenticationFilter;
+import com.lrchan.qootalk.infrastructure.security.filter.JwtExceptionFilter;
 import com.lrchan.qootalk.infrastructure.security.provider.JwtAuthenticationValidator;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) 
             .addFilterBefore(new JwtAuthenticationFilter(jwtAuthenticationValidator), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
             .build();
     }
-    
 }

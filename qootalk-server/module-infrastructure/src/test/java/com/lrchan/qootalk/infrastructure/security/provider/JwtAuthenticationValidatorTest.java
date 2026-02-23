@@ -10,11 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import com.lrchan.qootalk.common.exception.InfrastructureException;
+import com.lrchan.qootalk.infrastructure.common.error.AuthErrorCode;
+
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,6 +27,7 @@ class JwtAuthenticationValidatorTest {
 
     private JwtAuthenticationValidator validator;
     private final String testSalt = "testSecretKeyForJwtAuthenticationValidator1234567890";
+    private final long testAccessExpiration = 1000 * 60;
     private SecretKey testKey;
 
     @BeforeEach
@@ -50,35 +55,58 @@ class JwtAuthenticationValidatorTest {
     class ValidateToken {
 
         @Test
-        @DisplayName("올바른 서명과 유효 기간 내의 토큰은 true를 반환한다")
+        @DisplayName("올바른 서명과 유효 기간 내의 토큰은 유효성 검증에 성공한다")
         void success() {
-            String token = createRawToken("user@test.com", "ROLE_USER", 1000 * 60);
-            boolean isValid = validator.validateToken(token);
-            assertThat(isValid).isTrue();
+            String token = createRawToken("user@test.com", "ROLE_USER", testAccessExpiration);
+            validator.validateToken(token);
         }
 
         @Test
-        @DisplayName("만료된 토큰은 false를 반환한다")
-        void expired() {
-            String token = createRawToken("user@test.com", "ROLE_USER", -1000); // 과거 시점
-            boolean isValid = validator.validateToken(token);
-            assertThat(isValid).isFalse();
-        }
-
-        @Test
-        @DisplayName("잘못된 서명(다른 키로 생성)된 토큰은 false를 반환한다")
+        @DisplayName("잘못된 서명(다른 키로 생성)된 토큰은 InfrastructureException이 발생한다")
         void invalidSignature() {
             SecretKey wrongKey = Keys.hmacShaKeyFor("wrongSecretKey123456789012345678901234567890".getBytes());
             String token = Jwts.builder().subject("test").signWith(wrongKey).compact();
             
-            boolean isValid = validator.validateToken(token);
-            assertThat(isValid).isFalse();
+            assertThatThrownBy(() -> validator.validateToken(token))
+                .isInstanceOf(InfrastructureException.class)
+                .hasMessage(AuthErrorCode.INVALID_JWT_SIGNATURE.getMessage());
         }
 
         @Test
-        @DisplayName("형식이 잘못된 문자열은 false를 반환한다")
+        @DisplayName("형식이 잘못된 문자열은 InfrastructureException이 발생한다")
         void malformed() {
-            assertThat(validator.validateToken("not.a.jwt.token")).isFalse();
+            assertThatThrownBy(() -> validator.validateToken("not.a.jwt.token"))
+                .isInstanceOf(InfrastructureException.class)
+                .hasMessage(AuthErrorCode.INVALID_JWT_MALFORMED.getMessage());
+        }
+
+        @Test
+        @DisplayName("만료된 토큰은 InfrastructureException이 발생한다")
+        void expired() {
+            String token = createRawToken("user@test.com", "ROLE_USER", -1000); // 과거 시점
+            assertThatThrownBy(() -> validator.validateToken(token))
+                .isInstanceOf(InfrastructureException.class)
+                .hasMessage(AuthErrorCode.INVALID_JWT_EXPIRED.getMessage());
+        }
+
+        @Test
+        @DisplayName("지원되지 않는 토큰은 InfrastructureException이 발생한다")
+        void unsupported() {
+            String token = Jwts.builder().subject("test").compact();
+            assertThatThrownBy(() -> validator.validateToken(token))
+                .isInstanceOf(InfrastructureException.class)
+                .hasMessage(AuthErrorCode.INVALID_JWT_UNSUPPORTED.getMessage());
+        }
+
+        @Test
+        @DisplayName("JWT 토큰이 null 또는 빈 문자열일 경우 InfrastructureException이 발생한다")
+        void illegalArgument() {
+            assertThatThrownBy(() -> validator.validateToken(null))
+                .isInstanceOf(InfrastructureException.class)
+                .hasMessage(AuthErrorCode.INVALID_JWT_ILLEGAL_ARGUMENT.getMessage());
+            assertThatThrownBy(() -> validator.validateToken(""))
+                .isInstanceOf(InfrastructureException.class)
+                .hasMessage(AuthErrorCode.INVALID_JWT_ILLEGAL_ARGUMENT.getMessage());
         }
     }
 

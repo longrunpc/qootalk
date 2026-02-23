@@ -27,9 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtAuthenticationValidator.resolveToken(request);
 
-        if (token == null || !jwtAuthenticationValidator.validateToken(token)) {
-            throw new InfrastructureException(GlobalErrorCode.UNAUTHORIZED);
-        }
+        jwtAuthenticationValidator.validateToken(token);
         
         Authentication authentication = jwtAuthenticationValidator.getAuthentication(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
