@@ -67,10 +67,9 @@ public class JwtAuthenticationValidator {
         return null;
     }
 
-    public boolean validateToken(String token) {
+    public void validateToken(String token) {
         try {
             parseClaims(token);
-            return true;
         } catch (SignatureException e) {
             // 잘못된 JWT 서명일 때
             throw new InfrastructureException(AuthErrorCode.INVALID_JWT_SIGNATURE);

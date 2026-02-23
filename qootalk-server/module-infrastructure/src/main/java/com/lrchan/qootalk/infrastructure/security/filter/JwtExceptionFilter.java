@@ -28,9 +28,9 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
     private void setErrorResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(errorCode.getHttpStatus());
 
-        String responseBody = String.format("{\"code\":\"%s\",\"message\":\"%s\"}", errorCode.getCode(), errorCode.getMessage());
+        String responseBody = String.format("{\"code\":\"%s\",\"message\":\"%s\",\"httpStatus\":\"%d\"}", errorCode.getCode(), errorCode.getMessage(), errorCode.getHttpStatus());
         response.getWriter().write(responseBody);
     }
 }

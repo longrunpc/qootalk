@@ -55,11 +55,10 @@ class JwtAuthenticationValidatorTest {
     class ValidateToken {
 
         @Test
-        @DisplayName("올바른 서명과 유효 기간 내의 토큰은 true를 반환한다")
+        @DisplayName("올바른 서명과 유효 기간 내의 토큰은 유효성 검증에 성공한다")
         void success() {
             String token = createRawToken("user@test.com", "ROLE_USER", testAccessExpiration);
-            boolean isValid = validator.validateToken(token);
-            assertThat(isValid).isTrue();
+            validator.validateToken(token);
         }
 
         @Test
@@ -100,8 +99,11 @@ class JwtAuthenticationValidatorTest {
         }
 
         @Test
-        @DisplayName("JWT 토큰이 null일 경우 InfrastructureException이 발생한다")
+        @DisplayName("JWT 토큰이 null 또는 빈 문자열일 경우 InfrastructureException이 발생한다")
         void illegalArgument() {
+            assertThatThrownBy(() -> validator.validateToken(null))
+                .isInstanceOf(InfrastructureException.class)
+                .hasMessage(AuthErrorCode.INVALID_JWT_ILLEGAL_ARGUMENT.getMessage());
             assertThatThrownBy(() -> validator.validateToken(""))
                 .isInstanceOf(InfrastructureException.class)
                 .hasMessage(AuthErrorCode.INVALID_JWT_ILLEGAL_ARGUMENT.getMessage());
