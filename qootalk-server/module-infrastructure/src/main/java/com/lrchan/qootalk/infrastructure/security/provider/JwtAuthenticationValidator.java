@@ -10,6 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.lrchan.qootalk.common.error.GlobalErrorCode;
+import com.lrchan.qootalk.common.exception.InfrastructureException;
+import com.lrchan.qootalk.infrastructure.common.error.AuthErrorCode;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -69,14 +73,17 @@ public class JwtAuthenticationValidator {
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             // 잘못된 JWT 서명일 때 (추후 로깅 처리)
+            throw new InfrastructureException(AuthErrorCode.INVALID_JWT_SIGNATURE);
         } catch (ExpiredJwtException e) {
             // 만료된 JWT 토큰일 때
+            throw new InfrastructureException(AuthErrorCode.INVALID_JWT_EXPIRED);
         } catch (UnsupportedJwtException e) {
             // 지원되지 않는 JWT 토큰일 때
+            throw new InfrastructureException(AuthErrorCode.INVALID_JWT_UNSUPPORTED);
         } catch (JwtException | IllegalArgumentException e) {
             // JWT 토큰이 잘못되었을 때
+            throw new InfrastructureException(AuthErrorCode.INVALID_JWT_ILLEGAL_ARGUMENT);
         }
-        return false;
     }
 
     private Claims parseClaims(String token) {
