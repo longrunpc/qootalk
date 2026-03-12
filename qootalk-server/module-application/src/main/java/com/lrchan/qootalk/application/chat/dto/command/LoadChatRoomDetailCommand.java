@@ -1,8 +1,7 @@
 package com.lrchan.qootalk.application.chat.dto.command;
 
-public record ReadChatRoomsCommand(
+public record LoadChatRoomDetailCommand(
     Long userId,
-    int page,
-    int size
+    Long roomId
 ) {
 }

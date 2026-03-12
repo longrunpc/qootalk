@@ -9,11 +9,14 @@ import com.lrchan.qootalk.application.chat.port.in.CreateChatRoomUsecase;
 import com.lrchan.qootalk.application.chat.port.out.SaveChatRoomPort;
 import com.lrchan.qootalk.application.chat.port.out.SaveMessagePort;
 import com.lrchan.qootalk.application.chat.port.out.SaveRoomParticipantPort;
+import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
+import com.lrchan.qootalk.common.exception.DomainException;
 import com.lrchan.qootalk.domain.chat.message.Message;
 import com.lrchan.qootalk.domain.chat.message.MessageType;
 import com.lrchan.qootalk.domain.chat.participant.RoomParticipant;
 import com.lrchan.qootalk.domain.chat.participant.RoomRole;
 import com.lrchan.qootalk.domain.chat.room.ChatRoom;
+import com.lrchan.qootalk.domain.user.error.UserErrorCode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,12 +25,16 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class CreateChatRoomService implements CreateChatRoomUsecase {
     
+    private final LoadUserPort loadUserPort;
     private final SaveChatRoomPort saveChatRoomPort;
     private final SaveRoomParticipantPort saveRoomParticipantPort;
     private final SaveMessagePort saveMessagePort;
     
     @Override
     public CreateChatRoomQueryResult create(CreateChatRoomCommand command) {
+        // 유저 검증
+        loadUserPort.findById(command.requesterId())
+            .orElseThrow(() -> new DomainException(UserErrorCode.USER_NOT_FOUND));
         // 채팅방 생성
         ChatRoom chatRoom = ChatRoom.create(command.roomName(), command.roomType(), command.requesterId());
         ChatRoom savedChatRoom = saveChatRoomPort.save(chatRoom);
