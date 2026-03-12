@@ -49,4 +49,9 @@ public class ChatRoom extends BaseModel {
         this.createdBy = createdBy;
         update();
     }
+
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
+        update();
+    }
 }

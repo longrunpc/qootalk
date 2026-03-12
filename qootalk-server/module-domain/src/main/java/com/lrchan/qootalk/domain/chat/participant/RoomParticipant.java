@@ -80,4 +80,9 @@ public class RoomParticipant extends BaseModel {
         this.lastReadMessageId = messageId;
         update();
     }
+
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
+        update();
+    }
 }
