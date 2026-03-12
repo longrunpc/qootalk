@@ -69,7 +69,7 @@ public class DeleteChatRoomService implements DeleteChatRoomUsecase {
         // 채팅방 참여자 삭제
         List<RoomParticipant> roomParticipants = loadRoomParticipantPort.findActiveByRoomId(command.roomId());
         for (RoomParticipant participant : roomParticipants) {
-            roomParticipant.delete();
+            participant.delete();
             saveRoomParticipantPort.save(participant);
         }
 
