@@ -7,13 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import com.lrchan.qootalk.application.chat.port.out.ReadChatRoomPort;
+import com.lrchan.qootalk.application.chat.port.out.LoadChatRoomPort;
 import com.lrchan.qootalk.application.chat.port.out.SaveChatRoomPort;
 import com.lrchan.qootalk.domain.chat.room.ChatRoom;
 import com.lrchan.qootalk.domain.chat.room.ChatRoomRepository;
 
 @Component
-public class ChatRoomRepositoryAdapter implements ChatRoomRepository, SaveChatRoomPort, ReadChatRoomPort {
+public class ChatRoomRepositoryAdapter implements ChatRoomRepository, SaveChatRoomPort, LoadChatRoomPort {
     
     private final ChatRoomJpaRepository chatRoomJpaRepository;
     
@@ -41,11 +41,5 @@ public class ChatRoomRepositoryAdapter implements ChatRoomRepository, SaveChatRo
         ChatRoomEntity chatRoomEntity = ChatRoomEntityMapper.toEntity(chatRoom);
         ChatRoomEntity savedEntity = chatRoomJpaRepository.save(chatRoomEntity);
         return ChatRoomEntityMapper.toDomain(savedEntity);
-    }
-
-    @Override
-    public List<ChatRoom> findAllByUserId(Long userId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return chatRoomJpaRepository.findAllByUserId(userId, pageable).stream().map(ChatRoomEntityMapper::toDomain).toList();
     }
 }

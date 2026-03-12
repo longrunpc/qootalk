@@ -13,23 +13,34 @@ public class RoomParticipant extends BaseModel {
     private Long roomId;
     private Long lastReadMessageId;
     private RoomRole role;
+    private boolean notificationEnabled;
 
-    private RoomParticipant(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role, LocalDateTime createdAt,
-            LocalDateTime updatedAt, LocalDateTime deletedAt) {
+    private RoomParticipant(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role,
+            boolean notificationEnabled, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         this.userId = Objects.requireNonNull(userId);
         this.roomId = Objects.requireNonNull(roomId);
         this.lastReadMessageId = Objects.requireNonNull(lastReadMessageId);
         this.role = role == null ? RoomRole.MEMBER : role;
+        this.notificationEnabled = notificationEnabled;
     }
 
     public static RoomParticipant create(Long userId, Long roomId, Long lastReadMessageId, RoomRole role) {
-        return new RoomParticipant(null, userId, roomId, lastReadMessageId, role, LocalDateTime.now(), LocalDateTime.now(), null);
+        return create(userId, roomId, lastReadMessageId, role, true);
+    }
+
+    public static RoomParticipant create(Long userId, Long roomId, Long lastReadMessageId, RoomRole role, boolean notificationEnabled) {
+        return new RoomParticipant(null, userId, roomId, lastReadMessageId, role, notificationEnabled, LocalDateTime.now(), LocalDateTime.now(), null);
     }
 
     // DB 복구 전용 메서드
     public static RoomParticipant reconstruct(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
-        return new RoomParticipant(id, userId, roomId, lastReadMessageId, role, createdAt, updatedAt, deletedAt);
+        return reconstruct(id, userId, roomId, lastReadMessageId, role, true, createdAt, updatedAt, deletedAt);
+    }
+
+    public static RoomParticipant reconstruct(Long id, Long userId, Long roomId, Long lastReadMessageId, RoomRole role,
+            boolean notificationEnabled, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        return new RoomParticipant(id, userId, roomId, lastReadMessageId, role, notificationEnabled, createdAt, updatedAt, deletedAt);
     }   
 
     public Long userId() {
@@ -48,8 +59,17 @@ public class RoomParticipant extends BaseModel {
         return role;
     }
 
+    public boolean notificationEnabled() {
+        return notificationEnabled;
+    }
+
     public void changeRole(RoomRole role) {
         this.role = role == null ? RoomRole.MEMBER : role;
+        update();
+    }
+
+    public void changeNotificationEnabled(boolean notificationEnabled) {
+        this.notificationEnabled = notificationEnabled;
         update();
     }
 

@@ -38,7 +38,13 @@ public class CreateChatRoomService implements CreateChatRoomUsecase {
 
         // 채팅방 참여자 생성
         for (Long participantId : command.participantIds()) {
-            RoomParticipant roomParticipant = RoomParticipant.create(participantId, savedChatRoom.id(), savedMessage.id(), RoomRole.MEMBER);
+            RoomParticipant roomParticipant = RoomParticipant.create(
+                participantId,
+                savedChatRoom.id(),
+                savedMessage.id(),
+                RoomRole.MEMBER,
+                command.notificationEnabled()
+            );
             saveRoomParticipantPort.save(roomParticipant);
         }
 

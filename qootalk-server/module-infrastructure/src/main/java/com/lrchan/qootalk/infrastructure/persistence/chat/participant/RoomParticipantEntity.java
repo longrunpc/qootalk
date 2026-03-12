@@ -40,4 +40,8 @@ public class RoomParticipantEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private RoomRole role;
+
+    @Column(name = "notification_enabled", nullable = false)
+    @lombok.Builder.Default
+    private boolean notificationEnabled = true;
 }
