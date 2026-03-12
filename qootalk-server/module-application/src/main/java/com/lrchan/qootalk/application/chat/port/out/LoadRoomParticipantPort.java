@@ -10,5 +10,5 @@ public interface LoadRoomParticipantPort {
     Optional<RoomParticipant> findById(Long id);
     Optional<RoomParticipant> findByUserIdAndRoomId(Long userId, Long roomId);
     List<RoomParticipant> findByRoomId(Long roomId);
-    PagedResponse<RoomParticipant> findPageByUserId(Long userId, int page, int size);
+    PagedResponse<RoomParticipant> findActivePageByUserId(Long userId, int page, int size);
 }

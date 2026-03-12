@@ -18,5 +18,5 @@ public interface RoomParticipantJpaRepository extends JpaRepository<RoomParticip
     @Query("SELECT rp FROM RoomParticipantEntity rp " +
        "WHERE rp.userId = :userId AND rp.deletedAt IS NULL " +
        "ORDER BY rp.lastReadMessageId DESC")
-    Page<RoomParticipantEntity> findPageByUserId(@Param("userId") Long userId, Pageable pageable);
+    Page<RoomParticipantEntity> findActivePageByUserId(@Param("userId") Long userId, Pageable pageable);
 }

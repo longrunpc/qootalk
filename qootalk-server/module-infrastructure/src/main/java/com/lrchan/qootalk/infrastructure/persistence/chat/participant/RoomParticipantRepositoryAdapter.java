@@ -45,9 +45,9 @@ public class RoomParticipantRepositoryAdapter implements RoomParticipantReposito
     }
 
     @Override
-    public PagedResponse<RoomParticipant> findPageByUserId(Long userId, int page, int size) {
+    public PagedResponse<RoomParticipant> findActivePageByUserId(Long userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<RoomParticipantEntity> roomParticipantEntities = roomParticipantJpaRepository.findPageByUserId(userId, pageable);
+        Page<RoomParticipantEntity> roomParticipantEntities = roomParticipantJpaRepository.findActivePageByUserId(userId, pageable);
 
         return PagedResponse.of(roomParticipantEntities.getContent().stream().map(RoomParticipantEntityMapper::toDomain).toList(), roomParticipantEntities.getNumber(), roomParticipantEntities.getSize(), roomParticipantEntities.getTotalElements(), roomParticipantEntities.getTotalPages());
     }

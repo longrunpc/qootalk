@@ -8,5 +8,5 @@ public interface RoomParticipantRepository {
     Optional<RoomParticipant> findById(Long id);
     Optional<RoomParticipant> findByUserIdAndRoomId(Long userId, Long roomId);
     RoomParticipant save(RoomParticipant roomParticipant);
-    PagedResponse<RoomParticipant> findPageByUserId(Long userId, int page, int size);
+    PagedResponse<RoomParticipant> findActivePageByUserId(Long userId, int page, int size);
 }
