@@ -1,8 +1,8 @@
 package com.lrchan.qootalk.application.chat.port.in;
 
 import com.lrchan.qootalk.application.chat.dto.command.CreateChatRoomCommand;
-import com.lrchan.qootalk.application.chat.dto.result.ChatRoomQueryResult;
+import com.lrchan.qootalk.application.chat.dto.result.CreateChatRoomQueryResult;
 
 public interface CreateChatRoomUsecase {
-    ChatRoomQueryResult create(CreateChatRoomCommand command);
+    CreateChatRoomQueryResult create(CreateChatRoomCommand command);
 }

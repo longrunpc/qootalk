@@ -1,9 +1,7 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.message;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;

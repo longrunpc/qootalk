@@ -1,5 +1,6 @@
 package com.lrchan.qootalk.domain.chat.room;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ChatRoomRepository {
@@ -7,4 +8,5 @@ public interface ChatRoomRepository {
     Optional<ChatRoom> findByRoomName(String roomName);
     boolean existsByRoomName(String roomName);
     ChatRoom save(ChatRoom chatRoom);
+    List<ChatRoom> findAllByUserId(Long userId, int page, int size);
 }

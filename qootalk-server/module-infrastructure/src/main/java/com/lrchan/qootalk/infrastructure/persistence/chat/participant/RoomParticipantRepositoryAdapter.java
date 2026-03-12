@@ -34,4 +34,9 @@ public class RoomParticipantRepositoryAdapter implements RoomParticipantReposito
     public List<RoomParticipant> findByRoomId(Long roomId) {
         return roomParticipantJpaRepository.findByRoomId(roomId).stream().map(RoomParticipantEntityMapper::toDomain).toList();
     }
+
+    @Override
+    public Optional<RoomParticipant> findByUserIdAndRoomId(Long userId, Long roomId) {
+        return roomParticipantJpaRepository.findByUserIdAndRoomId(userId, roomId).map(RoomParticipantEntityMapper::toDomain);
+    }
 }

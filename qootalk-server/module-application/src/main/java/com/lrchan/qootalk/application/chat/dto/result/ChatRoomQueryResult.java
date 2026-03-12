@@ -2,6 +2,7 @@ package com.lrchan.qootalk.application.chat.dto.result;
 
 import java.time.LocalDateTime;
 
+import com.lrchan.qootalk.domain.chat.message.Message;
 import com.lrchan.qootalk.domain.chat.room.ChatRoom;
 import com.lrchan.qootalk.domain.chat.room.RoomType;
 
@@ -9,18 +10,18 @@ public record ChatRoomQueryResult(
     Long id,
     String roomName,
     RoomType roomType,
-    Long createdBy,
-    int participantCount,
-    LocalDateTime createdAt
+    String lastMessage,
+    int unreadCount,
+    LocalDateTime updatedAt
 ) {
-    public static ChatRoomQueryResult of(ChatRoom chatRoom, int participantCount) {
+    public static ChatRoomQueryResult of(ChatRoom chatRoom, Message lastMessage, int unreadCount) {
         return new ChatRoomQueryResult(
             chatRoom.id(),
             chatRoom.roomName(),
             chatRoom.roomType(),
-            chatRoom.createdBy(),
-            participantCount,
-            chatRoom.createdAt()
+            lastMessage.content(),
+            unreadCount,
+            chatRoom.updatedAt()
         );
     }
 }

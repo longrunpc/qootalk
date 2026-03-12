@@ -7,5 +7,6 @@ import com.lrchan.qootalk.domain.chat.participant.RoomParticipant;
 
 public interface LoadRoomParticipantPort {
     Optional<RoomParticipant> findById(Long id);
+    Optional<RoomParticipant> findByUserIdAndRoomId(Long userId, Long roomId);
     List<RoomParticipant> findByRoomId(Long roomId);
 }
