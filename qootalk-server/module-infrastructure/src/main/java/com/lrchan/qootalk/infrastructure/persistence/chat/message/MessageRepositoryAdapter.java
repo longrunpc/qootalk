@@ -4,11 +4,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.lrchan.qootalk.application.chat.port.out.SaveMessagePort;
 import com.lrchan.qootalk.domain.chat.message.Message;
 import com.lrchan.qootalk.domain.chat.message.MessageRepository;
 
 @Component
-public class MessageRepositoryAdapter implements MessageRepository {
+public class MessageRepositoryAdapter implements MessageRepository, SaveMessagePort {
     private final MessageJpaRepository messageJpaRepository;
 
     public MessageRepositoryAdapter(MessageJpaRepository messageJpaRepository) {

@@ -18,7 +18,7 @@ public class Message extends BaseModel {
             Long parentMessageId, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         this.roomId = Objects.requireNonNull(roomId);
-        this.userId = Objects.requireNonNull(userId);
+        this.userId = userId;
         this.content = content;
         this.messageType = (messageType == null) ? MessageType.TEXT : messageType;
         this.mentions = mentions == null ? new ArrayList<>() : new ArrayList<>(mentions);
