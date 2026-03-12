@@ -16,6 +16,7 @@ import com.lrchan.qootalk.domain.chat.message.MessageType;
 import com.lrchan.qootalk.domain.chat.participant.RoomParticipant;
 import com.lrchan.qootalk.domain.chat.participant.RoomRole;
 import com.lrchan.qootalk.domain.chat.room.ChatRoom;
+import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
 
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,19 @@ public class CreateChatRoomService implements CreateChatRoomUsecase {
     @Override
     public CreateChatRoomQueryResult create(CreateChatRoomCommand command) {
         // 유저 검증
-        loadUserPort.findById(command.requesterId())
+        User user = loadUserPort.findById(command.requesterId())
             .orElseThrow(() -> new DomainException(UserErrorCode.USER_NOT_FOUND));
+        if (user.deletedAt() != null) {
+            throw new DomainException(UserErrorCode.USER_DELETED);
+        }
+        for (Long participantId : command.participantIds()) {
+            User participant = loadUserPort.findById(participantId)
+                .orElseThrow(() -> new DomainException(UserErrorCode.USER_NOT_FOUND));
+            if (participant.deletedAt() != null) {
+                throw new DomainException(UserErrorCode.USER_DELETED);
+            }
+        }
+        
         // 채팅방 생성
         ChatRoom chatRoom = ChatRoom.create(command.roomName(), command.roomType(), command.requesterId());
         ChatRoom savedChatRoom = saveChatRoomPort.save(chatRoom);

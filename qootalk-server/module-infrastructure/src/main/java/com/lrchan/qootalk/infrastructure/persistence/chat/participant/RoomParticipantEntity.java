@@ -1,8 +1,5 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.participant;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
-
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
