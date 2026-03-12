@@ -1,8 +1,5 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.participant;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
-
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -40,4 +37,8 @@ public class RoomParticipantEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private RoomRole role;
+
+    @Column(name = "notification_enabled", nullable = false)
+    @lombok.Builder.Default
+    private boolean notificationEnabled = true;
 }

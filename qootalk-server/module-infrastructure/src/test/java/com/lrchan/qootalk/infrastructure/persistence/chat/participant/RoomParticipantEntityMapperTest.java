@@ -30,6 +30,7 @@ class RoomParticipantEntityMapperTest {
                 .roomId(20L)
                 .lastReadMessageId(30L)
                 .role(RoomRole.ADMIN)
+                .notificationEnabled(false)
                 .createdAt(now)
                 .updatedAt(now)
                 .deletedAt(deletedAt)
@@ -44,6 +45,7 @@ class RoomParticipantEntityMapperTest {
             assertThat(domain.roomId()).isEqualTo(20L);
             assertThat(domain.lastReadMessageId()).isEqualTo(30L);
             assertThat(domain.role()).isEqualTo(RoomRole.ADMIN);
+            assertThat(domain.notificationEnabled()).isFalse();
             assertThat(domain.createdAt()).isEqualTo(now);
             assertThat(domain.updatedAt()).isEqualTo(now);
             assertThat(domain.deletedAt()).isEqualTo(deletedAt);
@@ -61,6 +63,7 @@ class RoomParticipantEntityMapperTest {
                 .roomId(20L)
                 .lastReadMessageId(30L)
                 .role(null)
+                .notificationEnabled(true)
                 .createdAt(now)
                 .updatedAt(now)
                 .deletedAt(null)
@@ -91,6 +94,7 @@ class RoomParticipantEntityMapperTest {
                 20L,
                 30L,
                 RoomRole.OWNER,
+                false,
                 now,
                 now,
                 null
@@ -105,6 +109,7 @@ class RoomParticipantEntityMapperTest {
             assertThat(entity.getRoomId()).isEqualTo(20L);
             assertThat(entity.getLastReadMessageId()).isEqualTo(30L);
             assertThat(entity.getRole()).isEqualTo(RoomRole.OWNER);
+            assertThat(entity.isNotificationEnabled()).isFalse();
         }
 
         @Test
@@ -118,6 +123,7 @@ class RoomParticipantEntityMapperTest {
                 20L,
                 30L,
                 null,
+                true,
                 now,
                 now,
                 null
@@ -128,6 +134,7 @@ class RoomParticipantEntityMapperTest {
 
             // then
             assertThat(entity.getRole()).isEqualTo(RoomRole.MEMBER);
+            assertThat(entity.isNotificationEnabled()).isTrue();
         }
     }
 
@@ -146,6 +153,7 @@ class RoomParticipantEntityMapperTest {
                 20L,
                 30L,
                 RoomRole.ADMIN,
+                false,
                 now,
                 now,
                 null
@@ -160,7 +168,7 @@ class RoomParticipantEntityMapperTest {
             assertThat(converted.roomId()).isEqualTo(original.roomId());
             assertThat(converted.lastReadMessageId()).isEqualTo(original.lastReadMessageId());
             assertThat(converted.role()).isEqualTo(original.role());
+            assertThat(converted.notificationEnabled()).isEqualTo(original.notificationEnabled());
         }
     }
 }
-

@@ -14,6 +14,7 @@ public class RoomParticipantEntityMapper {
             .roomId(roomParticipant.roomId())
             .lastReadMessageId(roomParticipant.lastReadMessageId())
             .role(roomParticipant.role())
+            .notificationEnabled(roomParticipant.notificationEnabled())
             .createdAt(roomParticipant.createdAt())
             .updatedAt(roomParticipant.updatedAt())
             .deletedAt(roomParticipant.deletedAt())
@@ -21,6 +22,16 @@ public class RoomParticipantEntityMapper {
     }
 
     public static RoomParticipant toDomain(RoomParticipantEntity roomParticipantEntity) {
-        return RoomParticipant.reconstruct(roomParticipantEntity.getId(), roomParticipantEntity.getUserId(), roomParticipantEntity.getRoomId(), roomParticipantEntity.getLastReadMessageId(), roomParticipantEntity.getRole(), roomParticipantEntity.getCreatedAt(), roomParticipantEntity.getUpdatedAt(), roomParticipantEntity.getDeletedAt());
+        return RoomParticipant.reconstruct(
+            roomParticipantEntity.getId(),
+            roomParticipantEntity.getUserId(),
+            roomParticipantEntity.getRoomId(),
+            roomParticipantEntity.getLastReadMessageId(),
+            roomParticipantEntity.getRole(),
+            roomParticipantEntity.isNotificationEnabled(),
+            roomParticipantEntity.getCreatedAt(),
+            roomParticipantEntity.getUpdatedAt(),
+            roomParticipantEntity.getDeletedAt()
+        );
     }
 }

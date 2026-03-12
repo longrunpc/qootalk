@@ -34,6 +34,7 @@ class RoomParticipantTest {
             assertThat(userChatRoom.roomId()).isEqualTo(100L);
             assertThat(userChatRoom.lastReadMessageId()).isEqualTo(0L);
             assertThat(userChatRoom.role()).isEqualTo(RoomRole.MEMBER);
+            assertThat(userChatRoom.notificationEnabled()).isTrue();
         }
 
         @Test
@@ -50,6 +51,21 @@ class RoomParticipantTest {
 
             // then
             assertThat(userChatRoom.role()).isEqualTo(RoomRole.MEMBER);
+        }
+
+        @Test
+        @DisplayName("유저 채팅방을 생성할 때 알림 설정을 지정할 수 있다")
+        void should_SetNotificationEnabled_When_CreateUserChatRoom() {
+            // given
+            Long userId = 1L;
+            Long roomId = 100L;
+            Long lastReadMessageId = 0L;
+
+            // when
+            RoomParticipant userChatRoom = RoomParticipant.create(userId, roomId, lastReadMessageId, RoomRole.MEMBER, false);
+
+            // then
+            assertThat(userChatRoom.notificationEnabled()).isFalse();
         }
 
         @Test
@@ -243,6 +259,19 @@ class RoomParticipantTest {
             // then
             assertThat(result).isEqualTo(RoomRole.MEMBER);
         }
+
+        @Test
+        @DisplayName("알림 사용 여부를 조회할 때 올바른 값이 반환되어야 한다")
+        void should_ReturnNotificationEnabled_When_GetNotificationEnabled() {
+            // given
+            RoomParticipant userChatRoom = RoomParticipant.create(1L, 100L, 0L, RoomRole.MEMBER, false);
+
+            // when
+            boolean result = userChatRoom.notificationEnabled();
+
+            // then
+            assertThat(result).isFalse();
+        }
     }
 
     @Nested
@@ -304,6 +333,24 @@ class RoomParticipantTest {
     }
 
     @Nested
+    @DisplayName("알림 설정 변경")
+    class ChangeNotificationEnabledTest {
+
+        @Test
+        @DisplayName("알림 설정을 변경할 수 있어야 한다")
+        void should_UpdateNotificationEnabled_When_Changed() {
+            // given
+            RoomParticipant userChatRoom = RoomParticipant.create(1L, 100L, 0L, RoomRole.MEMBER);
+
+            // when
+            userChatRoom.changeNotificationEnabled(false);
+
+            // then
+            assertThat(userChatRoom.notificationEnabled()).isFalse();
+        }
+    }
+
+    @Nested
     @DisplayName("소프트 삭제")
     class SoftDeleteTest {
 
@@ -325,4 +372,3 @@ class RoomParticipantTest {
         }
     }
 }
-

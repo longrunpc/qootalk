@@ -26,6 +26,7 @@ public class RoomParticipantJpaRepositoryTest extends IntegrationTestSupport {
             .roomId(10L)
             .lastReadMessageId(100L)
             .role(RoomRole.MEMBER)
+            .notificationEnabled(false)
             .build();
 
         // when
@@ -37,6 +38,7 @@ public class RoomParticipantJpaRepositoryTest extends IntegrationTestSupport {
         assertThat(savedEntity.getRoomId()).isEqualTo(10L);
         assertThat(savedEntity.getLastReadMessageId()).isEqualTo(100L);
         assertThat(savedEntity.getRole()).isEqualTo(RoomRole.MEMBER);
+        assertThat(savedEntity.isNotificationEnabled()).isFalse();
         assertThat(savedEntity.getCreatedAt()).isNotNull();
         assertThat(savedEntity.getUpdatedAt()).isNotNull();
     }
@@ -53,6 +55,7 @@ public class RoomParticipantJpaRepositoryTest extends IntegrationTestSupport {
                 .roomId(10L)
                 .lastReadMessageId(100L)
                 .role(RoomRole.MEMBER)
+                .notificationEnabled(true)
                 .build();
             roomParticipantJpaRepository.save(participantEntity);
 
@@ -67,6 +70,7 @@ public class RoomParticipantJpaRepositoryTest extends IntegrationTestSupport {
             assertThat(foundEntity.getRoomId()).isEqualTo(10L);
             assertThat(foundEntity.getLastReadMessageId()).isEqualTo(100L);
             assertThat(foundEntity.getRole()).isEqualTo(RoomRole.MEMBER);
+            assertThat(foundEntity.isNotificationEnabled()).isTrue();
         }
 
         @Test
@@ -89,6 +93,7 @@ public class RoomParticipantJpaRepositoryTest extends IntegrationTestSupport {
                 .roomId(10L)
                 .lastReadMessageId(100L)
                 .role(RoomRole.MEMBER)
+                .notificationEnabled(true)
                 .build();
             roomParticipantJpaRepository.save(participantEntity);
 

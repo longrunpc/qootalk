@@ -4,11 +4,13 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.lrchan.qootalk.application.chat.port.out.LoadMessagePort;
+import com.lrchan.qootalk.application.chat.port.out.SaveMessagePort;
 import com.lrchan.qootalk.domain.chat.message.Message;
 import com.lrchan.qootalk.domain.chat.message.MessageRepository;
 
 @Component
-public class MessageRepositoryAdapter implements MessageRepository {
+public class MessageRepositoryAdapter implements MessageRepository, SaveMessagePort, LoadMessagePort {
     private final MessageJpaRepository messageJpaRepository;
 
     public MessageRepositoryAdapter(MessageJpaRepository messageJpaRepository) {
@@ -25,5 +27,10 @@ public class MessageRepositoryAdapter implements MessageRepository {
         MessageEntity messageEntity = MessageEntityMapper.toEntity(message);
         MessageEntity savedEntity = messageJpaRepository.save(messageEntity);
         return MessageEntityMapper.toDomain(savedEntity);
+    }
+
+    @Override
+    public Long countByRoomIdAndIdAfter(Long roomId, Long id) {
+        return messageJpaRepository.countByRoomIdAndIdAfter(roomId, id);
     }
 }

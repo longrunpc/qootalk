@@ -52,3 +52,6 @@ dependencies {
 	implementation 'software.amazon.awssdk:s3:2.41.13'
 }
 
+tasks.named('test') {
+	environment 'TESTCONTAINERS_RYUK_DISABLED', 'true'
+}
