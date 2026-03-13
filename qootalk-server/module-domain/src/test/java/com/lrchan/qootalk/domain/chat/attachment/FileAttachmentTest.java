@@ -42,28 +42,24 @@ class FileAttachmentTest {
         void should_CreateFileAttachment_When_ValidData() {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
-            FileType fileType = FileType.DOCUMENT;
             FileSecurity fileSecurity = createFileSecurity();
 
             // when
             FileAttachment fileAttachment = FileAttachment.create(
                 roomId,
-                messageId,
                 uploaderId,
                 metadata,
-                fileType,
+                FileType.fromContentType(metadata.contentType()),
                 fileSecurity
             );
 
             // then
             assertThat(fileAttachment.roomId()).isEqualTo(roomId);
-            assertThat(fileAttachment.messageId()).isEqualTo(messageId);
             assertThat(fileAttachment.uploaderId()).isEqualTo(uploaderId);
             assertThat(fileAttachment.metadata()).isEqualTo(metadata);
-            assertThat(fileAttachment.fileType()).isEqualTo(fileType);
+            assertThat(fileAttachment.fileType()).isEqualTo(FileType.fromContentType(metadata.contentType()));
             assertThat(fileAttachment.fileSecurity()).isEqualTo(fileSecurity);
             assertThat(fileAttachment.id()).isNull();
             assertThat(fileAttachment.isDeleted()).isFalse();
@@ -74,19 +70,18 @@ class FileAttachmentTest {
         void should_CreateFileAttachment_When_VariousFileTypes() {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
             FileSecurity fileSecurity = createFileSecurity();
 
             // when & then
-            assertThat(FileAttachment.create(roomId, messageId, uploaderId, metadata, FileType.IMAGE, fileSecurity)
+            assertThat(FileAttachment.create(roomId, uploaderId, metadata, FileType.IMAGE, fileSecurity)
                 .fileType()).isEqualTo(FileType.IMAGE);
-            assertThat(FileAttachment.create(roomId, messageId, uploaderId, metadata, FileType.VIDEO, fileSecurity)
+            assertThat(FileAttachment.create(roomId, uploaderId, metadata, FileType.VIDEO, fileSecurity)
                 .fileType()).isEqualTo(FileType.VIDEO);
-            assertThat(FileAttachment.create(roomId, messageId, uploaderId, metadata, FileType.AUDIO, fileSecurity)
+            assertThat(FileAttachment.create(roomId, uploaderId, metadata, FileType.AUDIO, fileSecurity)
                 .fileType()).isEqualTo(FileType.AUDIO);
-            assertThat(FileAttachment.create(roomId, messageId, uploaderId, metadata, FileType.OTHER, fileSecurity)
+            assertThat(FileAttachment.create(roomId, uploaderId, metadata, FileType.OTHER, fileSecurity)
                 .fileType()).isEqualTo(FileType.OTHER);
         }
 
@@ -95,19 +90,18 @@ class FileAttachmentTest {
         void should_CreateFileAttachment_When_VariousFileSecurity() {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
             FileType fileType = FileType.DOCUMENT;
 
             // when & then
             FileAttachment privateAttachment = FileAttachment.create(
-                roomId, messageId, uploaderId, metadata, fileType, FileSecurity.defaultPrivate()
+                roomId, uploaderId, metadata, fileType, FileSecurity.defaultPrivate()
             );
             assertThat(privateAttachment.fileSecurity().visibility()).isEqualTo(com.lrchan.qootalk.domain.chat.vo.Visibility.PRIVATE);
 
             FileAttachment publicAttachment = FileAttachment.create(
-                roomId, messageId, uploaderId, metadata, fileType, FileSecurity.publicReadable()
+                roomId, uploaderId, metadata, fileType, FileSecurity.publicReadable()
             );
             assertThat(publicAttachment.fileSecurity().visibility()).isEqualTo(com.lrchan.qootalk.domain.chat.vo.Visibility.PUBLIC);
         }
@@ -117,7 +111,6 @@ class FileAttachmentTest {
         void should_CreateFileAttachment_When_VariousFileMetadata() {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             Long uploaderId = 100L;
             FileType fileType = FileType.IMAGE;
             FileSecurity fileSecurity = createFileSecurity();
@@ -134,7 +127,6 @@ class FileAttachmentTest {
 
             FileAttachment fileAttachment = FileAttachment.create(
                 roomId,
-                messageId,
                 uploaderId,
                 imageMetadata,
                 fileType,
@@ -152,33 +144,10 @@ class FileAttachmentTest {
     class ValidationFailureTest {
 
         @Test
-        @DisplayName("messageId가 null이면 예외가 발생한다")
-        void should_ThrowException_When_MessageIdIsNull() {
-            // given
-            Long roomId = 10L;
-            Long uploaderId = 100L;
-            FileMetadata metadata = createFileMetadata();
-            FileType fileType = FileType.DOCUMENT;
-            FileSecurity fileSecurity = createFileSecurity();
-
-            // when & then
-            assertThatThrownBy(() -> FileAttachment.create(
-                roomId,
-                null,
-                uploaderId,
-                metadata,
-                fileType,
-                fileSecurity
-            ))
-            .isInstanceOf(NullPointerException.class);
-        }
-
-        @Test
         @DisplayName("uploaderId가 null이면 예외가 발생한다")
         void should_ThrowException_When_UploaderIdIsNull() {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             FileMetadata metadata = createFileMetadata();
             FileType fileType = FileType.DOCUMENT;
             FileSecurity fileSecurity = createFileSecurity();
@@ -186,7 +155,6 @@ class FileAttachmentTest {
             // when & then
             assertThatThrownBy(() -> FileAttachment.create(
                 roomId,
-                messageId,
                 null,
                 metadata,
                 fileType,
@@ -200,7 +168,6 @@ class FileAttachmentTest {
         void should_ThrowException_When_MetadataIsNull() {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             Long uploaderId = 100L;
             FileType fileType = FileType.DOCUMENT;
             FileSecurity fileSecurity = createFileSecurity();
@@ -208,7 +175,6 @@ class FileAttachmentTest {
             // when & then
             assertThatThrownBy(() -> FileAttachment.create(
                 roomId,
-                messageId,
                 uploaderId,
                 null,
                 fileType,
@@ -227,7 +193,6 @@ class FileAttachmentTest {
         void should_HaveNullId_When_Created() {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
             FileType fileType = FileType.DOCUMENT;
@@ -236,7 +201,6 @@ class FileAttachmentTest {
             // when
             FileAttachment fileAttachment = FileAttachment.create(
                 roomId,
-                messageId,
                 uploaderId,
                 metadata,
                 fileType,
@@ -252,7 +216,6 @@ class FileAttachmentTest {
         void should_NotBeDeleted_When_Created() {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
             FileType fileType = FileType.DOCUMENT;
@@ -261,7 +224,6 @@ class FileAttachmentTest {
             // when
             FileAttachment fileAttachment = FileAttachment.create(
                 roomId,
-                messageId,
                 uploaderId,
                 metadata,
                 fileType,
@@ -277,7 +239,6 @@ class FileAttachmentTest {
         void should_BeDeleted_When_SoftDeleteCalled() {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
             FileType fileType = FileType.DOCUMENT;
@@ -285,7 +246,6 @@ class FileAttachmentTest {
 
             FileAttachment fileAttachment = FileAttachment.create(
                 roomId,
-                messageId,
                 uploaderId,
                 metadata,
                 fileType,
@@ -304,7 +264,6 @@ class FileAttachmentTest {
         void should_UpdateTimestamp_When_UpdateCalled() throws InterruptedException {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
             FileType fileType = FileType.DOCUMENT;
@@ -312,7 +271,6 @@ class FileAttachmentTest {
 
             FileAttachment fileAttachment = FileAttachment.create(
                 roomId,
-                messageId,
                 uploaderId,
                 metadata,
                 fileType,
@@ -337,7 +295,6 @@ class FileAttachmentTest {
         void should_ReturnCorrectValues_When_AccessorMethodsCalled() {
             // given
             Long roomId = 10L;
-            Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
             FileType fileType = FileType.DOCUMENT;
@@ -346,7 +303,6 @@ class FileAttachmentTest {
             // when
             FileAttachment fileAttachment = FileAttachment.create(
                 roomId,
-                messageId,
                 uploaderId,
                 metadata,
                 fileType,
@@ -355,7 +311,6 @@ class FileAttachmentTest {
 
             // then
             assertThat(fileAttachment.roomId()).isEqualTo(roomId);
-            assertThat(fileAttachment.messageId()).isEqualTo(messageId);
             assertThat(fileAttachment.uploaderId()).isEqualTo(uploaderId);
             assertThat(fileAttachment.metadata()).isEqualTo(metadata);
             assertThat(fileAttachment.fileType()).isEqualTo(fileType);

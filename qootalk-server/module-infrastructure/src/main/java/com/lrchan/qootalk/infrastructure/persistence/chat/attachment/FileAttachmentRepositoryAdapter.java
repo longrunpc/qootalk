@@ -4,11 +4,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.lrchan.qootalk.application.chat.port.out.SaveFileAttachmentPort;
 import com.lrchan.qootalk.domain.chat.attachment.FileAttachment;
 import com.lrchan.qootalk.domain.chat.attachment.FileAttachmentRepository;
 
 @Component
-public class FileAttachmentRepositoryAdapter implements FileAttachmentRepository {
+public class FileAttachmentRepositoryAdapter implements FileAttachmentRepository, SaveFileAttachmentPort {
     private final FileAttachmentJpaRepository fileAttachmentJpaRepository;
 
     public FileAttachmentRepositoryAdapter(FileAttachmentJpaRepository fileAttachmentJpaRepository) {

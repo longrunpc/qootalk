@@ -9,13 +9,13 @@ import com.lrchan.qootalk.domain.common.BaseModel;
 
 public class FileAttachment extends BaseModel {
 
-    private final Long roomId;
-    private final Long messageId;
-    private final Long uploaderId;
+    private Long roomId;
+    private Long messageId;
+    private Long uploaderId;
 
-    private final FileMetadata metadata;
-    private final FileType fileType;
-    private final FileSecurity fileSecurity;
+    private FileMetadata metadata;
+    private FileType fileType;
+    private FileSecurity fileSecurity;
 
     private FileAttachment(
             Long id,
@@ -30,7 +30,7 @@ public class FileAttachment extends BaseModel {
             LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
         this.roomId = Objects.requireNonNull(roomId);
-        this.messageId = Objects.requireNonNull(messageId);
+        this.messageId = messageId;
         this.uploaderId = Objects.requireNonNull(uploaderId);
         this.metadata = Objects.requireNonNull(metadata);
         this.fileType = fileType == null ? FileType.DOCUMENT : fileType;
@@ -39,7 +39,6 @@ public class FileAttachment extends BaseModel {
 
     public static FileAttachment create(
             Long roomId,
-            Long messageId,
             Long uploaderId,
             FileMetadata metadata,
             FileType fileType,
@@ -47,7 +46,7 @@ public class FileAttachment extends BaseModel {
         return new FileAttachment(
                 null,
                 roomId,
-                messageId,
+                null,
                 uploaderId,
                 metadata,
                 fileType,
@@ -80,6 +79,10 @@ public class FileAttachment extends BaseModel {
                 createdAt,
                 updatedAt,
                 deletedAt);
+    }
+
+    public void setMessageId(Long messageId) {
+        this.messageId = Objects.requireNonNull(messageId);
     }
 
     public Long roomId() {
