@@ -9,6 +9,7 @@ import com.lrchan.qootalk.domain.common.BaseModel;
 
 public class FileAttachment extends BaseModel {
 
+    private final Long roomId;
     private final Long messageId;
     private final Long uploaderId;
 
@@ -18,6 +19,7 @@ public class FileAttachment extends BaseModel {
 
     private FileAttachment(
             Long id,
+            Long roomId,
             Long messageId,
             Long uploaderId,
             FileMetadata metadata,
@@ -27,6 +29,7 @@ public class FileAttachment extends BaseModel {
             LocalDateTime updatedAt,
             LocalDateTime deletedAt) {
         super(id, createdAt, updatedAt, deletedAt);
+        this.roomId = Objects.requireNonNull(roomId);
         this.messageId = Objects.requireNonNull(messageId);
         this.uploaderId = Objects.requireNonNull(uploaderId);
         this.metadata = Objects.requireNonNull(metadata);
@@ -35,6 +38,7 @@ public class FileAttachment extends BaseModel {
     }
 
     public static FileAttachment create(
+            Long roomId,
             Long messageId,
             Long uploaderId,
             FileMetadata metadata,
@@ -42,6 +46,7 @@ public class FileAttachment extends BaseModel {
             FileSecurity fileSecurity) {
         return new FileAttachment(
                 null,
+                roomId,
                 messageId,
                 uploaderId,
                 metadata,
@@ -55,6 +60,7 @@ public class FileAttachment extends BaseModel {
     // DB 복구 전용 메서드
     public static FileAttachment reconstruct(
             Long id,
+            Long roomId,
             Long messageId,
             Long uploaderId,
             FileMetadata metadata,
@@ -65,6 +71,7 @@ public class FileAttachment extends BaseModel {
             LocalDateTime deletedAt) {
         return new FileAttachment(
                 id,
+                roomId,
                 messageId,
                 uploaderId,
                 metadata,
@@ -73,6 +80,10 @@ public class FileAttachment extends BaseModel {
                 createdAt,
                 updatedAt,
                 deletedAt);
+    }
+
+    public Long roomId() {
+        return roomId;
     }
 
     public Long messageId() {

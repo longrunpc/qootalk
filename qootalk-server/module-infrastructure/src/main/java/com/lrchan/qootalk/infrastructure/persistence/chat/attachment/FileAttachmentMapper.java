@@ -36,6 +36,7 @@ public final class FileAttachmentMapper {
 
         return FileAttachmentEntity.builder()
                 .id(fileAttachment.id())
+                .roomId(fileAttachment.roomId())
                 .messageId(fileAttachment.messageId())
                 .uploaderId(fileAttachment.uploaderId())
                 .metadata(metadataEmbeddable)
@@ -70,6 +71,7 @@ public final class FileAttachmentMapper {
 
         return FileAttachment.reconstruct(
                 entity.getId(),
+                entity.getRoomId(),
                 entity.getMessageId(),
                 entity.getUploaderId(),
                 metadata,

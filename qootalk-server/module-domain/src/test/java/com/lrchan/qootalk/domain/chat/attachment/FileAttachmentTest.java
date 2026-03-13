@@ -41,6 +41,7 @@ class FileAttachmentTest {
         @DisplayName("유효한 데이터로 FileAttachment를 생성할 수 있다")
         void should_CreateFileAttachment_When_ValidData() {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
@@ -49,6 +50,7 @@ class FileAttachmentTest {
 
             // when
             FileAttachment fileAttachment = FileAttachment.create(
+                roomId,
                 messageId,
                 uploaderId,
                 metadata,
@@ -57,6 +59,7 @@ class FileAttachmentTest {
             );
 
             // then
+            assertThat(fileAttachment.roomId()).isEqualTo(roomId);
             assertThat(fileAttachment.messageId()).isEqualTo(messageId);
             assertThat(fileAttachment.uploaderId()).isEqualTo(uploaderId);
             assertThat(fileAttachment.metadata()).isEqualTo(metadata);
@@ -70,19 +73,20 @@ class FileAttachmentTest {
         @DisplayName("다양한 파일 타입으로 생성할 수 있다")
         void should_CreateFileAttachment_When_VariousFileTypes() {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
             FileSecurity fileSecurity = createFileSecurity();
 
             // when & then
-            assertThat(FileAttachment.create(messageId, uploaderId, metadata, FileType.IMAGE, fileSecurity)
+            assertThat(FileAttachment.create(roomId, messageId, uploaderId, metadata, FileType.IMAGE, fileSecurity)
                 .fileType()).isEqualTo(FileType.IMAGE);
-            assertThat(FileAttachment.create(messageId, uploaderId, metadata, FileType.VIDEO, fileSecurity)
+            assertThat(FileAttachment.create(roomId, messageId, uploaderId, metadata, FileType.VIDEO, fileSecurity)
                 .fileType()).isEqualTo(FileType.VIDEO);
-            assertThat(FileAttachment.create(messageId, uploaderId, metadata, FileType.AUDIO, fileSecurity)
+            assertThat(FileAttachment.create(roomId, messageId, uploaderId, metadata, FileType.AUDIO, fileSecurity)
                 .fileType()).isEqualTo(FileType.AUDIO);
-            assertThat(FileAttachment.create(messageId, uploaderId, metadata, FileType.OTHER, fileSecurity)
+            assertThat(FileAttachment.create(roomId, messageId, uploaderId, metadata, FileType.OTHER, fileSecurity)
                 .fileType()).isEqualTo(FileType.OTHER);
         }
 
@@ -90,6 +94,7 @@ class FileAttachmentTest {
         @DisplayName("다양한 FileSecurity 설정으로 생성할 수 있다")
         void should_CreateFileAttachment_When_VariousFileSecurity() {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
@@ -97,12 +102,12 @@ class FileAttachmentTest {
 
             // when & then
             FileAttachment privateAttachment = FileAttachment.create(
-                messageId, uploaderId, metadata, fileType, FileSecurity.defaultPrivate()
+                roomId, messageId, uploaderId, metadata, fileType, FileSecurity.defaultPrivate()
             );
             assertThat(privateAttachment.fileSecurity().visibility()).isEqualTo(com.lrchan.qootalk.domain.chat.vo.Visibility.PRIVATE);
 
             FileAttachment publicAttachment = FileAttachment.create(
-                messageId, uploaderId, metadata, fileType, FileSecurity.publicReadable()
+                roomId, messageId, uploaderId, metadata, fileType, FileSecurity.publicReadable()
             );
             assertThat(publicAttachment.fileSecurity().visibility()).isEqualTo(com.lrchan.qootalk.domain.chat.vo.Visibility.PUBLIC);
         }
@@ -111,6 +116,7 @@ class FileAttachmentTest {
         @DisplayName("다양한 FileMetadata로 생성할 수 있다")
         void should_CreateFileAttachment_When_VariousFileMetadata() {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             Long uploaderId = 100L;
             FileType fileType = FileType.IMAGE;
@@ -127,6 +133,7 @@ class FileAttachmentTest {
             );
 
             FileAttachment fileAttachment = FileAttachment.create(
+                roomId,
                 messageId,
                 uploaderId,
                 imageMetadata,
@@ -148,6 +155,7 @@ class FileAttachmentTest {
         @DisplayName("messageId가 null이면 예외가 발생한다")
         void should_ThrowException_When_MessageIdIsNull() {
             // given
+            Long roomId = 10L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
             FileType fileType = FileType.DOCUMENT;
@@ -155,6 +163,7 @@ class FileAttachmentTest {
 
             // when & then
             assertThatThrownBy(() -> FileAttachment.create(
+                roomId,
                 null,
                 uploaderId,
                 metadata,
@@ -168,6 +177,7 @@ class FileAttachmentTest {
         @DisplayName("uploaderId가 null이면 예외가 발생한다")
         void should_ThrowException_When_UploaderIdIsNull() {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             FileMetadata metadata = createFileMetadata();
             FileType fileType = FileType.DOCUMENT;
@@ -175,6 +185,7 @@ class FileAttachmentTest {
 
             // when & then
             assertThatThrownBy(() -> FileAttachment.create(
+                roomId,
                 messageId,
                 null,
                 metadata,
@@ -188,6 +199,7 @@ class FileAttachmentTest {
         @DisplayName("metadata가 null이면 예외가 발생한다")
         void should_ThrowException_When_MetadataIsNull() {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             Long uploaderId = 100L;
             FileType fileType = FileType.DOCUMENT;
@@ -195,6 +207,7 @@ class FileAttachmentTest {
 
             // when & then
             assertThatThrownBy(() -> FileAttachment.create(
+                roomId,
                 messageId,
                 uploaderId,
                 null,
@@ -213,6 +226,7 @@ class FileAttachmentTest {
         @DisplayName("생성 시 id는 null이다")
         void should_HaveNullId_When_Created() {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
@@ -221,6 +235,7 @@ class FileAttachmentTest {
 
             // when
             FileAttachment fileAttachment = FileAttachment.create(
+                roomId,
                 messageId,
                 uploaderId,
                 metadata,
@@ -236,6 +251,7 @@ class FileAttachmentTest {
         @DisplayName("생성 시 삭제되지 않은 상태이다")
         void should_NotBeDeleted_When_Created() {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
@@ -244,6 +260,7 @@ class FileAttachmentTest {
 
             // when
             FileAttachment fileAttachment = FileAttachment.create(
+                roomId,
                 messageId,
                 uploaderId,
                 metadata,
@@ -259,6 +276,7 @@ class FileAttachmentTest {
         @DisplayName("softDelete를 호출하면 삭제 상태가 된다")
         void should_BeDeleted_When_SoftDeleteCalled() {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
@@ -266,6 +284,7 @@ class FileAttachmentTest {
             FileSecurity fileSecurity = createFileSecurity();
 
             FileAttachment fileAttachment = FileAttachment.create(
+                roomId,
                 messageId,
                 uploaderId,
                 metadata,
@@ -284,6 +303,7 @@ class FileAttachmentTest {
         @DisplayName("update를 호출하면 updatedAt이 갱신된다")
         void should_UpdateTimestamp_When_UpdateCalled() throws InterruptedException {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
@@ -291,6 +311,7 @@ class FileAttachmentTest {
             FileSecurity fileSecurity = createFileSecurity();
 
             FileAttachment fileAttachment = FileAttachment.create(
+                roomId,
                 messageId,
                 uploaderId,
                 metadata,
@@ -315,6 +336,7 @@ class FileAttachmentTest {
         @DisplayName("모든 접근자 메서드가 올바른 값을 반환한다")
         void should_ReturnCorrectValues_When_AccessorMethodsCalled() {
             // given
+            Long roomId = 10L;
             Long messageId = 1L;
             Long uploaderId = 100L;
             FileMetadata metadata = createFileMetadata();
@@ -323,6 +345,7 @@ class FileAttachmentTest {
 
             // when
             FileAttachment fileAttachment = FileAttachment.create(
+                roomId,
                 messageId,
                 uploaderId,
                 metadata,
@@ -331,6 +354,7 @@ class FileAttachmentTest {
             );
 
             // then
+            assertThat(fileAttachment.roomId()).isEqualTo(roomId);
             assertThat(fileAttachment.messageId()).isEqualTo(messageId);
             assertThat(fileAttachment.uploaderId()).isEqualTo(uploaderId);
             assertThat(fileAttachment.metadata()).isEqualTo(metadata);
