@@ -1,5 +1,6 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.attachment;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ public class FileAttachmentRepositoryAdapter implements FileAttachmentRepository
 
     @Override
     public Optional<FileAttachment> findById(Long id) {
-        return fileAttachmentJpaRepository.findById(id).map(FileAttachmentMapper::toDomain);
+        return fileAttachmentJpaRepository.findById(Objects.requireNonNull(id)).map(FileAttachmentMapper::toDomain);
     }
 
     @Override
@@ -29,7 +30,7 @@ public class FileAttachmentRepositoryAdapter implements FileAttachmentRepository
     @Override
     public FileAttachment save(FileAttachment fileAttachment) {
         FileAttachmentEntity fileAttachmentEntity = FileAttachmentMapper.toEntity(fileAttachment);
-        FileAttachmentEntity savedEntity = fileAttachmentJpaRepository.save(fileAttachmentEntity);
+        FileAttachmentEntity savedEntity = fileAttachmentJpaRepository.save(Objects.requireNonNull(fileAttachmentEntity));
         return FileAttachmentMapper.toDomain(savedEntity);
     }
 }

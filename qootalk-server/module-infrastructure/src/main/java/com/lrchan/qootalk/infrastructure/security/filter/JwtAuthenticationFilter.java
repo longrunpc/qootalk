@@ -6,8 +6,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.lrchan.qootalk.common.error.GlobalErrorCode;
-import com.lrchan.qootalk.common.exception.InfrastructureException;
 import com.lrchan.qootalk.infrastructure.security.provider.JwtAuthenticationValidator;
 
 import jakarta.servlet.FilterChain;
