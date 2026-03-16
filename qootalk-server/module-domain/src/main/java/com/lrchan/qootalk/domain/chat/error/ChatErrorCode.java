@@ -21,7 +21,9 @@ public enum ChatErrorCode implements ErrorCode {
     CHAT_FILE_SECURITY_INVALID_MALICIOUS_FILE_DOWNLOADABLE_OR_SHAREABLE("CHAT_014", "악성 파일은 다운로드 및 공유가 불가능합니다.", 400),
     CHAT_FILE_SECURITY_INVALID_PUBLIC_FILE_DOWNLOADABLE("CHAT_015", "공개 파일의 다운로드를 비활성화할 수 없습니다.", 400),
     CHAT_FILE_METADATA_INVALID_PATH("CHAT_016", "파일 경로가 올바르지 않습니다.", 400),
-    CHAT_FILE_METADATA_INVALID_INPUT_STREAM("CHAT_017", "파일 입력 스트림이 올바르지 않습니다.", 400);
+    CHAT_FILE_METADATA_INVALID_INPUT_STREAM("CHAT_017", "파일 입력 스트림이 올바르지 않습니다.", 400),
+    CHAT_FILE_ATTACHMENT_NOT_FOUND("CHAT_018", "파일 첨부파일을 찾을 수 없습니다.", 404),
+    CHAT_FILE_ATTACHMENT_DELETED("CHAT_019", "파일 첨부파일이 삭제되었습니다.", 404);
 
     private final String code;
     private final String message;

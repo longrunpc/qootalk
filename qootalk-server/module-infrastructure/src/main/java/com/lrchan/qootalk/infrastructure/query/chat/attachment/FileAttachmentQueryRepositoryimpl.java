@@ -28,7 +28,7 @@ public class FileAttachmentQueryRepositoryimpl implements FileAttachmentQueryRep
     private final QFileAttachmentEntity qFileAttachment = QFileAttachmentEntity.fileAttachmentEntity;
     
     @Override
-    public Page<FileAttachment> findPageByRoomIdAndUploaderIdAndFileType(
+    public Page<FileAttachmentEntity> findPageByRoomIdAndUploaderIdAndFileType(
             Long roomId, Long uploaderId, FileType fileType, int page, int size) {
         
         Pageable pageable = PageRequest.of(page, size);
@@ -57,7 +57,7 @@ public class FileAttachmentQueryRepositoryimpl implements FileAttachmentQueryRep
             );
 
         return PageableExecutionUtils.getPage(
-            entities.stream().map(FileAttachmentMapper::toDomain).toList(), 
+            entities, 
             pageable, 
             countQuery::fetchOne
         );
