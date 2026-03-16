@@ -1,0 +1,42 @@
+package com.lrchan.qootalk.application.chat.service;
+
+import com.lrchan.qootalk.application.chat.dto.command.LoadFileAttachmentsCommand;
+import com.lrchan.qootalk.application.chat.dto.result.FileAttachmentQueryResult;
+import com.lrchan.qootalk.application.chat.port.in.LoadFileAttachmentsUsecase;
+import com.lrchan.qootalk.application.chat.port.out.LoadChatRoomPort;
+import com.lrchan.qootalk.application.chat.port.out.LoadFileAttachmentPort;
+import com.lrchan.qootalk.application.chat.port.out.LoadRoomParticipantPort;
+import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
+import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
+import com.lrchan.qootalk.domain.user.error.UserErrorCode;
+import com.lrchan.qootalk.common.response.PagedResponse;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service  
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class LoadFileAttachmentsService implements LoadFileAttachmentsUsecase {
+
+    private final LoadUserPort loadUserPort;
+    private final LoadChatRoomPort loadChatRoomPort;
+    private final LoadFileAttachmentPort loadFileAttachmentPort;
+    private final LoadRoomParticipantPort loadRoomParticipantPort;
+    
+    @Override
+    public PagedResponse<FileAttachmentQueryResult> load(LoadFileAttachmentsCommand command) {
+        // 유저 검증
+        loadUserPort.findById(command.requesterId())
+            .orElseThrow(() -> new DomainException(UserErrorCode.USER_NOT_FOUND));
+        
+        // 채팅방 검증
+        loadChatRoomPort.findById(command.roomId())
+            .orElseThrow(() -> new DomainException(ChatErrorCode.CHAT_ROOM_NOT_FOUND));
+        
+        
+        return null;
+    }
+}
