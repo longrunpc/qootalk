@@ -8,11 +8,14 @@ import com.lrchan.qootalk.application.chat.port.out.LoadFileAttachmentPort;
 import com.lrchan.qootalk.application.chat.port.out.LoadRoomParticipantPort;
 import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
 import com.lrchan.qootalk.common.exception.DomainException;
+import com.lrchan.qootalk.domain.chat.attachment.FileAttachment;
 import com.lrchan.qootalk.domain.chat.error.ChatErrorCode;
 import com.lrchan.qootalk.domain.user.error.UserErrorCode;
 import com.lrchan.qootalk.common.response.PagedResponse;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +39,13 @@ public class LoadFileAttachmentsService implements LoadFileAttachmentsUsecase {
         loadChatRoomPort.findById(command.roomId())
             .orElseThrow(() -> new DomainException(ChatErrorCode.CHAT_ROOM_NOT_FOUND));
         
+        // 채팅방 참여자 검증
+        loadRoomParticipantPort.findByUserIdAndRoomId(command.requesterId(), command.roomId())
+            .orElseThrow(() -> new DomainException(ChatErrorCode.CHAT_ROOM_PARTICIPANT_NOT_FOUND));
         
-        return null;
+        // 파일 조회
+        Page<FileAttachment> fileAttachments = loadFileAttachmentPort.findPageByRoomIdAndUploaderIdAndFileType(command.roomId(), command.uploaderId(), command.fileType(), command.page(), command.size());
+        
+        return PagedResponse.of(fileAttachments.map(FileAttachmentQueryResult::of).toList(), fileAttachments.getNumber(), fileAttachments.getSize(), fileAttachments.getTotalElements(), fileAttachments.getTotalPages());
     }
 }
