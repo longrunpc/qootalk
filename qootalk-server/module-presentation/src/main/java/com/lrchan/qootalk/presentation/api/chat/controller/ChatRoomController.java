@@ -1,16 +1,22 @@
 package com.lrchan.qootalk.presentation.api.chat.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lrchan.qootalk.application.chat.dto.result.CreateChatRoomQueryResult;
+import com.lrchan.qootalk.application.chat.dto.result.ChatRoomQueryResult;
 import com.lrchan.qootalk.application.chat.port.in.CreateChatRoomUsecase;
+import com.lrchan.qootalk.application.chat.port.in.LoadChatRoomsUsecase;
 import com.lrchan.qootalk.common.response.ApiResponse;
+import com.lrchan.qootalk.common.response.PagedResponse;
 import com.lrchan.qootalk.presentation.api.chat.dto.request.CreateChatRoomRequest;
 import com.lrchan.qootalk.presentation.api.chat.dto.response.CreateChatRoomResponse;
+import com.lrchan.qootalk.presentation.api.chat.dto.response.ChatRoomSummaryResponse;
 import com.lrchan.qootalk.presentation.global.auth.AuthenticatedUserProvider;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +31,7 @@ public class ChatRoomController {
 
     private final AuthenticatedUserProvider authenticatedUserProvider;
     private final CreateChatRoomUsecase createChatRoomUsecase;
+    private final LoadChatRoomsUsecase loadChatRoomsUsecase;
 
     @PostMapping
     @Operation(
@@ -37,5 +44,28 @@ public class ChatRoomController {
         Long requesterId = authenticatedUserProvider.getCurrentUserId();
         CreateChatRoomQueryResult result = createChatRoomUsecase.create(request.toCommand(requesterId));
         return ResponseEntity.ok(ApiResponse.of(CreateChatRoomResponse.of(result)));
+    }
+
+    @GetMapping
+    @Operation(
+        summary = "채팅방 목록 조회",
+        description = "현재 로그인한 사용자가 참여 중인 채팅방 목록을 조회합니다."
+    )
+    public ResponseEntity<ApiResponse<PagedResponse<ChatRoomSummaryResponse>>> getChatRooms(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        Long requesterId = authenticatedUserProvider.getCurrentUserId();
+        PagedResponse<ChatRoomQueryResult> result = loadChatRoomsUsecase.load(
+            new com.lrchan.qootalk.application.chat.dto.command.LoadChatRoomsCommand(requesterId, page, size)
+        );
+        PagedResponse<ChatRoomSummaryResponse> response = PagedResponse.of(
+            result.content().stream().map(ChatRoomSummaryResponse::of).toList(),
+            result.page(),
+            result.size(),
+            result.totalElements(),
+            result.totalPages()
+        );
+        return ResponseEntity.ok(ApiResponse.of(response));
     }
 }
