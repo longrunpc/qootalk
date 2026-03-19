@@ -4,4 +4,10 @@ spring:
   # 운영환경 빌드 시 프로필 주입
   profiles:
     active: local
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
     
