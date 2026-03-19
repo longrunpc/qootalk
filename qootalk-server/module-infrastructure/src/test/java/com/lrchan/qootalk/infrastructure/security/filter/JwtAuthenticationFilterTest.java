@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -22,7 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 
-import com.lrchan.qootalk.common.exception.InfrastructureException;
 import com.lrchan.qootalk.infrastructure.security.provider.JwtAuthenticationValidator;
 
 import jakarta.servlet.FilterChain;

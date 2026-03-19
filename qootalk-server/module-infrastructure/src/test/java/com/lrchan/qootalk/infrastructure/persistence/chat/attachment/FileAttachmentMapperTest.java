@@ -56,6 +56,7 @@ class FileAttachmentMapperTest {
 
             FileAttachmentEntity entity = FileAttachmentEntity.builder()
                     .id(1L)
+                    .roomId(10L)
                     .messageId(100L)
                     .uploaderId(50L)
                     .metadata(metadataEmbeddable)
@@ -71,6 +72,7 @@ class FileAttachmentMapperTest {
 
             // then
             assertThat(domain.id()).isEqualTo(1L);
+            assertThat(domain.roomId()).isEqualTo(10L);
             assertThat(domain.messageId()).isEqualTo(100L);
             assertThat(domain.uploaderId()).isEqualTo(50L);
             assertThat(domain.fileType()).isEqualTo(FileType.IMAGE);
@@ -120,6 +122,7 @@ class FileAttachmentMapperTest {
 
             FileAttachmentEntity entity = FileAttachmentEntity.builder()
                     .id(1L)
+                    .roomId(10L)
                     .messageId(100L)
                     .uploaderId(50L)
                     .metadata(metadataEmbeddable)
@@ -169,6 +172,7 @@ class FileAttachmentMapperTest {
 
             FileAttachment domain = FileAttachment.reconstruct(
                     1L,
+                    10L,
                     100L,
                     50L,
                     metadata,
@@ -184,6 +188,7 @@ class FileAttachmentMapperTest {
 
             // then
             assertThat(entity.getId()).isEqualTo(1L);
+            assertThat(entity.getRoomId()).isEqualTo(10L);
             assertThat(entity.getMessageId()).isEqualTo(100L);
             assertThat(entity.getUploaderId()).isEqualTo(50L);
             assertThat(entity.getFileType()).isEqualTo(FileType.VIDEO);
@@ -226,6 +231,7 @@ class FileAttachmentMapperTest {
 
             FileAttachment domain = FileAttachment.reconstruct(
                     1L,
+                    10L,
                     100L,
                     50L,
                     metadata,
@@ -273,6 +279,7 @@ class FileAttachmentMapperTest {
 
             FileAttachment original = FileAttachment.reconstruct(
                     1L,
+                    10L,
                     100L,
                     50L,
                     originalMetadata,
@@ -289,6 +296,7 @@ class FileAttachmentMapperTest {
 
             // then
             assertThat(converted.id()).isEqualTo(original.id());
+            assertThat(converted.roomId()).isEqualTo(original.roomId());
             assertThat(converted.messageId()).isEqualTo(original.messageId());
             assertThat(converted.uploaderId()).isEqualTo(original.uploaderId());
             assertThat(converted.fileType()).isEqualTo(original.fileType());
@@ -349,6 +357,7 @@ class FileAttachmentMapperTest {
 
             FileAttachment original = FileAttachment.reconstruct(
                     1L,
+                    10L,
                     100L,
                     50L,
                     metadata,

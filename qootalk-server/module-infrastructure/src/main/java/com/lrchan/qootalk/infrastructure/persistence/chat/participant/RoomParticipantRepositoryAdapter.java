@@ -1,6 +1,7 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.participant;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -24,13 +25,13 @@ public class RoomParticipantRepositoryAdapter implements RoomParticipantReposito
 
     @Override
     public Optional<RoomParticipant> findById(Long id) {
-        return roomParticipantJpaRepository.findById(id).map(RoomParticipantEntityMapper::toDomain);
+        return roomParticipantJpaRepository.findById(Objects.requireNonNull(id)).map(RoomParticipantEntityMapper::toDomain);
     }
 
     @Override
     public RoomParticipant save(RoomParticipant roomParticipant) {
         RoomParticipantEntity roomParticipantEntity = RoomParticipantEntityMapper.toEntity(roomParticipant);
-        RoomParticipantEntity savedEntity = roomParticipantJpaRepository.save(roomParticipantEntity);
+        RoomParticipantEntity savedEntity = roomParticipantJpaRepository.save(Objects.requireNonNull(roomParticipantEntity));
         return RoomParticipantEntityMapper.toDomain(savedEntity);
     }
 

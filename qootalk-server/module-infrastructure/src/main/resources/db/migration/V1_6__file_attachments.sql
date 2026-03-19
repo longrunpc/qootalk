@@ -1,6 +1,7 @@
 -- file_attachments (includes @Embedded metadata + security columns)
 create table file_attachments (
   id bigserial primary key,
+  room_id bigint not null,
   message_id bigint not null,
   uploader_id bigint not null,
 
@@ -25,3 +26,4 @@ create table file_attachments (
 );
 
 create index idx_file_attachments_message_id on file_attachments(message_id);
+create index idx_file_attachments_room_id on file_attachments(room_id);

@@ -1,5 +1,7 @@
 package com.lrchan.qootalk.infrastructure.persistence.audit;
 
+import java.util.Objects;
+
 import org.springframework.stereotype.Component;
 
 import com.lrchan.qootalk.domain.audit.AuditLog;
@@ -16,6 +18,6 @@ public class AuditLogRepositoryAdapter implements AuditLogRepository {
     @Override
     public void save(AuditLog auditLog) {
         AuditLogEntity auditLogEntity = AuditLogEntityMapper.toEntity(auditLog);
-        auditLogJpaRepository.save(auditLogEntity);
+        auditLogJpaRepository.save(Objects.requireNonNull(auditLogEntity));
     }
 }

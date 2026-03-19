@@ -25,6 +25,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class FileAttachmentEntity extends BaseEntity {
+
+    @Column(name = "room_id", nullable = false)
+    private Long roomId;
     
     @Column(name = "message_id", nullable = false)
     private Long messageId;

@@ -1,5 +1,6 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.message;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -19,13 +20,13 @@ public class MessageRepositoryAdapter implements MessageRepository, SaveMessageP
     
     @Override
     public Optional<Message> findById(Long id) {
-        return messageJpaRepository.findById(id).map(MessageEntityMapper::toDomain);
+        return messageJpaRepository.findById(Objects.requireNonNull(id)).map(MessageEntityMapper::toDomain);
     }
 
     @Override
     public Message save(Message message) {
         MessageEntity messageEntity = MessageEntityMapper.toEntity(message);
-        MessageEntity savedEntity = messageJpaRepository.save(messageEntity);
+        MessageEntity savedEntity = messageJpaRepository.save(Objects.requireNonNull(messageEntity));
         return MessageEntityMapper.toDomain(savedEntity);
     }
 

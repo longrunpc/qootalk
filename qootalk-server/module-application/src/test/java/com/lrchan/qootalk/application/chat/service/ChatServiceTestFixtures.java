@@ -3,13 +3,22 @@ package com.lrchan.qootalk.application.chat.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.lrchan.qootalk.domain.chat.attachment.FileAttachment;
+import com.lrchan.qootalk.domain.chat.attachment.FileType;
 import com.lrchan.qootalk.domain.chat.message.Message;
 import com.lrchan.qootalk.domain.chat.message.MessageType;
 import com.lrchan.qootalk.domain.chat.participant.RoomParticipant;
 import com.lrchan.qootalk.domain.chat.participant.RoomRole;
 import com.lrchan.qootalk.domain.chat.room.ChatRoom;
 import com.lrchan.qootalk.domain.chat.room.RoomType;
+import com.lrchan.qootalk.domain.chat.vo.ContentType;
+import com.lrchan.qootalk.domain.chat.vo.FileMetadata;
+import com.lrchan.qootalk.domain.chat.vo.FileName;
+import com.lrchan.qootalk.domain.chat.vo.FileSecurity;
+import com.lrchan.qootalk.domain.chat.vo.FileSize;
+import com.lrchan.qootalk.domain.chat.vo.Path;
 import com.lrchan.qootalk.domain.chat.vo.RoomName;
+import com.lrchan.qootalk.domain.chat.vo.StorageType;
 import com.lrchan.qootalk.domain.user.User;
 import com.lrchan.qootalk.domain.user.UserRole;
 import com.lrchan.qootalk.domain.user.vo.Email;
@@ -124,6 +133,56 @@ final class ChatServiceTestFixtures {
             now.minusMinutes(1),
             now.minusMinutes(1),
             null
+        );
+    }
+
+    static FileAttachment attachment(Long id, Long roomId, Long messageId, Long uploaderId, String fileName, FileType fileType) {
+        LocalDateTime now = LocalDateTime.now();
+        FileMetadata metadata = new FileMetadata(
+            new FileName(fileName),
+            new FileName("stored-" + fileName),
+            new ContentType("application/pdf"),
+            new FileSize(1024L),
+            new Path("uploads/chat/" + roomId + "/attachments/" + messageId + "/"),
+            StorageType.LOCAL
+        );
+
+        return FileAttachment.reconstruct(
+            id,
+            roomId,
+            messageId,
+            uploaderId,
+            metadata,
+            fileType,
+            FileSecurity.defaultPrivate(),
+            now.minusDays(1),
+            now.minusHours(1),
+            null
+        );
+    }
+
+    static FileAttachment deletedAttachment(Long id, Long roomId, Long messageId, Long uploaderId, String fileName, FileType fileType) {
+        LocalDateTime now = LocalDateTime.now();
+        FileMetadata metadata = new FileMetadata(
+            new FileName(fileName),
+            new FileName("stored-" + fileName),
+            new ContentType("application/pdf"),
+            new FileSize(1024L),
+            new Path("uploads/chat/" + roomId + "/attachments/" + messageId + "/"),
+            StorageType.LOCAL
+        );
+
+        return FileAttachment.reconstruct(
+            id,
+            roomId,
+            messageId,
+            uploaderId,
+            metadata,
+            fileType,
+            FileSecurity.defaultPrivate(),
+            now.minusDays(1),
+            now.minusHours(1),
+            now.minusMinutes(1)
         );
     }
 }
