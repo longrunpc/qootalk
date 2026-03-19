@@ -20,14 +20,21 @@
     "id": 501,
     "messageId": 1001,
     "uploaderId": 1,
-    "fileName": "architecture.pdf",
+    "fileName": {
+      "value": "architecture.pdf"
+    },
     "fileType": "DOCUMENT",
-    "contentType": "application/pdf",
-    "fileSize": 102400,
-    "storageType": "S3",
-    "path": "chat/10/2026/03/architecture.pdf",
-    "downloadUrl": "https://cdn.qootalk.com/files/501",
-    "createdAt": "2026-03-12T11:40:00+09:00"
+    "contentType": {
+      "value": "application/pdf"
+    },
+    "fileSize": {
+      "value": 102400
+    },
+    "storageType": "LOCAL",
+    "storagePath": {
+      "value": "uploads/chat/10/attachments/1001/"
+    },
+    "createdAt": "2026-03-12T11:40:00"
   },
   "error": null
 }

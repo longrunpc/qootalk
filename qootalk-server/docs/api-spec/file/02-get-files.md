@@ -21,11 +21,23 @@
     "content": [
       {
         "id": 501,
-        "fileName": "architecture.pdf",
-        "fileType": "DOCUMENT",
-        "fileSize": 102400,
+        "messageId": 1001,
         "uploaderId": 1,
-        "createdAt": "2026-03-12T11:40:00+09:00"
+        "fileName": {
+          "value": "architecture.pdf"
+        },
+        "fileType": "DOCUMENT",
+        "contentType": {
+          "value": "application/pdf"
+        },
+        "fileSize": {
+          "value": 102400
+        },
+        "storageType": "LOCAL",
+        "storagePath": {
+          "value": "uploads/chat/10/attachments/1001/"
+        },
+        "createdAt": "2026-03-12T11:40:00"
       }
     ],
     "page": 0,

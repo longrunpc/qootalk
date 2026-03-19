@@ -21,10 +21,14 @@
   "success": true,
   "data": {
     "id": 1,
+    "email": "user@qootalk.com",
     "name": "김쿠톡",
-    "statusMessage": "업무 집중",
     "profileImageUrl": "https://cdn.qootalk.com/profiles/1-new.png",
-    "updatedAt": "2026-03-12T10:10:00+09:00"
+    "statusMessage": "업무 집중",
+    "role": "USER",
+    "createdAt": "2026-03-01T10:00:00",
+    "updatedAt": "2026-03-12T10:10:00",
+    "deletedAt": null
   },
   "error": null
 }

@@ -29,9 +29,8 @@
     "messageType": "TEXT",
     "mentions": [12, 15],
     "parentMessageId": null,
-    "attachments": [],
-    "readCount": 0,
-    "createdAt": "2026-03-12T11:20:00+09:00"
+    "attachmentIds": [],
+    "createdAt": "2026-03-12T11:20:00"
   },
   "error": null
 }

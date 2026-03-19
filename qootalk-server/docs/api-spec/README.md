@@ -37,6 +37,10 @@
 }
 ```
 
+## 날짜/시간 형식
+
+- `LocalDateTime` 응답은 오프셋 없이 `yyyy-MM-ddTHH:mm:ss` 형식을 사용합니다.
+
 ## API 목록
 
 | # | Method | Path | 설명 | 명세 |

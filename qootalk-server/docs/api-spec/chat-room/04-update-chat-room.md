@@ -20,7 +20,7 @@
   "data": {
     "id": 10,
     "roomName": "백엔드 플랫폼 팀",
-    "updatedAt": "2026-03-12T11:10:00+09:00"
+    "updatedAt": "2026-03-12T11:10:00"
   },
   "error": null
 }

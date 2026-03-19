@@ -25,7 +25,7 @@
         "roomType": "GROUP",
         "lastMessage": "오늘 배포 일정 공유드립니다.",
         "unreadCount": 3,
-        "updatedAt": "2026-03-12T11:05:00+09:00"
+        "updatedAt": "2026-03-12T11:05:00"
       }
     ],
     "page": 0,
