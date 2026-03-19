@@ -1,5 +1,8 @@
 package com.lrchan.qootalk.application.chat.service;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,11 +55,29 @@ public class CreateChatRoomService implements CreateChatRoomUsecase {
         ChatRoom savedChatRoom = saveChatRoomPort.save(chatRoom);
 
         // 채팅방 생성 시스템 메세지 추가
-        Message message = Message.create(savedChatRoom.id(), null, "채팅방을 생성했습니다.", MessageType.SYSTEM, null);
+        Message message = Message.create(
+            savedChatRoom.id(),
+            command.requesterId(),
+            "채팅방을 생성했습니다.",
+            MessageType.SYSTEM,
+            null
+        );
         Message savedMessage = saveMessagePort.save(message);
 
-        // 채팅방 참여자 생성
-        for (Long participantId : command.participantIds()) {
+        // 생성자는 항상 OWNER 권한으로 참여한다.
+        saveRoomParticipantPort.save(RoomParticipant.create(
+            command.requesterId(),
+            savedChatRoom.id(),
+            savedMessage.id(),
+            RoomRole.OWNER,
+            command.notificationEnabled()
+        ));
+
+        Set<Long> participantIds = new LinkedHashSet<>(command.participantIds());
+        participantIds.remove(command.requesterId());
+
+        // 나머지 참여자는 MEMBER 권한으로 추가한다.
+        for (Long participantId : participantIds) {
             RoomParticipant roomParticipant = RoomParticipant.create(
                 participantId,
                 savedChatRoom.id(),
@@ -67,6 +88,6 @@ public class CreateChatRoomService implements CreateChatRoomUsecase {
             saveRoomParticipantPort.save(roomParticipant);
         }
 
-        return CreateChatRoomQueryResult.of(savedChatRoom, command.participantIds().size());
+        return CreateChatRoomQueryResult.of(savedChatRoom, participantIds.size() + 1);
     }
 }

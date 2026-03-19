@@ -70,6 +70,7 @@ public class DeleteFileAttachmentService implements DeleteFileAttachmentUsecase 
         }
 
         // 파일 첨부파일 삭제
+        fileAttachment.softDelete();
         FileAttachment deletedFileAttachment = deleteFileAttachmentPort.delete(fileAttachment);
 
         return DeleteFileAttachmentQueryResult.of(deletedFileAttachment);

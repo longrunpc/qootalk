@@ -31,10 +31,10 @@ import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 @AutoConfigureMockMvc
 public abstract class ApiIntegrationTestSupport extends IntegrationTestSupport {
 
-    protected static final String AUTH_API_PREFIX = "/api/v1/auth";
-    protected static final String USER_API_PREFIX = "/api/v1/api/v1/users/me";
-    protected static final String CHAT_ROOM_API_PREFIX = "/api/v1/api/v1/chat-rooms";
-    protected static final String FILE_API_PREFIX = "/api/v1/api/v1/files";
+    protected static final String AUTH_API_PREFIX = "/auth";
+    protected static final String USER_API_PREFIX = "/api/v1/users/me";
+    protected static final String CHAT_ROOM_API_PREFIX = "/api/v1/chat-rooms";
+    protected static final String FILE_API_PREFIX = "/api/v1/files";
 
     @Autowired
     protected MockMvc mockMvc;
