@@ -17,11 +17,11 @@
   "success": true,
   "data": {
     "accessToken": {
-      "value": "eyJhbGciOiJIUzI1NiJ9...",
+      "token": "eyJhbGciOiJIUzI1NiJ9...",
       "expiresIn": 3600000
     },
     "refreshToken": {
-      "value": "eyJhbGciOiJIUzI1NiJ9...",
+      "token": "eyJhbGciOiJIUzI1NiJ9...",
       "expiresIn": 1209600000
     }
   },

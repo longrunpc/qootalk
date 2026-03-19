@@ -18,11 +18,11 @@
       {
         "userId": 1,
         "roomRole": "OWNER",
-        "joinedAt": "2026-03-12T11:00:00+09:00"
+        "joinedAt": "2026-03-12T11:00:00"
       }
     ],
     "notificationEnabled": true,
-    "createdAt": "2026-03-12T11:00:00+09:00"
+    "createdAt": "2026-03-12T11:00:00"
   },
   "error": null
 }

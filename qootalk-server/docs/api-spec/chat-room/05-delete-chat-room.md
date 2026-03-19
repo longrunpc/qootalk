@@ -10,8 +10,9 @@
 {
   "success": true,
   "data": {
-    "deleted": true,
-    "roomId": 10
+    "id": 10,
+    "roomName": "백엔드 팀",
+    "deletedAt": "2026-03-12T11:15:00"
   },
   "error": null
 }

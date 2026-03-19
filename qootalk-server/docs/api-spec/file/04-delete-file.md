@@ -10,8 +10,8 @@
 {
   "success": true,
   "data": {
-    "deleted": true,
-    "fileId": 501
+    "id": 501,
+    "deletedAt": "2026-03-12T11:45:00"
   },
   "error": null
 }

@@ -23,16 +23,20 @@
       "id": 1,
       "email": "user@qootalk.com",
       "name": "홍길동",
+      "profileImageUrl": null,
+      "statusMessage": "",
       "role": "USER",
-      "status": "ACTIVE"
+      "createdAt": "2026-03-12T10:00:00",
+      "updatedAt": "2026-03-12T10:00:00",
+      "deletedAt": null
     },
     "token": {
       "accessToken": {
-        "value": "eyJhbGciOiJIUzI1NiJ9...",
+        "token": "eyJhbGciOiJIUzI1NiJ9...",
         "expiresIn": 3600000
       },
       "refreshToken": {
-        "value": "eyJhbGciOiJIUzI1NiJ9...",
+        "token": "eyJhbGciOiJIUzI1NiJ9...",
         "expiresIn": 1209600000
       }
     }
