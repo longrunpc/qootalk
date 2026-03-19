@@ -18,6 +18,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	// Dotenv
 	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
@@ -29,4 +30,7 @@ dependencies {
 	// Flyway
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-database-postgresql'
+
+	// AWS S3
+	testImplementation 'software.amazon.awssdk:s3:2.41.13'
 }
