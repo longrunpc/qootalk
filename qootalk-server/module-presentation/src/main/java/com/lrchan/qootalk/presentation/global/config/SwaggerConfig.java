@@ -34,7 +34,7 @@ public class SwaggerConfig {
     public GroupedOpenApi qooTalkApi() {
         return GroupedOpenApi.builder()
             .group("qootalk-v1")
-            .pathsToMatch("/api/v1/**")
+            .pathsToMatch("/**")
             .build();
     }
 }
