@@ -1,7 +1,9 @@
 package com.lrchan.qootalk.presentation.api.chat.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,11 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lrchan.qootalk.application.chat.dto.result.FileAttachmentQueryResult;
+import com.lrchan.qootalk.application.chat.dto.result.DeleteFileAttachmentQueryResult;
 import com.lrchan.qootalk.application.chat.dto.command.UploadFileAttachmentCommand;
+import com.lrchan.qootalk.application.chat.port.in.DeleteFileAttachmentUsecase;
 import com.lrchan.qootalk.application.chat.port.in.LoadFileAttachmentsUsecase;
 import com.lrchan.qootalk.application.chat.port.in.UploadFileAttachmentUsecase;
 import com.lrchan.qootalk.common.response.ApiResponse;
 import com.lrchan.qootalk.common.response.PagedResponse;
+import com.lrchan.qootalk.presentation.api.chat.dto.response.DeleteFileAttachmentResponse;
 import com.lrchan.qootalk.presentation.api.chat.dto.response.FileAttachmentResponse;
 import com.lrchan.qootalk.presentation.global.auth.AuthenticatedUserProvider;
 import com.lrchan.qootalk.domain.chat.attachment.FileType;
@@ -30,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class FileController {
 
     private final AuthenticatedUserProvider authenticatedUserProvider;
+    private final DeleteFileAttachmentUsecase deleteFileAttachmentUsecase;
     private final LoadFileAttachmentsUsecase loadFileAttachmentsUsecase;
     private final UploadFileAttachmentUsecase uploadFileAttachmentUsecase;
 
@@ -89,5 +95,21 @@ public class FileController {
             result.totalPages()
         );
         return ResponseEntity.ok(ApiResponse.of(response));
+    }
+
+    @DeleteMapping("/{fileId}")
+    @Operation(
+        summary = "파일 삭제",
+        description = "현재 로그인한 사용자가 채팅방 파일을 삭제합니다."
+    )
+    public ResponseEntity<ApiResponse<DeleteFileAttachmentResponse>> deleteFile(
+        @PathVariable Long fileId,
+        @RequestParam Long roomId
+    ) {
+        Long requesterId = authenticatedUserProvider.getCurrentUserId();
+        DeleteFileAttachmentQueryResult result = deleteFileAttachmentUsecase.delete(
+            new com.lrchan.qootalk.application.chat.dto.command.DeleteFileAttachmentCommand(requesterId, roomId, fileId)
+        );
+        return ResponseEntity.ok(ApiResponse.of(DeleteFileAttachmentResponse.of(result)));
     }
 }
