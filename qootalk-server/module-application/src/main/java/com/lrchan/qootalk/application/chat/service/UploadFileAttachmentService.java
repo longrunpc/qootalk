@@ -65,7 +65,7 @@ public class UploadFileAttachmentService implements UploadFileAttachmentUsecase 
         }
 
         // 파일 업로드
-        String path = "chat/" + command.roomId() + "/attachments/" + command.messageId() + "/";
+        String path = "uploads/chat/" + command.roomId() + "/attachments/" + command.messageId() + "/";
         StorageResource resource = new StorageResource(
             path,
             command.originalFileName(),
@@ -83,6 +83,7 @@ public class UploadFileAttachmentService implements UploadFileAttachmentUsecase 
             StorageType.LOCAL);
         FileAttachment fileAttachment = FileAttachment.create(
             command.roomId(), command.requesterId(), metadata, FileType.fromContentType(new ContentType(command.contentType())), FileSecurity.defaultPrivate());
+        fileAttachment.setMessageId(command.messageId());
 
         FileAttachment savedFileAttachment = saveFileAttachmentPort.save(fileAttachment);
         return FileAttachmentQueryResult.of(savedFileAttachment);
