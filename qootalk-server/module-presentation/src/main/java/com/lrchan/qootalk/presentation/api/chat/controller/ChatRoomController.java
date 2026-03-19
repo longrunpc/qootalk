@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,15 +13,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.lrchan.qootalk.application.chat.dto.result.CreateChatRoomQueryResult;
 import com.lrchan.qootalk.application.chat.dto.result.ChatRoomQueryResult;
 import com.lrchan.qootalk.application.chat.dto.result.ChatRoomDetailQueryResult;
+import com.lrchan.qootalk.application.chat.dto.result.UpdateChatRoomQueryResult;
 import com.lrchan.qootalk.application.chat.port.in.CreateChatRoomUsecase;
 import com.lrchan.qootalk.application.chat.port.in.LoadChatRoomDetailUsecase;
 import com.lrchan.qootalk.application.chat.port.in.LoadChatRoomsUsecase;
+import com.lrchan.qootalk.application.chat.port.in.UpdateChatRoomUsecase;
 import com.lrchan.qootalk.common.response.ApiResponse;
 import com.lrchan.qootalk.common.response.PagedResponse;
 import com.lrchan.qootalk.presentation.api.chat.dto.request.CreateChatRoomRequest;
+import com.lrchan.qootalk.presentation.api.chat.dto.request.UpdateChatRoomRequest;
 import com.lrchan.qootalk.presentation.api.chat.dto.response.ChatRoomDetailResponse;
 import com.lrchan.qootalk.presentation.api.chat.dto.response.CreateChatRoomResponse;
 import com.lrchan.qootalk.presentation.api.chat.dto.response.ChatRoomSummaryResponse;
+import com.lrchan.qootalk.presentation.api.chat.dto.response.UpdateChatRoomResponse;
 import com.lrchan.qootalk.presentation.global.auth.AuthenticatedUserProvider;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,6 +42,7 @@ public class ChatRoomController {
     private final CreateChatRoomUsecase createChatRoomUsecase;
     private final LoadChatRoomDetailUsecase loadChatRoomDetailUsecase;
     private final LoadChatRoomsUsecase loadChatRoomsUsecase;
+    private final UpdateChatRoomUsecase updateChatRoomUsecase;
 
     @PostMapping
     @Operation(
@@ -85,5 +91,19 @@ public class ChatRoomController {
             new com.lrchan.qootalk.application.chat.dto.command.LoadChatRoomDetailCommand(requesterId, roomId)
         );
         return ResponseEntity.ok(ApiResponse.of(ChatRoomDetailResponse.of(result)));
+    }
+
+    @PatchMapping("/{roomId}")
+    @Operation(
+        summary = "채팅방 수정",
+        description = "현재 로그인한 사용자가 참여 중인 채팅방 이름을 수정합니다."
+    )
+    public ResponseEntity<ApiResponse<UpdateChatRoomResponse>> updateChatRoom(
+        @PathVariable Long roomId,
+        @RequestBody UpdateChatRoomRequest request
+    ) {
+        Long requesterId = authenticatedUserProvider.getCurrentUserId();
+        UpdateChatRoomQueryResult result = updateChatRoomUsecase.update(request.toCommand(requesterId, roomId));
+        return ResponseEntity.ok(ApiResponse.of(UpdateChatRoomResponse.of(result)));
     }
 }
