@@ -1,0 +1,130 @@
+package com.lrchan.qootalk.presentation.api.user.controller;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
+
+import com.lrchan.qootalk.presentation.support.ApiIntegrationTestSupport;
+
+class AuthControllerIntegrationTest extends ApiIntegrationTestSupport {
+
+    @Nested
+    @DisplayName("회원가입")
+    class SignupTest {
+        @Test
+        @DisplayName("회원가입에 성공한다")
+        void signupSuccess() throws Exception {
+            mockMvc.perform(post(AUTH_API_PREFIX + "/signup")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json(new SignupRequest("tester@qootalk.com", "Password123!", "테스터"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.id").isNumber())
+                .andExpect(jsonPath("$.data.email").value("tester@qootalk.com"))
+                .andExpect(jsonPath("$.data.name").value("테스터"))
+                .andExpect(jsonPath("$.data.role").value("USER"));
+        }
+
+        @Test
+        @DisplayName("중복 이메일로 회원가입하면 실패한다")
+        void signupFailsWhenEmailDuplicated() throws Exception {
+            createUser("duplicated@qootalk.com", "Password123!", "중복유저");
+
+            mockMvc.perform(post(AUTH_API_PREFIX + "/signup")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json(new SignupRequest("duplicated@qootalk.com", "Password123!", "새유저"))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.error.code").value("USER_002"))
+                .andExpect(jsonPath("$.error.message").value("이미 존재하는 사용자입니다."));
+        }
+
+        @Test
+        @DisplayName("잘못된 이메일 형식으로 회원가입하면 실패한다")
+        void signupFailsWhenEmailInvalid() throws Exception {
+            mockMvc.perform(post(AUTH_API_PREFIX + "/signup")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json(new SignupRequest("invalid-email", "Password123!", "테스터"))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.error.code").value("USER_004"))
+                .andExpect(jsonPath("$.error.message").value("이메일 형식이 올바르지 않습니다."));
+        }
+
+        @Test
+        @DisplayName("이름 길이가 짧으면 회원가입에 실패한다")
+        void signupFailsWhenNameTooShort() throws Exception {
+            mockMvc.perform(post(AUTH_API_PREFIX + "/signup")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json(new SignupRequest("tester2@qootalk.com", "Password123!", "김"))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.error.code").value("USER_005"))
+                .andExpect(jsonPath("$.error.message").value("이름 형식이 올바르지 않습니다."));
+        }
+    }
+    
+    @Nested
+    @DisplayName("로그인")
+    class LoginTest {
+        @Test
+        @DisplayName("로그인에 성공하면 토큰 쿠키를 내려준다")
+        void loginSuccess() throws Exception {
+            createUser("login@qootalk.com", "Password123!", "로그인유저");
+
+            MvcResult result = mockMvc.perform(post(AUTH_API_PREFIX + "/login")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json(new LoginRequest("login@qootalk.com", "Password123!"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.email").value("login@qootalk.com"))
+                .andExpect(cookie().exists("accessToken"))
+                .andExpect(cookie().exists("refreshToken"))
+                .andReturn();
+
+            org.assertj.core.api.Assertions.assertThat(result.getResponse().getHeaders("Set-Cookie"))
+                .hasSize(2)
+                .anyMatch(value -> value.contains("accessToken="))
+                .anyMatch(value -> value.contains("refreshToken="));
+        }
+
+        @Test
+        @DisplayName("잘못된 비밀번호로 로그인하면 실패한다")
+        void loginFailsWhenPasswordInvalid() throws Exception {
+            createUser("login-fail@qootalk.com", "Password123!", "로그인실패유저");
+
+            mockMvc.perform(post(AUTH_API_PREFIX + "/login")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json(new LoginRequest("login-fail@qootalk.com", "WrongPassword123!"))))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.error.code").value("USER_001"))
+                .andExpect(jsonPath("$.error.message").value("로그인에 실패했습니다."));
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 이메일로 로그인하면 실패한다")
+        void loginFailsWhenUserNotFound() throws Exception {
+            mockMvc.perform(post(AUTH_API_PREFIX + "/login")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json(new LoginRequest("missing@qootalk.com", "Password123!"))))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.error.code").value("USER_001"))
+                .andExpect(jsonPath("$.error.message").value("로그인에 실패했습니다."));
+        }
+    }
+
+    private record SignupRequest(String email, String password, String name) {
+    }
+
+    private record LoginRequest(String email, String password) {
+    }
+}
