@@ -44,6 +44,20 @@ class UserProfileControllerIntegrationTest extends ApiIntegrationTestSupport {
     }
 
     @Test
+    @DisplayName("상태 메시지가 너무 길면 수정에 실패한다")
+    void updateStatusMessageFailsWhenTooLong() throws Exception {
+        UserEntity user = createUser("status-long@qootalk.com", "Password123!", "긴상태유저");
+
+        mockMvc.perform(authorized(patch(USER_API_PREFIX + "/status-message"), user)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new StatusMessageRequest("a".repeat(101)))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.error.code").value("USER_007"))
+            .andExpect(jsonPath("$.error.message").value("상태 메시지 형식이 올바르지 않습니다."));
+    }
+
+    @Test
     @DisplayName("프로필 이미지를 업로드하고 삭제할 수 있다")
     void uploadAndDeleteProfileImage() throws Exception {
         UserEntity user = createUser("profile@qootalk.com", "Password123!", "프로필유저");
@@ -67,6 +81,62 @@ class UserProfileControllerIntegrationTest extends ApiIntegrationTestSupport {
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.data.id").value(user.getId()))
             .andExpect(jsonPath("$.data.profileImageUrl").isEmpty());
+    }
+
+    @Test
+    @DisplayName("프로필 이미지를 다시 업로드하면 기존 이미지가 교체된다")
+    void uploadProfileImageReplacesExistingImage() throws Exception {
+        UserEntity user = createUser("profile-replace@qootalk.com", "Password123!", "교체유저");
+
+        String firstImageUrl = uploadProfileImage(user, "profile-1.png", "first-image");
+        String secondImageUrl = uploadProfileImage(user, "profile-2.png", "second-image");
+
+        org.assertj.core.api.Assertions.assertThat(secondImageUrl)
+            .contains("qootalk-s3-local")
+            .isNotEqualTo(firstImageUrl);
+    }
+
+    @Test
+    @DisplayName("현재 프로필 이미지 URL과 다른 값으로 삭제를 요청하면 실패한다")
+    void deleteProfileImageFailsWhenUrlMismatch() throws Exception {
+        UserEntity user = createUser("profile-mismatch@qootalk.com", "Password123!", "불일치유저");
+        uploadProfileImage(user, "profile.png", "profile-image");
+
+        mockMvc.perform(authorized(delete(USER_API_PREFIX + "/profile-image"), user)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new DeleteProfileImageRequest("https://example.com/another-image.png"))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.error.code").value("USER_002"))
+            .andExpect(jsonPath("$.error.message").value("프로필 이미지 URL이 일치하지 않습니다."));
+    }
+
+    @Test
+    @DisplayName("프로필 이미지가 없으면 삭제 요청이 와도 그대로 성공한다")
+    void deleteProfileImageSucceedsWhenImageDoesNotExist() throws Exception {
+        UserEntity user = createUser("profile-empty@qootalk.com", "Password123!", "빈프로필유저");
+
+        mockMvc.perform(authorized(delete(USER_API_PREFIX + "/profile-image"), user)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new DeleteProfileImageRequest("https://example.com/not-used.png"))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.data.id").value(user.getId()))
+            .andExpect(jsonPath("$.data.profileImageUrl").isEmpty());
+    }
+
+    private String uploadProfileImage(UserEntity user, String fileName, String content) throws Exception {
+        MvcResult uploadResult = mockMvc.perform(authorized(
+                    multipart(USER_API_PREFIX + "/profile-image")
+                        .file(multipartFile("file", fileName, MediaType.IMAGE_PNG_VALUE, content)),
+                    user))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.data.profileImageUrl").value(containsString("qootalk-s3-local")))
+            .andReturn();
+
+        JsonNode uploadJson = objectMapper.readTree(responseBody(uploadResult));
+        return uploadJson.path("data").path("profileImageUrl").asText();
     }
 
     private record StatusMessageRequest(String statusMessage) {
