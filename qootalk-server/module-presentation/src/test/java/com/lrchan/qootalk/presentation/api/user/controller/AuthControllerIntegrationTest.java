@@ -46,6 +46,30 @@ class AuthControllerIntegrationTest extends ApiIntegrationTestSupport {
     }
 
     @Test
+    @DisplayName("잘못된 이메일 형식으로 회원가입하면 실패한다")
+    void signupFailsWhenEmailInvalid() throws Exception {
+        mockMvc.perform(post(AUTH_API_PREFIX + "/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new SignupRequest("invalid-email", "Password123!", "테스터"))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.error.code").value("USER_004"))
+            .andExpect(jsonPath("$.error.message").value("이메일 형식이 올바르지 않습니다."));
+    }
+
+    @Test
+    @DisplayName("이름 길이가 짧으면 회원가입에 실패한다")
+    void signupFailsWhenNameTooShort() throws Exception {
+        mockMvc.perform(post(AUTH_API_PREFIX + "/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new SignupRequest("tester2@qootalk.com", "Password123!", "김"))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.error.code").value("USER_005"))
+            .andExpect(jsonPath("$.error.message").value("이름 형식이 올바르지 않습니다."));
+    }
+
+    @Test
     @DisplayName("로그인에 성공하면 토큰 쿠키를 내려준다")
     void loginSuccess() throws Exception {
         createUser("login@qootalk.com", "Password123!", "로그인유저");
@@ -74,6 +98,18 @@ class AuthControllerIntegrationTest extends ApiIntegrationTestSupport {
         mockMvc.perform(post(AUTH_API_PREFIX + "/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json(new LoginRequest("login-fail@qootalk.com", "WrongPassword123!"))))
+            .andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.error.code").value("USER_001"))
+            .andExpect(jsonPath("$.error.message").value("로그인에 실패했습니다."));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 이메일로 로그인하면 실패한다")
+    void loginFailsWhenUserNotFound() throws Exception {
+        mockMvc.perform(post(AUTH_API_PREFIX + "/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new LoginRequest("missing@qootalk.com", "Password123!"))))
             .andExpect(status().isUnauthorized())
             .andExpect(jsonPath("$.success").value(false))
             .andExpect(jsonPath("$.error.code").value("USER_001"))
