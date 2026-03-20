@@ -35,7 +35,7 @@ public class LoadChatRoomsService implements LoadChatRoomsUsecase {
         // 유저 검증
         loadUserPort.findById(command.userId())
             .orElseThrow(() -> new DomainException(UserErrorCode.USER_NOT_FOUND));
-            
+        
         // 채팅방 리스트 조회
         PagedResponse<RoomParticipant> roomParticipants = loadRoomParticipantPort.findActivePageByUserId(command.userId(), command.page(), command.size());
 

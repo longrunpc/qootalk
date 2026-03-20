@@ -68,13 +68,13 @@ class CreateChatRoomServiceTest {
 
         assertThat(result.id()).isEqualTo(100L);
         assertThat(result.createdBy()).isEqualTo(1L);
-        assertThat(result.participantCount()).isEqualTo(2);
+        assertThat(result.participantCount()).isEqualTo(3);
 
         ArgumentCaptor<RoomParticipant> participantCaptor = ArgumentCaptor.forClass(RoomParticipant.class);
-        verify(saveRoomParticipantPort, times(2)).save(participantCaptor.capture());
+        verify(saveRoomParticipantPort, times(3)).save(participantCaptor.capture());
         assertThat(participantCaptor.getAllValues())
             .extracting(RoomParticipant::userId)
-            .containsExactly(2L, 3L);
+            .containsExactly(1L, 2L, 3L);
         assertThat(participantCaptor.getAllValues())
             .allMatch(participant -> !participant.notificationEnabled());
     }
