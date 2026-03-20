@@ -10,6 +10,3 @@ create table messages (
   updated_at timestamp not null,
   deleted_at timestamp
 );
-
-create index idx_messages_room_id on messages(room_id);
-create index idx_messages_user_id on messages(user_id);

@@ -17,6 +17,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,8 +48,14 @@ public class MessageEntity extends BaseEntity {
 
     // null일때 멘션 없음을 의미(체크 유의)
     @ElementCollection
-    @CollectionTable(name = "message_mentions", joinColumns = @JoinColumn(name = "message_id"))
-    @Column(name = "user_id")
+    @CollectionTable(
+        name = "message_mentions",
+        joinColumns = @JoinColumn(name = "message_id"),
+        uniqueConstraints = {
+            @UniqueConstraint(name = "uk_message_mentions_message_user", columnNames = {"message_id", "user_id"})
+        }
+    )
+    @Column(name = "user_id", nullable = false)
     @Builder.Default
     private List<Long> mentions = new ArrayList<>();
 

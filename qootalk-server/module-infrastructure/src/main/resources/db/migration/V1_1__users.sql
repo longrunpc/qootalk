@@ -1,7 +1,7 @@
 -- users
 create table users (
   id bigserial primary key,
-  email varchar(255) not null unique,
+  email varchar(255) not null,
   password varchar(255) not null,
   name varchar(255) not null,
   profile_image_url varchar(255),
@@ -9,5 +9,6 @@ create table users (
   role varchar(255) not null,
   created_at timestamp not null,
   updated_at timestamp not null,
-  deleted_at timestamp
+  deleted_at timestamp,
+  constraint uk_users_email unique (email)
 );

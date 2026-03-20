@@ -8,5 +8,3 @@ create table chat_rooms (
   updated_at timestamp not null,
   deleted_at timestamp
 );
-
-create index idx_chat_rooms_created_by on chat_rooms(created_by);

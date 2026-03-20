@@ -22,8 +22,6 @@ create table file_attachments (
 
   created_at timestamp not null,
   updated_at timestamp not null,
-  deleted_at timestamp
+  deleted_at timestamp,
+  constraint uk_file_attachments_message_id unique (message_id)
 );
-
-create index idx_file_attachments_message_id on file_attachments(message_id);
-create index idx_file_attachments_room_id on file_attachments(room_id);

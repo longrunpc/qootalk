@@ -12,13 +12,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "file_attachments")
+@Table(
+    name = "file_attachments",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_file_attachments_message_id", columnNames = "message_id")
+    }
+)
 @SQLDelete(sql = "UPDATE file_attachments SET deleted_at = now() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
 @SuperBuilder
