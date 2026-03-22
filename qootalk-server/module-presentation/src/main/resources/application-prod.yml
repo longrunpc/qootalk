@@ -19,4 +19,33 @@ spring:
     baseline-on-migrate: true
     clean-disabled: true
 
+  data:
+    redis:
+      host: ${PROD_REDIS_HOST}
+      port: ${PROD_REDIS_PORT}
+
+  kafka:
+    bootstrap-servers: ${PROD_KAFKA_BOOTSTRAP_SERVERS}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: ${PROD_KAFKA_CONSUMER_GROUP:qootalk-chat-prod}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+
+messaging:
+  kafka:
+    topics:
+      chat-message: ${CHAT_MESSAGE_TOPIC:qootalk.chat.message}
+    consumer-group: ${PROD_KAFKA_CONSUMER_GROUP:qootalk-chat-prod}
+  redis:
+    channels:
+      chat-message: ${REDIS_CHAT_MESSAGE_CHANNEL:qootalk:chat:message}
+      user-presence: ${REDIS_USER_PRESENCE_CHANNEL:qootalk:user:presence}
+    presence-ttl-seconds: ${REDIS_PRESENCE_TTL_SECONDS:300}
+
 # 추후 aws s3 설정 추가

@@ -27,6 +27,30 @@ spring:
       host: ${LOCAL_REDIS_HOST}
       port: ${LOCAL_REDIS_PORT}
 
+  kafka:
+    bootstrap-servers: ${LOCAL_KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: ${LOCAL_KAFKA_CONSUMER_GROUP:qootalk-chat-local}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+
+messaging:
+  kafka:
+    topics:
+      chat-message: ${CHAT_MESSAGE_TOPIC:qootalk.chat.message}
+    consumer-group: ${LOCAL_KAFKA_CONSUMER_GROUP:qootalk-chat-local}
+  redis:
+    channels:
+      chat-message: ${REDIS_CHAT_MESSAGE_CHANNEL:qootalk:chat:message}
+      user-presence: ${REDIS_USER_PRESENCE_CHANNEL:qootalk:user:presence}
+    presence-ttl-seconds: ${REDIS_PRESENCE_TTL_SECONDS:300}
+
 aws:
   s3:
     endpoint: ${LOCAL_S3_ENDPOINT}
