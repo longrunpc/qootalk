@@ -1,4 +1,29 @@
 services:
+  redis:
+    image: redis:7-alpine
+    container_name: qootalk_redis
+    ports:
+      - "6379:6379"
+
+  kafka:
+    image: bitnami/kafka:3.9.0
+    container_name: qootalk_kafka
+    ports:
+      - "9094:9094"
+    environment:
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    volumes:
+      - kafka_data:/bitnami/kafka
+
   localstack:
     image: localstack/localstack:latest
     container_name: localstack_s3
@@ -12,3 +37,6 @@ services:
     volumes:
       - "./localstack_data:/var/lib/localstack"
       - "./scripts/localstack/init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh"
+
+volumes:
+  kafka_data:
