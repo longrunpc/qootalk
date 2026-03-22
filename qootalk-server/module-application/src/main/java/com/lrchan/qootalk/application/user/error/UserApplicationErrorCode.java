@@ -4,7 +4,8 @@ import com.lrchan.qootalk.common.error.ErrorCode;
 
 public enum UserApplicationErrorCode implements ErrorCode {
     LOGIN_FAILED("USER_001", "로그인에 실패했습니다.", 401),
-    USER_PROFILE_IMAGE_URL_MISMATCH("USER_002", "프로필 이미지 URL이 일치하지 않습니다.", 400);
+    USER_PROFILE_IMAGE_URL_MISMATCH("USER_002", "프로필 이미지 URL이 일치하지 않습니다.", 400),
+    USER_DELETED("USER_003", "삭제된 사용자입니다.", 400);
 
     private final String code;
     private final String message;

@@ -29,9 +29,14 @@ public class DeleteProfileImageService implements DeleteProfileImageUsecase {
 
     @Override
     public UserQueryResult delete(DeleteProfileImageCommand command) {
+        // 유저 조회
         User user = loadUserPort.findById(command.userId())
             .orElseThrow(() -> new DomainException(UserErrorCode.USER_NOT_FOUND));
-        
+        if (user.isDeleted()) {
+            throw new ApplicationException(UserApplicationErrorCode.USER_DELETED);
+        }
+
+        // 프로필 이미지 삭제
         if (user.profileImageUrl().value() == null) {
             return UserQueryResult.of(user);
         }

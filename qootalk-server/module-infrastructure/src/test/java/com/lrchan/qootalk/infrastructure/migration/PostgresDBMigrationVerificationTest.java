@@ -42,14 +42,47 @@ class PostgresDBMigrationVerificationTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("messages 테이블에 room_id 인덱스가 존재해야 한다")
-    void verifyMessageRoomIdIndex() {
-        Integer indexCount = jdbcTemplate.queryForObject(
-            "SELECT count(*) FROM pg_indexes WHERE tablename = 'messages' AND indexname = 'idx_messages_room_id'",
+    @DisplayName("유니크 제약은 명시적인 UK 이름으로 생성되어야 한다")
+    void verifyNamedUniqueConstraints() {
+        Integer uniqueConstraintCount = jdbcTemplate.queryForObject(
+            """
+            SELECT count(*)
+            FROM information_schema.table_constraints
+            WHERE constraint_type = 'UNIQUE'
+              AND constraint_name IN (
+                'uk_users_email',
+                'uk_room_participants_user_room',
+                'uk_message_mentions_message_user'
+              )
+            """,
             Integer.class
         );
 
-        assertThat(indexCount).isGreaterThan(0);
+        assertThat(uniqueConstraintCount).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("사용자 정의 일반 인덱스 없이 스키마가 생성되어야 한다")
+    void verifyNoCustomIndexesRemain() {
+        Integer indexCount = jdbcTemplate.queryForObject(
+            """
+            SELECT count(*)
+            FROM pg_indexes
+            WHERE schemaname = 'public'
+              AND indexname IN (
+                'idx_chat_rooms_created_by',
+                'idx_room_participants_user_id',
+                'idx_room_participants_room_id',
+                'idx_messages_room_id',
+                'idx_messages_user_id',
+                'idx_file_attachments_room_id',
+                'idx_message_mentions_message_id'
+              )
+            """,
+            Integer.class
+        );
+
+        assertThat(indexCount).isZero();
     }
 
     @Test

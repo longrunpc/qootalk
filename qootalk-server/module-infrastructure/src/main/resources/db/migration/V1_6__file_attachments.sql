@@ -24,6 +24,3 @@ create table file_attachments (
   updated_at timestamp not null,
   deleted_at timestamp
 );
-
-create index idx_file_attachments_message_id on file_attachments(message_id);
-create index idx_file_attachments_room_id on file_attachments(room_id);

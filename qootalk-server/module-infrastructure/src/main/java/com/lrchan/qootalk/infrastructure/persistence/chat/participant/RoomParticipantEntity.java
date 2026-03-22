@@ -11,13 +11,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "room_participants")
+@Table(
+    name = "room_participants",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_room_participants_user_room", columnNames = {"user_id", "room_id"})
+    }
+)
 @SQLDelete(sql = "UPDATE room_participants SET deleted_at = now() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
 @SuperBuilder

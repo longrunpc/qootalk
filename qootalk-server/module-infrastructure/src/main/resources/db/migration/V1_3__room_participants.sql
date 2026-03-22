@@ -8,8 +8,6 @@ create table room_participants (
   notification_enabled boolean not null default true,
   created_at timestamp not null,
   updated_at timestamp not null,
-  deleted_at timestamp
+  deleted_at timestamp,
+  constraint uk_room_participants_user_room unique (user_id, room_id)
 );
-
-create index idx_room_participants_user_id on room_participants(user_id);
-create index idx_room_participants_room_id on room_participants(room_id);

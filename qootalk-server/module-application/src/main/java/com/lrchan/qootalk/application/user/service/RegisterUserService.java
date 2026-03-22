@@ -27,14 +27,18 @@ public class RegisterUserService implements RegisterUserUseCase {
 
     @Override
     public UserQueryResult register(RegisterUserCommand command) {
+        // 이메일 중복 검증
         if (loadUserPort.findByEmail(command.email().value()).isPresent()) {
             throw new DomainException(UserErrorCode.USER_ALREADY_EXISTS);
         }
         
+        // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(command.password().encryptedPassword());
         
+        // 유저 생성
         User user = User.create(command.email(), new Password(encodedPassword), command.name());
-        
+
+        // 유저 저장
         User registeredUser = saveUserPort.save(user);
 
         return UserQueryResult.of(registeredUser);
