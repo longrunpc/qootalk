@@ -23,7 +23,14 @@ public enum ChatErrorCode implements ErrorCode {
     CHAT_FILE_METADATA_INVALID_PATH("CHAT_016", "파일 경로가 올바르지 않습니다.", 400),
     CHAT_FILE_METADATA_INVALID_INPUT_STREAM("CHAT_017", "파일 입력 스트림이 올바르지 않습니다.", 400),
     CHAT_FILE_ATTACHMENT_NOT_FOUND("CHAT_018", "파일 첨부파일을 찾을 수 없습니다.", 404),
-    CHAT_FILE_ATTACHMENT_DELETED("CHAT_019", "파일 첨부파일이 삭제되었습니다.", 404);
+    CHAT_FILE_ATTACHMENT_DELETED("CHAT_019", "파일 첨부파일이 삭제되었습니다.", 404),
+    CHAT_MESSAGE_NOT_FOUND("CHAT_020", "메시지를 찾을 수 없습니다.", 404),
+    CHAT_MESSAGE_EMPTY_PAYLOAD("CHAT_021", "메시지 내용 또는 첨부파일이 필요합니다.", 400),
+    CHAT_MESSAGE_INVALID_CONTENT("CHAT_022", "메시지 내용이 올바르지 않습니다.", 400),
+    CHAT_MESSAGE_ATTACHMENT_REQUIRED("CHAT_023", "해당 메시지 타입에는 첨부파일이 필요합니다.", 400),
+    CHAT_MESSAGE_INVALID_PARENT("CHAT_024", "부모 메시지가 현재 채팅방에 속하지 않습니다.", 400),
+    CHAT_MESSAGE_ATTACHMENT_ROOM_MISMATCH("CHAT_025", "첨부파일이 현재 채팅방에 속하지 않습니다.", 400),
+    CHAT_MESSAGE_ATTACHMENT_OWNER_MISMATCH("CHAT_026", "본인이 업로드한 첨부파일만 전송할 수 있습니다.", 400);
 
     private final String code;
     private final String message;
