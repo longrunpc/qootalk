@@ -8,12 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.lrchan.qootalk.application.chat.dto.command.SendMessageCommand;
+import com.lrchan.qootalk.application.chat.dto.event.ChatMessageEvent;
 import com.lrchan.qootalk.application.chat.dto.result.SendMessageQueryResult;
 import com.lrchan.qootalk.application.chat.port.in.SendMessageUsecase;
 import com.lrchan.qootalk.application.chat.port.out.LoadChatRoomPort;
 import com.lrchan.qootalk.application.chat.port.out.LoadFileAttachmentPort;
 import com.lrchan.qootalk.application.chat.port.out.LoadMessagePort;
 import com.lrchan.qootalk.application.chat.port.out.LoadRoomParticipantPort;
+import com.lrchan.qootalk.application.chat.port.out.PublishChatMessagePort;
 import com.lrchan.qootalk.application.chat.port.out.SaveFileAttachmentPort;
 import com.lrchan.qootalk.application.chat.port.out.SaveMessagePort;
 import com.lrchan.qootalk.application.chat.port.out.SaveRoomParticipantPort;
@@ -43,6 +45,7 @@ public class SendMessageService implements SendMessageUsecase {
     private final SaveMessagePort saveMessagePort;
     private final SaveFileAttachmentPort saveFileAttachmentPort;
     private final SaveRoomParticipantPort saveRoomParticipantPort;
+    private final PublishChatMessagePort publishChatMessagePort;
 
     @Override
     public SendMessageQueryResult send(SendMessageCommand command) {
@@ -89,6 +92,9 @@ public class SendMessageService implements SendMessageUsecase {
         // 채팅방 참여자 업데이트
         participant.updateReadReceipt(savedMessage.id());
         saveRoomParticipantPort.save(participant);
+
+        // 실시간 브로드캐스팅용 이벤트 발행
+        publishChatMessagePort.publish(ChatMessageEvent.of(savedMessage, attachmentIds));
 
         return SendMessageQueryResult.of(savedMessage, attachmentIds);
     }

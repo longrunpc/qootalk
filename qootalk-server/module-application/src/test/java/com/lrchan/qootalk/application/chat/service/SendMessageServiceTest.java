@@ -24,6 +24,7 @@ import com.lrchan.qootalk.application.chat.port.out.LoadChatRoomPort;
 import com.lrchan.qootalk.application.chat.port.out.LoadFileAttachmentPort;
 import com.lrchan.qootalk.application.chat.port.out.LoadMessagePort;
 import com.lrchan.qootalk.application.chat.port.out.LoadRoomParticipantPort;
+import com.lrchan.qootalk.application.chat.port.out.PublishChatMessagePort;
 import com.lrchan.qootalk.application.chat.port.out.SaveFileAttachmentPort;
 import com.lrchan.qootalk.application.chat.port.out.SaveMessagePort;
 import com.lrchan.qootalk.application.chat.port.out.SaveRoomParticipantPort;
@@ -54,6 +55,8 @@ class SendMessageServiceTest {
     private SaveFileAttachmentPort saveFileAttachmentPort;
     @Mock
     private SaveRoomParticipantPort saveRoomParticipantPort;
+    @Mock
+    private PublishChatMessagePort publishChatMessagePort;
 
     @InjectMocks
     private SendMessageService sendMessageService;
@@ -81,6 +84,7 @@ class SendMessageServiceTest {
         ArgumentCaptor<RoomParticipant> participantCaptor = ArgumentCaptor.forClass(RoomParticipant.class);
         verify(saveRoomParticipantPort).save(participantCaptor.capture());
         assertThat(participantCaptor.getValue().lastReadMessageId()).isEqualTo(20L);
+        verify(publishChatMessagePort).publish(any());
     }
 
     @Test
@@ -103,6 +107,7 @@ class SendMessageServiceTest {
 
         assertThat(result.attachmentIds()).containsExactly(31L, 32L);
         verify(saveFileAttachmentPort, times(2)).save(any(FileAttachment.class));
+        verify(publishChatMessagePort).publish(any());
     }
 
     @Test
