@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.util.StringUtils;
@@ -44,7 +44,7 @@ public class RedisPubSubConfig {
     }
 
     @Bean
-    MessagePublisher redisMessagePublisher(StringRedisTemplate redisTemplate) {
+    MessagePublisher redisMessagePublisher(RedisTemplate<String, Object> redisTemplate) {
         return new RedisMessagePublisher(redisTemplate);
     }
 
@@ -53,9 +53,9 @@ public class RedisPubSubConfig {
     }
 
     static class RedisMessagePublisher implements MessagePublisher {
-        private final StringRedisTemplate redisTemplate;
+        private final RedisTemplate<String, Object> redisTemplate;
 
-        RedisMessagePublisher(StringRedisTemplate redisTemplate) {
+        RedisMessagePublisher(RedisTemplate<String, Object> redisTemplate) {
             this.redisTemplate = redisTemplate;
         }
 

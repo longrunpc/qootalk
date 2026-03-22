@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,11 +19,8 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.util.StringUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableConfigurationProperties(KafkaMessagingProperties.class)
@@ -56,21 +52,11 @@ public class KafkaConfig {
     @Bean
     ConsumerFactory<String, Object> kafkaConsumerFactory(
         KafkaProperties kafkaProperties,
-        KafkaMessagingProperties messagingProperties,
-        ObjectMapper objectMapper
+        KafkaMessagingProperties messagingProperties
     ) {
         Map<String, Object> properties = new HashMap<>(kafkaProperties.buildConsumerProperties());
         properties.putIfAbsent(ConsumerConfig.GROUP_ID_CONFIG, resolveConsumerGroup(messagingProperties));
-        properties.putIfAbsent(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-
-        JsonDeserializer<Object> valueDeserializer = new JsonDeserializer<>(Object.class, objectMapper, false);
-        valueDeserializer.addTrustedPackages("*");
-
-        return new DefaultKafkaConsumerFactory<>(
-            properties,
-            new StringDeserializer(),
-            valueDeserializer
-        );
+        return new DefaultKafkaConsumerFactory<>(properties);
     }
 
     @Bean
