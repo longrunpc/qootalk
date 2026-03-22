@@ -3,6 +3,8 @@ package com.lrchan.qootalk.infrastructure.persistence.chat.message;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 
 import com.lrchan.qootalk.application.chat.port.out.LoadMessagePort;
@@ -33,5 +35,11 @@ public class MessageRepositoryAdapter implements MessageRepository, SaveMessageP
     @Override
     public Long countByRoomIdAndIdAfter(Long roomId, Long id) {
         return messageJpaRepository.countByRoomIdAndIdAfter(roomId, id);
+    }
+
+    @Override
+    public Slice<Message> findSliceByRoomId(Long roomId, Long fromMessageId, int page, int size) {
+        return messageJpaRepository.findSliceByRoomId(roomId, fromMessageId, PageRequest.of(page, size))
+            .map(MessageEntityMapper::toDomain);
     }
 }
