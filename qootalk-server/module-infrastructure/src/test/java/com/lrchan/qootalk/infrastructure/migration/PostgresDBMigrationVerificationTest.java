@@ -52,14 +52,13 @@ class PostgresDBMigrationVerificationTest extends IntegrationTestSupport {
               AND constraint_name IN (
                 'uk_users_email',
                 'uk_room_participants_user_room',
-                'uk_file_attachments_message_id',
                 'uk_message_mentions_message_user'
               )
             """,
             Integer.class
         );
 
-        assertThat(uniqueConstraintCount).isEqualTo(4);
+        assertThat(uniqueConstraintCount).isEqualTo(3);
     }
 
     @Test

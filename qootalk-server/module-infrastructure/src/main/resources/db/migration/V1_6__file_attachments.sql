@@ -22,6 +22,5 @@ create table file_attachments (
 
   created_at timestamp not null,
   updated_at timestamp not null,
-  deleted_at timestamp,
-  constraint uk_file_attachments_message_id unique (message_id)
+  deleted_at timestamp
 );
