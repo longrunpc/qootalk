@@ -13,6 +13,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'org.postgresql:postgresql'
 
 	// Querydsl
@@ -46,12 +47,15 @@ dependencies {
 	// TestContainers
 	testImplementation "org.testcontainers:testcontainers-postgresql:2.0.1"
 	testImplementation "com.redis:testcontainers-redis:2.2.2"
+	testImplementation "org.testcontainers:kafka:1.20.1"
 	testImplementation "org.testcontainers:testcontainers-localstack:2.0.1"
 	testImplementation "org.testcontainers:junit-jupiter:1.20.1"
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
 
 	// TestFixtures
 	testFixturesImplementation 'org.testcontainers:testcontainers-postgresql:2.0.1'
 	testFixturesImplementation 'com.redis:testcontainers-redis:2.2.2'
+    testFixturesImplementation "org.testcontainers:kafka:1.20.1"
     testFixturesImplementation "org.testcontainers:testcontainers-localstack:2.0.1"
     testFixturesImplementation "org.testcontainers:junit-jupiter:1.20.1"
     testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -4,6 +4,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import com.redis.testcontainers.RedisContainer;
+import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.localstack.LocalStackContainer;
 import org.testcontainers.postgresql.PostgreSQLContainer;
@@ -15,6 +16,7 @@ public abstract class IntegrationTestSupport {
 
     static final PostgreSQLContainer postgres;
     static final RedisContainer redis;
+    static final KafkaContainer kafka;
     static final LocalStackContainer localstack;
 
     static {
@@ -22,8 +24,13 @@ public abstract class IntegrationTestSupport {
         localstack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:3.0.0"))
             .withEnv("DEFAULT_REGION", "ap-northeast-2");
         redis = new RedisContainer(DockerImageName.parse("redis:7-alpine"));
+        kafka = new KafkaContainer(
+            DockerImageName.parse("apache/kafka-native:3.8.0")
+                .asCompatibleSubstituteFor("apache/kafka")
+        );
 
         redis.start();
+        kafka.start();
         postgres.start();
         localstack.start();
         
@@ -57,6 +64,7 @@ public abstract class IntegrationTestSupport {
         // --- Redis (Testcontainers) 설정 ---
         registry.add("spring.data.redis.host", redis::getHost);
         registry.add("spring.data.redis.port", redis::getFirstMappedPort);
+        registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
 
         // --- JWT 설정 ---
         // 이 값은 테스트 코드에서 사용되는 임시 값이므로, 실제 개발 환경에서는 사용하지 않습니다.
