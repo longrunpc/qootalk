@@ -71,6 +71,10 @@ class SendMessageServiceTest {
         given(loadUserPort.findById(1L)).willReturn(Optional.of(ChatServiceTestFixtures.activeUser(1L)));
         given(loadChatRoomPort.findById(10L)).willReturn(Optional.of(ChatServiceTestFixtures.activeRoom(10L, 1L)));
         given(loadRoomParticipantPort.findByUserIdAndRoomId(1L, 10L)).willReturn(Optional.of(participant));
+        given(loadRoomParticipantPort.findActiveByRoomId(10L)).willReturn(List.of(
+            ChatServiceTestFixtures.participant(100L, 1L, 10L, 1L, com.lrchan.qootalk.domain.chat.participant.RoomRole.MEMBER, true),
+            ChatServiceTestFixtures.participant(101L, 2L, 10L, 1L, com.lrchan.qootalk.domain.chat.participant.RoomRole.MEMBER, true)
+        ));
         given(saveMessagePort.save(any(Message.class))).willReturn(savedMessage);
 
         SendMessageQueryResult result = sendMessageService.send(command);
@@ -126,6 +130,21 @@ class SendMessageServiceTest {
     }
 
     @Test
+    @DisplayName("사용자는 SYSTEM 메시지를 전송할 수 없다")
+    void send_fail_whenMessageTypeNotAllowed() {
+        SendMessageCommand command = new SendMessageCommand(1L, 10L, "시스템 공지", MessageType.SYSTEM, List.of(), null, List.of());
+
+        given(loadUserPort.findById(1L)).willReturn(Optional.of(ChatServiceTestFixtures.activeUser(1L)));
+        given(loadChatRoomPort.findById(10L)).willReturn(Optional.of(ChatServiceTestFixtures.activeRoom(10L, 1L)));
+        given(loadRoomParticipantPort.findByUserIdAndRoomId(1L, 10L))
+            .willReturn(Optional.of(ChatServiceTestFixtures.participant(100L, 1L, 10L, 1L, com.lrchan.qootalk.domain.chat.participant.RoomRole.MEMBER, true)));
+
+        assertThatThrownBy(() -> sendMessageService.send(command))
+            .isInstanceOf(DomainException.class)
+            .hasMessage(ChatErrorCode.CHAT_MESSAGE_TYPE_NOT_ALLOWED.getMessage());
+    }
+
+    @Test
     @DisplayName("다른 채팅방의 부모 메시지로 답장을 보내면 예외가 발생한다")
     void send_fail_whenParentMessageBelongsToAnotherRoom() {
         SendMessageCommand command = new SendMessageCommand(1L, 10L, "답장", MessageType.REPLY, List.of(), 99L, List.of());
@@ -139,6 +158,25 @@ class SendMessageServiceTest {
         assertThatThrownBy(() -> sendMessageService.send(command))
             .isInstanceOf(DomainException.class)
             .hasMessage(ChatErrorCode.CHAT_MESSAGE_INVALID_PARENT.getMessage());
+    }
+
+    @Test
+    @DisplayName("채팅방 참여자가 아닌 사용자를 멘션하면 예외가 발생한다")
+    void send_fail_whenMentionTargetNotParticipant() {
+        SendMessageCommand command = new SendMessageCommand(1L, 10L, "멘션", MessageType.TEXT, List.of(99L), null, List.of());
+
+        given(loadUserPort.findById(1L)).willReturn(Optional.of(ChatServiceTestFixtures.activeUser(1L)));
+        given(loadChatRoomPort.findById(10L)).willReturn(Optional.of(ChatServiceTestFixtures.activeRoom(10L, 1L)));
+        given(loadRoomParticipantPort.findByUserIdAndRoomId(1L, 10L))
+            .willReturn(Optional.of(ChatServiceTestFixtures.participant(100L, 1L, 10L, 1L, com.lrchan.qootalk.domain.chat.participant.RoomRole.MEMBER, true)));
+        given(loadRoomParticipantPort.findActiveByRoomId(10L)).willReturn(List.of(
+            ChatServiceTestFixtures.participant(100L, 1L, 10L, 1L, com.lrchan.qootalk.domain.chat.participant.RoomRole.MEMBER, true),
+            ChatServiceTestFixtures.participant(101L, 2L, 10L, 1L, com.lrchan.qootalk.domain.chat.participant.RoomRole.MEMBER, true)
+        ));
+
+        assertThatThrownBy(() -> sendMessageService.send(command))
+            .isInstanceOf(DomainException.class)
+            .hasMessage(ChatErrorCode.CHAT_MESSAGE_MENTION_TARGET_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -157,5 +195,20 @@ class SendMessageServiceTest {
         assertThatThrownBy(() -> sendMessageService.send(command))
             .isInstanceOf(DomainException.class)
             .hasMessage(ChatErrorCode.CHAT_MESSAGE_ATTACHMENT_OWNER_MISMATCH.getMessage());
+    }
+
+    @Test
+    @DisplayName("중복된 첨부파일 ID는 메시지에 포함할 수 없다")
+    void send_fail_whenAttachmentIdsDuplicated() {
+        SendMessageCommand command = new SendMessageCommand(1L, 10L, null, MessageType.FILE, List.of(), null, List.of(31L, 31L));
+
+        given(loadUserPort.findById(1L)).willReturn(Optional.of(ChatServiceTestFixtures.activeUser(1L)));
+        given(loadChatRoomPort.findById(10L)).willReturn(Optional.of(ChatServiceTestFixtures.activeRoom(10L, 1L)));
+        given(loadRoomParticipantPort.findByUserIdAndRoomId(1L, 10L))
+            .willReturn(Optional.of(ChatServiceTestFixtures.participant(100L, 1L, 10L, 1L, com.lrchan.qootalk.domain.chat.participant.RoomRole.MEMBER, true)));
+
+        assertThatThrownBy(() -> sendMessageService.send(command))
+            .isInstanceOf(DomainException.class)
+            .hasMessage(ChatErrorCode.CHAT_MESSAGE_DUPLICATE_ATTACHMENT.getMessage());
     }
 }

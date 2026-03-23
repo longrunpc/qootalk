@@ -1,7 +1,9 @@
 package com.lrchan.qootalk.application.chat.service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +76,7 @@ public class SendMessageService implements SendMessageUsecase {
         MessageType messageType = command.messageType() == null ? MessageType.TEXT : command.messageType();
         validateMessagePayload(command, messageType);
         validateParentMessage(command.parentMessageId(), command.roomId());
+        validateMentions(command.mentions(), command.roomId());
 
         // 메시지 생성
         Message message = Message.createReply(
@@ -103,6 +106,10 @@ public class SendMessageService implements SendMessageUsecase {
         boolean hasContent = StringUtils.hasText(command.content());
         boolean hasAttachments = command.attachmentIds() != null && !command.attachmentIds().isEmpty();
 
+        if (messageType == MessageType.SYSTEM || messageType == MessageType.NOTICE) {
+            throw new DomainException(ChatErrorCode.CHAT_MESSAGE_TYPE_NOT_ALLOWED);
+        }
+
         if (!hasContent && !hasAttachments) {
             throw new DomainException(ChatErrorCode.CHAT_MESSAGE_EMPTY_PAYLOAD);
         }
@@ -113,6 +120,13 @@ public class SendMessageService implements SendMessageUsecase {
 
         if ((messageType == MessageType.FILE || messageType == MessageType.IMAGE) && !hasAttachments) {
             throw new DomainException(ChatErrorCode.CHAT_MESSAGE_ATTACHMENT_REQUIRED);
+        }
+
+        if (hasAttachments) {
+            Set<Long> uniqueAttachmentIds = new LinkedHashSet<>(command.attachmentIds());
+            if (uniqueAttachmentIds.size() != command.attachmentIds().size()) {
+                throw new DomainException(ChatErrorCode.CHAT_MESSAGE_DUPLICATE_ATTACHMENT);
+            }
         }
     }
 
@@ -154,6 +168,22 @@ public class SendMessageService implements SendMessageUsecase {
             attachmentIds.add(attachment.id());
         }
         return List.copyOf(attachmentIds);
+    }
+
+    private void validateMentions(List<Long> mentions, Long roomId) {
+        if (mentions == null || mentions.isEmpty()) {
+            return;
+        }
+
+        Set<Long> participantIds = loadRoomParticipantPort.findActiveByRoomId(roomId).stream()
+            .map(RoomParticipant::userId)
+            .collect(java.util.stream.Collectors.toSet());
+
+        for (Long mentionedUserId : mentions) {
+            if (!participantIds.contains(mentionedUserId)) {
+                throw new DomainException(ChatErrorCode.CHAT_MESSAGE_MENTION_TARGET_NOT_FOUND);
+            }
+        }
     }
 
     private String normalizeContent(String content) {
