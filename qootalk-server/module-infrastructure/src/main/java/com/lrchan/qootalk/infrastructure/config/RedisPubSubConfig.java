@@ -3,6 +3,7 @@ package com.lrchan.qootalk.infrastructure.config;
 import java.time.Duration;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +16,14 @@ import org.springframework.util.StringUtils;
 @EnableConfigurationProperties(RedisMessagingProperties.class)
 public class RedisPubSubConfig {
 
-    private static final String DEFAULT_CHAT_MESSAGE_CHANNEL = "qootalk:chat:message";
-    private static final String DEFAULT_USER_PRESENCE_CHANNEL = "qootalk:user:presence";
-    private static final long DEFAULT_USER_PRESENCE_TTL_SECONDS = 300L;
+    @Value("${qootalk.channels.chat-message}")
+    private String chatMessageChannel;
+
+    @Value("${qootalk.channels.user-presence}")
+    private String userPresenceChannel;
+
+    @Value("${qootalk.presence-ttl-seconds}")
+    private long presenceTtlSeconds;
 
     @Bean
     ChannelTopic chatMessageChannelTopic(RedisMessagingProperties properties) {
@@ -70,7 +76,7 @@ public class RedisPubSubConfig {
             .map(RedisMessagingProperties::channels)
             .map(RedisMessagingProperties.Channels::chatMessage)
             .filter(StringUtils::hasText)
-            .orElse(DEFAULT_CHAT_MESSAGE_CHANNEL);
+            .orElse(chatMessageChannel);
     }
 
     private String resolveUserPresenceChannel(RedisMessagingProperties properties) {
@@ -78,13 +84,13 @@ public class RedisPubSubConfig {
             .map(RedisMessagingProperties::channels)
             .map(RedisMessagingProperties.Channels::userPresence)
             .filter(StringUtils::hasText)
-            .orElse(DEFAULT_USER_PRESENCE_CHANNEL);
+            .orElse(userPresenceChannel);
     }
 
     private long resolvePresenceTtlSeconds(RedisMessagingProperties properties) {
         return Optional.ofNullable(properties)
             .map(RedisMessagingProperties::presenceTtlSeconds)
             .filter(ttl -> ttl > 0)
-            .orElse(DEFAULT_USER_PRESENCE_TTL_SECONDS);
+            .orElse(presenceTtlSeconds);
     }
 }

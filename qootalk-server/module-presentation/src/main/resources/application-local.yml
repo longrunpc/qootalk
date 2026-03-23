@@ -1,3 +1,9 @@
+qootalk:
+  channels:
+    chat-message: qootalk:chat:message
+    user-presence: qootalk:user:presence
+  presence-ttl-seconds: 300
+
 spring:
   config:
     import: "optional:file:.env[.properties],optional:file:../.env[.properties]"
