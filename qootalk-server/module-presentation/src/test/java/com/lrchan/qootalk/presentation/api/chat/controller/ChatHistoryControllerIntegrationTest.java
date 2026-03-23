@@ -44,6 +44,41 @@ class ChatHistoryControllerIntegrationTest extends ApiIntegrationTestSupport {
         }
 
         @Test
+        @DisplayName("대량 메시지도 fromMessageId 기반으로 안정적으로 페이징 조회할 수 있다")
+        void getChatHistoriesWithFromMessageIdPaging() throws Exception {
+            UserEntity sender = createUser("history-paging-sender@qootalk.com", "Password123!", "기록페이징발신자");
+            UserEntity member = createUser("history-paging-member@qootalk.com", "Password123!", "기록페이징멤버");
+
+            Long roomId = createChatRoom(sender, member.getId());
+
+            Long lastMessageId = null;
+            for (int i = 1; i <= 25; i++) {
+                lastMessageId = sendMessage(sender, roomId, "message-" + i);
+            }
+
+            MvcResult firstPageResult = mockMvc.perform(authorized(get(CHAT_ROOM_API_PREFIX + "/" + roomId + "/histories"), sender)
+                    .param("page", "0")
+                    .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.content", hasSize(10)))
+                .andExpect(jsonPath("$.data.content[0].content").value("message-25"))
+                .andExpect(jsonPath("$.data.hasNext").value(true))
+                .andReturn();
+
+            JsonNode firstPageJson = objectMapper.readTree(responseBody(firstPageResult));
+            long fromMessageId = firstPageJson.path("data").path("content").get(9).path("id").asLong();
+
+            mockMvc.perform(authorized(get(CHAT_ROOM_API_PREFIX + "/" + roomId + "/histories"), sender)
+                    .param("fromMessageId", String.valueOf(fromMessageId))
+                    .param("page", "0")
+                    .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.content", hasSize(10)))
+                .andExpect(jsonPath("$.data.content[0].content").value("message-15"))
+                .andExpect(jsonPath("$.data.hasNext").value(true));
+        }
+
+        @Test
         @DisplayName("참여하지 않은 사용자는 채팅 이력을 조회할 수 없다")
         void getChatHistoriesFailsWhenNotParticipant() throws Exception {
             UserEntity owner = createUser("history-owner@qootalk.com", "Password123!", "기록방장");
