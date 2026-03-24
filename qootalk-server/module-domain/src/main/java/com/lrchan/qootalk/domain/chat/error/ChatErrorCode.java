@@ -33,7 +33,9 @@ public enum ChatErrorCode implements ErrorCode {
     CHAT_MESSAGE_ATTACHMENT_OWNER_MISMATCH("CHAT_026", "본인이 업로드한 첨부파일만 전송할 수 있습니다.", 400),
     CHAT_MESSAGE_TYPE_NOT_ALLOWED("CHAT_027", "사용자가 전송할 수 없는 메시지 타입입니다.", 400),
     CHAT_MESSAGE_MENTION_TARGET_NOT_FOUND("CHAT_028", "멘션 대상은 현재 채팅방 참여자여야 합니다.", 400),
-    CHAT_MESSAGE_DUPLICATE_ATTACHMENT("CHAT_029", "중복된 첨부파일 ID는 전송할 수 없습니다.", 400);
+    CHAT_MESSAGE_DUPLICATE_ATTACHMENT("CHAT_029", "중복된 첨부파일 ID는 전송할 수 없습니다.", 400),
+    CHAT_MESSAGE_EDIT_FORBIDDEN("CHAT_030", "본인이 작성한 메시지만 수정할 수 있습니다.", 403),
+    CHAT_MESSAGE_UPDATE_NOT_ALLOWED("CHAT_031", "해당 메시지 타입은 수정할 수 없습니다.", 400);
 
     private final String code;
     private final String message;
