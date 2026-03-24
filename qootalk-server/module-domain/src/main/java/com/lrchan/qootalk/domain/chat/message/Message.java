@@ -82,4 +82,9 @@ public class Message extends BaseModel {
         this.mentions = userIds == null ? new ArrayList<>() : new ArrayList<>(userIds);
         update();
     }
+
+    public void delete() {
+        softDelete();
+        update();
+    }
 }
