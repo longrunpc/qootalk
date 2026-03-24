@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.lrchan.qootalk.application.chat.dto.event.ChatMessageEvent;
 import com.lrchan.qootalk.application.chat.dto.event.UserChatMessageEvent;
 import com.lrchan.qootalk.application.chat.port.out.LoadRoomParticipantPort;
-import com.lrchan.qootalk.infrastructure.config.RedisPubSubConfig.MessagePublisher;
+import com.lrchan.qootalk.infrastructure.messaging.redis.MessagePublisher;
 import com.lrchan.qootalk.infrastructure.messaging.presence.RedisUserPresenceTracker;
 
 @Component

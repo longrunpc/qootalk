@@ -71,5 +71,14 @@ public abstract class IntegrationTestSupport {
         registry.add("jwt.secret", () -> "BZ8uxA8V9Iz//+hgMZ9j+TZBWNfytwMoJU3QkkcT/aQ=");
         registry.add("jwt.access-expiration", () -> "86400000");
         registry.add("jwt.refresh-expiration", () -> "604800000");
+
+        // --- Redis PubSub 설정 ---
+        registry.add("messaging.redis.channels.chat-message", () -> "qootalk:chat:message");
+        registry.add("messaging.redis.channels.user-presence", () -> "qootalk:user:presence");
+        registry.add("messaging.redis.presence-ttl-seconds", () -> "300");
+
+        // --- Kafka 설정 ---
+        registry.add("messaging.kafka.topics.chat-message", () -> "qootalk.chat.message");
+        registry.add("messaging.kafka.consumer-group", () -> "qootalk-chat");
     }
 }

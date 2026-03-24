@@ -21,7 +21,7 @@ import com.lrchan.qootalk.application.chat.dto.event.ChatMessageEvent;
 import com.lrchan.qootalk.application.chat.port.out.LoadRoomParticipantPort;
 import com.lrchan.qootalk.domain.chat.message.MessageType;
 import com.lrchan.qootalk.domain.chat.participant.RoomRole;
-import com.lrchan.qootalk.infrastructure.config.RedisPubSubConfig.MessagePublisher;
+import com.lrchan.qootalk.infrastructure.messaging.redis.MessagePublisher;
 import com.lrchan.qootalk.infrastructure.messaging.presence.RedisUserPresenceTracker;
 
 @ExtendWith(MockitoExtension.class)
