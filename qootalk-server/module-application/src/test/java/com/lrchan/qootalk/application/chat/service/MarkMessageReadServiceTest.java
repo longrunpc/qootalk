@@ -3,6 +3,7 @@ package com.lrchan.qootalk.application.chat.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import java.util.Optional;
@@ -19,6 +20,7 @@ import com.lrchan.qootalk.application.chat.dto.result.ReadReceiptQueryResult;
 import com.lrchan.qootalk.application.chat.port.out.LoadChatRoomPort;
 import com.lrchan.qootalk.application.chat.port.out.LoadMessagePort;
 import com.lrchan.qootalk.application.chat.port.out.LoadRoomParticipantPort;
+import com.lrchan.qootalk.application.chat.port.out.PublishReadReceiptPort;
 import com.lrchan.qootalk.application.chat.port.out.SaveRoomParticipantPort;
 import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
 import com.lrchan.qootalk.common.exception.DomainException;
@@ -39,6 +41,8 @@ class MarkMessageReadServiceTest {
     private LoadMessagePort loadMessagePort;
     @Mock
     private SaveRoomParticipantPort saveRoomParticipantPort;
+    @Mock
+    private PublishReadReceiptPort publishReadReceiptPort;
 
     @InjectMocks
     private MarkMessageReadService markMessageReadService;
@@ -59,6 +63,7 @@ class MarkMessageReadServiceTest {
         assertThat(result.updated()).isTrue();
         assertThat(result.lastReadMessageId()).isEqualTo(20L);
         verify(saveRoomParticipantPort).save(participant);
+        verify(publishReadReceiptPort).publish(org.mockito.ArgumentMatchers.any());
     }
 
     @Test
@@ -76,6 +81,8 @@ class MarkMessageReadServiceTest {
 
         assertThat(result.updated()).isFalse();
         assertThat(result.lastReadMessageId()).isEqualTo(10L);
+        verify(saveRoomParticipantPort, never()).save(participant);
+        verify(publishReadReceiptPort, never()).publish(org.mockito.ArgumentMatchers.any());
     }
 
     @Test
