@@ -10,6 +10,7 @@ public record RedisMessagingProperties(
 
     public record Channels(
         String chatMessage,
+        String readReceipt,
         String userPresence
     ) {
     }

@@ -50,10 +50,12 @@ messaging:
   kafka:
     topics:
       chat-message: ${CHAT_MESSAGE_TOPIC:qootalk.chat.message}
+      read-receipt: ${READ_RECEIPT_TOPIC:qootalk.read.receipt}
     consumer-group: ${LOCAL_KAFKA_CONSUMER_GROUP:qootalk-chat-local}
   redis:
     channels:
       chat-message: ${REDIS_CHAT_MESSAGE_CHANNEL:qootalk:chat:message}
+      read-receipt: ${REDIS_READ_RECEIPT_CHANNEL:qootalk:chat:read-receipt}
       user-presence: ${REDIS_USER_PRESENCE_CHANNEL:qootalk:user:presence}
     presence-ttl-seconds: ${REDIS_PRESENCE_TTL_SECONDS:300}
 

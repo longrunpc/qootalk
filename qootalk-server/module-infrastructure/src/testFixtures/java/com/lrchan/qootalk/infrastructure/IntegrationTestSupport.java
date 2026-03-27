@@ -74,11 +74,13 @@ public abstract class IntegrationTestSupport {
 
         // --- Redis PubSub 설정 ---
         registry.add("messaging.redis.channels.chat-message", () -> "qootalk:chat:message");
+        registry.add("messaging.redis.channels.read-receipt", () -> "qootalk:chat:read-receipt");
         registry.add("messaging.redis.channels.user-presence", () -> "qootalk:user:presence");
         registry.add("messaging.redis.presence-ttl-seconds", () -> "300");
 
         // --- Kafka 설정 ---
         registry.add("messaging.kafka.topics.chat-message", () -> "qootalk.chat.message");
+        registry.add("messaging.kafka.topics.read-receipt", () -> "qootalk.read.receipt");
         registry.add("messaging.kafka.consumer-group", () -> "qootalk-chat");
     }
 }

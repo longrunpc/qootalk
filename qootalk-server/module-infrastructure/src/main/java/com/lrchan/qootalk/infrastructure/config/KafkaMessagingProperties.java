@@ -9,7 +9,8 @@ public record KafkaMessagingProperties(
 ) {
 
     public record Topics(
-        String chatMessage
+        String chatMessage,
+        String readReceipt
     ) {
     }
 }

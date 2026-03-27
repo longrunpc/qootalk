@@ -26,13 +26,11 @@ import org.springframework.util.StringUtils;
 @EnableConfigurationProperties(KafkaMessagingProperties.class)
 public class KafkaConfig {
 
-    private static final String DEFAULT_CHAT_MESSAGE_TOPIC = "qootalk.chat.message";
-    private static final String DEFAULT_CONSUMER_GROUP = "qootalk-chat";
-
     @Bean
     KafkaAdmin.NewTopics chatMessageTopic(KafkaMessagingProperties properties) {
         return new KafkaAdmin.NewTopics(
-            new NewTopic(resolveChatMessageTopic(properties), 3, (short) 1)
+            new NewTopic(resolveTopic(properties.topics().chatMessage()), 3, (short) 1),
+            new NewTopic(resolveTopic(properties.topics().readReceipt()), 3, (short) 1)
         );
     }
 
@@ -69,18 +67,16 @@ public class KafkaConfig {
         return factory;
     }
 
-    private String resolveChatMessageTopic(KafkaMessagingProperties properties) {
-        return Optional.ofNullable(properties)
-            .map(KafkaMessagingProperties::topics)
-            .map(KafkaMessagingProperties.Topics::chatMessage)
+    private String resolveTopic(String topic) {
+        return Optional.ofNullable(topic)
             .filter(StringUtils::hasText)
-            .orElse(DEFAULT_CHAT_MESSAGE_TOPIC);
+            .orElseThrow(() -> new IllegalStateException("Kafka topic must not be blank"));
     }
 
     private String resolveConsumerGroup(KafkaMessagingProperties properties) {
         return Optional.ofNullable(properties)
             .map(KafkaMessagingProperties::consumerGroup)
             .filter(StringUtils::hasText)
-            .orElse(DEFAULT_CONSUMER_GROUP);
+            .orElse(properties.consumerGroup());
     }
 }

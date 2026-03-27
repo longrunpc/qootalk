@@ -4,11 +4,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lrchan.qootalk.application.chat.dto.command.MarkMessageReadCommand;
+import com.lrchan.qootalk.application.chat.dto.event.ReadReceiptEvent;
 import com.lrchan.qootalk.application.chat.dto.result.ReadReceiptQueryResult;
 import com.lrchan.qootalk.application.chat.port.in.MarkMessageReadUsecase;
 import com.lrchan.qootalk.application.chat.port.out.LoadChatRoomPort;
 import com.lrchan.qootalk.application.chat.port.out.LoadMessagePort;
 import com.lrchan.qootalk.application.chat.port.out.LoadRoomParticipantPort;
+import com.lrchan.qootalk.application.chat.port.out.PublishReadReceiptPort;
 import com.lrchan.qootalk.application.chat.port.out.SaveRoomParticipantPort;
 import com.lrchan.qootalk.application.user.port.out.LoadUserPort;
 import com.lrchan.qootalk.common.exception.DomainException;
@@ -31,6 +33,7 @@ public class MarkMessageReadService implements MarkMessageReadUsecase {
     private final LoadRoomParticipantPort loadRoomParticipantPort;
     private final LoadMessagePort loadMessagePort;
     private final SaveRoomParticipantPort saveRoomParticipantPort;
+    private final PublishReadReceiptPort publishReadReceiptPort;
 
     @Override
     public ReadReceiptQueryResult mark(MarkMessageReadCommand command) {
@@ -64,6 +67,12 @@ public class MarkMessageReadService implements MarkMessageReadUsecase {
 
         participant.updateReadReceipt(command.lastReadMessageId());
         saveRoomParticipantPort.save(participant);
+        publishReadReceiptPort.publish(new ReadReceiptEvent(
+            command.roomId(),
+            command.requesterId(),
+            participant.lastReadMessageId(),
+            participant.updatedAt()
+        ));
         return new ReadReceiptQueryResult(command.roomId(), participant.lastReadMessageId(), true);
     }
 }

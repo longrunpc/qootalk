@@ -23,6 +23,11 @@ public class RedisPubSubConfig {
     }
 
     @Bean
+    ChannelTopic readReceiptChannelTopic(RedisMessagingProperties properties) {
+        return new ChannelTopic(properties.channels().readReceipt());
+    }
+
+    @Bean
     ChannelTopic userPresenceChannelTopic(RedisMessagingProperties properties) {
         return new ChannelTopic(properties.channels().userPresence());
     }

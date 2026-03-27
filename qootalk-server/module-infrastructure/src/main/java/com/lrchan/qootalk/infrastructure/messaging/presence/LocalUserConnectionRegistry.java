@@ -40,6 +40,10 @@ public class LocalUserConnectionRegistry {
     }
 
     public void dispatch(Long userId, ChatMessageEvent event) {
+        dispatch(userId, "chat-message", String.valueOf(event.messageId()), event);
+    }
+
+    public void dispatch(Long userId, String eventName, String eventId, Object payload) {
         Map<String, SseEmitter> emitters = emittersByUser.get(userId);
         if (emitters == null || emitters.isEmpty()) {
             return;
@@ -47,10 +51,15 @@ public class LocalUserConnectionRegistry {
 
         emitters.forEach((connectionId, emitter) -> {
             try {
-                emitter.send(SseEmitter.event()
-                    .name("chat-message")
-                    .id(String.valueOf(event.messageId()))
-                    .data(event));
+                SseEmitter.SseEventBuilder event = SseEmitter.event()
+                    .name(eventName)
+                    .data(payload);
+
+                if (eventId != null) {
+                    event.id(eventId);
+                }
+
+                emitter.send(event);
             } catch (IOException ex) {
                 remove(userId, connectionId);
                 emitter.completeWithError(ex);
