@@ -1,3 +1,9 @@
+qootalk:
+  channels:
+    chat-message: qootalk:chat:message
+    user-presence: qootalk:user:presence
+  presence-ttl-seconds: 300
+
 spring:
   config:
     import: "optional:file:.env[.properties],optional:file:../.env[.properties]"
@@ -26,6 +32,34 @@ spring:
     redis:
       host: ${LOCAL_REDIS_HOST}
       port: ${LOCAL_REDIS_PORT}
+
+  kafka:
+    bootstrap-servers: ${LOCAL_KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: ${LOCAL_KAFKA_CONSUMER_GROUP:qootalk-chat-local}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+
+messaging:
+  kafka:
+    topics:
+      chat-message: ${CHAT_MESSAGE_TOPIC:qootalk.chat.message}
+      read-receipt: ${READ_RECEIPT_TOPIC:qootalk.read.receipt}
+    consumer-group: ${LOCAL_KAFKA_CONSUMER_GROUP:qootalk-chat-local}
+    partition-count: ${LOCAL_KAFKA_PARTITION_COUNT:3}
+    replication-factor: ${LOCAL_KAFKA_REPLICATION_FACTOR:(short) 1}
+  redis:
+    channels:
+      chat-message: ${REDIS_CHAT_MESSAGE_CHANNEL:qootalk:chat:message}
+      read-receipt: ${REDIS_READ_RECEIPT_CHANNEL:qootalk:chat:read-receipt}
+      user-presence: ${REDIS_USER_PRESENCE_CHANNEL:qootalk:user:presence}
+    presence-ttl-seconds: ${REDIS_PRESENCE_TTL_SECONDS:300}
 
 aws:
   s3:

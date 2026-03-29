@@ -1,0 +1,55 @@
+package com.lrchan.qootalk.infrastructure.messaging.redis;
+
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.stereotype.Component;
+
+import com.lrchan.qootalk.application.chat.dto.event.UserReadReceiptEvent;
+import com.lrchan.qootalk.infrastructure.messaging.presence.LocalUserConnectionRegistry;
+
+@Component
+public class RedisReadReceiptSubscriber implements MessageListener, InitializingBean {
+
+    private final RedisMessageListenerContainer redisMessageListenerContainer;
+    private final ChannelTopic readReceiptChannelTopic;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private final LocalUserConnectionRegistry localUserConnectionRegistry;
+
+    public RedisReadReceiptSubscriber(
+        RedisMessageListenerContainer redisMessageListenerContainer,
+        @Qualifier("readReceiptChannelTopic") ChannelTopic readReceiptChannelTopic,
+        RedisTemplate<String, Object> redisTemplate,
+        LocalUserConnectionRegistry localUserConnectionRegistry
+    ) {
+        this.redisMessageListenerContainer = redisMessageListenerContainer;
+        this.readReceiptChannelTopic = readReceiptChannelTopic;
+        this.redisTemplate = redisTemplate;
+        this.localUserConnectionRegistry = localUserConnectionRegistry;
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        redisMessageListenerContainer.addMessageListener(this, readReceiptChannelTopic);
+    }
+
+    @Override
+    public void onMessage(org.springframework.data.redis.connection.Message message, byte[] pattern) {
+        RedisSerializer<?> serializer = redisTemplate.getValueSerializer();
+        Object payload = serializer.deserialize(message.getBody());
+        if (!(payload instanceof UserReadReceiptEvent userEvent)) {
+            return;
+        }
+
+        localUserConnectionRegistry.dispatch(
+            userEvent.recipientId(),
+            "read-receipt",
+            String.valueOf(userEvent.readReceipt().lastReadMessageId()),
+            userEvent.readReceipt()
+        );
+    }
+}
