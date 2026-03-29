@@ -53,7 +53,7 @@ messaging:
       read-receipt: ${READ_RECEIPT_TOPIC:qootalk.read.receipt}
     consumer-group: ${LOCAL_KAFKA_CONSUMER_GROUP:qootalk-chat-local}
     partition-count: ${LOCAL_KAFKA_PARTITION_COUNT:3}
-    replication-factor: ${LOCAL_KAFKA_REPLICATION_FACTOR:(short) 1}
+    replication-factor: ${LOCAL_KAFKA_REPLICATION_FACTOR:1}
   redis:
     channels:
       chat-message: ${REDIS_CHAT_MESSAGE_CHANNEL:qootalk:chat:message}

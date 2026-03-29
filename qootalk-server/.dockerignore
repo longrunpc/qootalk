@@ -1,0 +1,7 @@
+.git
+.gradle
+build
+**/build
+localstack_data
+*.log
+.DS_Store
