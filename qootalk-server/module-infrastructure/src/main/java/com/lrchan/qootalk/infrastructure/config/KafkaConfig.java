@@ -29,8 +29,8 @@ public class KafkaConfig {
     @Bean
     KafkaAdmin.NewTopics chatMessageTopic(KafkaMessagingProperties properties) {
         return new KafkaAdmin.NewTopics(
-            new NewTopic(resolveTopic(properties.topics().chatMessage()), 3, (short) 1),
-            new NewTopic(resolveTopic(properties.topics().readReceipt()), 3, (short) 1)
+            new NewTopic(resolveTopic(properties.topics().chatMessage()), properties.partitionCount(), properties.replicationFactor()),
+            new NewTopic(resolveTopic(properties.topics().readReceipt()), properties.partitionCount(), properties.replicationFactor())
         );
     }
 

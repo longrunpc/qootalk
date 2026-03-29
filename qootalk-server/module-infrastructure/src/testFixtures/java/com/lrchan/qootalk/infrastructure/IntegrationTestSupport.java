@@ -82,5 +82,7 @@ public abstract class IntegrationTestSupport {
         registry.add("messaging.kafka.topics.chat-message", () -> "qootalk.chat.message");
         registry.add("messaging.kafka.topics.read-receipt", () -> "qootalk.read.receipt");
         registry.add("messaging.kafka.consumer-group", () -> "qootalk-chat");
+        registry.add("messaging.kafka.partition-count", () -> "3");
+        registry.add("messaging.kafka.replication-factor", () -> "(short) 1");
     }
 }
