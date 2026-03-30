@@ -94,6 +94,9 @@ QooTalk Server는 사내 커뮤니케이션을 위한 채팅 백엔드 서버입
 
 즉, 유니크 키를 단순 제약 조건이 아니라 성능과 정합성을 함께 챙기는 설계 요소로 활용했습니다.
 
+- 관련 Docs : [`docs/unique-key-design.md`](./docs/unique-key-design.md)
+
+
 ### 2. Kafka와 Redis를 함께 사용해 동시성 처리 구조를 강화
 
 채팅 시스템은 여러 사용자가 동시에 같은 채팅방에서 메시지를 보내고 읽음 이벤트를 발생시키는 구조이기 때문에,  
@@ -108,6 +111,8 @@ QooTalk Server는 사내 커뮤니케이션을 위한 채팅 백엔드 서버입
 동시 요청이 몰리는 상황에서도 애플리케이션이 한 번에 모든 실시간 처리를 직접 떠안지 않도록 구조를 정리할 수 있었습니다.
 
 결과적으로 실시간성은 유지하면서도, 이후 소비자 확장이나 이벤트 기반 기능 추가로 이어질 수 있는 기반을 만들었습니다.
+
+- 관련 Docs : [`docs/chat-redis-kafka-optimization.md`](./docs/chat-redis-kafka-optimization.md)
 
 ### 3. Testcontainers를 활용해 실제 실행 환경에 가까운 테스트를 구성
 
