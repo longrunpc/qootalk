@@ -54,20 +54,21 @@ class ProfileImageUrlTest {
             assertThat(new ProfileImageUrl("https://example.com:8080/image.gif").value())
                 .isEqualTo("https://example.com:8080/image.gif");
         }
+
+        @Test
+        @DisplayName("null 값으로 생성할 수 있다")
+        void should_CreateProfileImageUrl_When_Null() {
+            // when
+            ProfileImageUrl profileImageUrl = new ProfileImageUrl(null);
+
+            // then
+            assertThat(profileImageUrl.value()).isNull();
+        }
     }
 
     @Nested
     @DisplayName("검증 실패")
     class ValidationFailureTest {
-
-        @Test
-        @DisplayName("null 값으로 생성하면 예외가 발생한다")
-        void should_ThrowException_When_Null() {
-            // when & then
-            assertThatThrownBy(() -> new ProfileImageUrl(null))
-                .isInstanceOf(DomainException.class)
-                .hasMessage(UserErrorCode.USER_INVALID_PROFILE_IMAGE_URL.getMessage());
-        }
 
         @Test
         @DisplayName("빈 문자열로 생성하면 예외가 발생한다")

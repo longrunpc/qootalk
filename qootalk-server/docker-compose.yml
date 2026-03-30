@@ -1,14 +1,105 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qootalk_app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+      localstack:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      LOCAL_DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-qootalk}
+      LOCAL_DB_USERNAME: ${POSTGRES_USER:-qootalk}
+      LOCAL_DB_PASSWORD: ${POSTGRES_PASSWORD:-qootalk}
+      LOCAL_JPA_DDL_AUTO: ${LOCAL_JPA_DDL_AUTO:-validate}
+      LOCAL_JPA_SHOW_SQL: ${LOCAL_JPA_SHOW_SQL:-false}
+      LOCAL_REDIS_HOST: redis
+      LOCAL_REDIS_PORT: 6379
+      LOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      LOCAL_KAFKA_CONSUMER_GROUP: ${LOCAL_KAFKA_CONSUMER_GROUP:-qootalk-chat-local}
+      LOCAL_KAFKA_PARTITION_COUNT: ${LOCAL_KAFKA_PARTITION_COUNT:-3}
+      LOCAL_KAFKA_REPLICATION_FACTOR: ${LOCAL_KAFKA_REPLICATION_FACTOR:-1}
+      LOCAL_S3_ENDPOINT: http://localstack:4566
+      LOCAL_S3_REGION: ${LOCAL_S3_REGION:-ap-northeast-2}
+      LOCAL_S3_ACCESS_KEY: ${LOCAL_S3_ACCESS_KEY:-test}
+      LOCAL_S3_SECRET_KEY: ${LOCAL_S3_SECRET_KEY:-test}
+      LOCAL_S3_BUCKET_NAME: ${LOCAL_S3_BUCKET_NAME:-qootalk-s3-local}
+      JWT_SECRET: ${JWT_SECRET:-qootalk-local-secret-key-qootalk-local-secret-key}
+      JWT_ACCESS_EXPIRATION: ${JWT_ACCESS_EXPIRATION:-3600000}
+      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-1209600000}
+      CHAT_MESSAGE_TOPIC: ${CHAT_MESSAGE_TOPIC:-qootalk.chat.message}
+      READ_RECEIPT_TOPIC: ${READ_RECEIPT_TOPIC:-qootalk.read.receipt}
+      REDIS_CHAT_MESSAGE_CHANNEL: ${REDIS_CHAT_MESSAGE_CHANNEL:-qootalk:chat:message}
+      REDIS_READ_RECEIPT_CHANNEL: ${REDIS_READ_RECEIPT_CHANNEL:-qootalk:chat:read-receipt}
+      REDIS_USER_PRESENCE_CHANNEL: ${REDIS_USER_PRESENCE_CHANNEL:-qootalk:user:presence}
+      REDIS_PRESENCE_TTL_SECONDS: ${REDIS_PRESENCE_TTL_SECONDS:-300}
+    ports:
+      - "8080:8080"
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: qootalk_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-qootalk}
+      POSTGRES_USER: ${POSTGRES_USER:-qootalk}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-qootalk}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-qootalk} -d ${POSTGRES_DB:-qootalk}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: qootalk_redis
+
+  kafka:
+    image: apache/kafka:3.9.0
+    container_name: qootalk_kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
   localstack:
     image: localstack/localstack:latest
-    container_name: localstack_s3
-    ports:
-      - "4566:4566"
+    container_name: qootalk_localstack
     environment:
-      - SERVICES=s3
-      - DEFAULT_REGION=ap-northeast-2
-      - DATA_DIR=/tmp/localstack/data
-      - PORT=4566
+      SERVICES: s3
+      DEFAULT_REGION: ${LOCAL_S3_REGION:-ap-northeast-2}
+      AWS_DEFAULT_REGION: ${LOCAL_S3_REGION:-ap-northeast-2}
+      AWS_ACCESS_KEY_ID: ${LOCAL_S3_ACCESS_KEY:-test}
+      AWS_SECRET_ACCESS_KEY: ${LOCAL_S3_SECRET_KEY:-test}
+      DATA_DIR: /tmp/localstack/data
+      PORT: 4566
+      LOCAL_S3_BUCKET_NAME: ${LOCAL_S3_BUCKET_NAME:-qootalk-s3-local}
     volumes:
-      - "./localstack_data:/var/lib/localstack"
-      - "./scripts/localstack/init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh"
+      - ./localstack_data:/var/lib/localstack
+      - ./scripts/localstack/init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh
+
+volumes:
+  postgres_data:
+  kafka_data:

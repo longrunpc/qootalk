@@ -28,6 +28,7 @@ public class FileAttachmentJpaRepositoryTest extends IntegrationTestSupport {
     void should_saveAndFind_when_validAttachment() {
         // given
         FileAttachmentEntity fileAttachmentEntity = FileAttachmentEntity.builder()
+            .roomId(10L)
             .messageId(1L)
             .uploaderId(2L)
             .metadata(new FileMetadataEmbeddable(
@@ -53,6 +54,7 @@ public class FileAttachmentJpaRepositoryTest extends IntegrationTestSupport {
 
         // then
         assertThat(savedEntity.getId()).isNotNull();
+        assertThat(savedEntity.getRoomId()).isEqualTo(10L);
         assertThat(savedEntity.getMessageId()).isEqualTo(1L);
         assertThat(savedEntity.getUploaderId()).isEqualTo(2L);
         assertThat(savedEntity.getFileType()).isEqualTo(FileType.IMAGE);
@@ -70,6 +72,7 @@ public class FileAttachmentJpaRepositoryTest extends IntegrationTestSupport {
         void should_findByMessageId_when_validMessageId() {
             // given
             FileAttachmentEntity fileAttachmentEntity = FileAttachmentEntity.builder()
+                .roomId(10L)
                 .messageId(1L)
                 .uploaderId(2L)
                 .metadata(new FileMetadataEmbeddable(
@@ -96,6 +99,7 @@ public class FileAttachmentJpaRepositoryTest extends IntegrationTestSupport {
 
             // then
             assertThat(foundEntity.getId()).isNotNull();
+            assertThat(foundEntity.getRoomId()).isEqualTo(10L);
             assertThat(foundEntity.getMessageId()).isEqualTo(1L);
             assertThat(foundEntity.getUploaderId()).isEqualTo(2L);
             assertThat(foundEntity.getFileType()).isEqualTo(FileType.IMAGE);

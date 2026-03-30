@@ -1,13 +1,10 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.room;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
-
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import com.lrchan.qootalk.domain.chat.room.RoomType;
-import com.lrchan.qootalk.infrastructure.persistence.common.BaseEntity;
+import com.lrchan.qootalk.infrastructure.common.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

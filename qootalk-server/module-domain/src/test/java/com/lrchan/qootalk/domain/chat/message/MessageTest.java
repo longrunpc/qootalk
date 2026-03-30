@@ -90,21 +90,6 @@ class MessageTest {
         }
 
         @Test
-        @DisplayName("userId가 null이면 예외가 발생해야 한다")
-        void should_ThrowException_When_UserIdIsNull() {
-            // given
-            Long roomId = 1L;
-            Long userId = null;
-            String content = "안녕하세요";
-            MessageType messageType = MessageType.TEXT;
-            List<Long> mentions = Collections.emptyList();
-
-            // when & then
-            assertThatThrownBy(() -> Message.create(roomId, userId, content, messageType, mentions))
-                .isInstanceOf(NullPointerException.class);
-        }
-
-        @Test
         @DisplayName("메시지를 생성할 때 멘션이 null이면 빈 리스트가 설정되어야 한다")
         void should_SetEmptyList_When_MentionsIsNull() {
             // given

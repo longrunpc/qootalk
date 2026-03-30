@@ -19,10 +19,10 @@ public final class ProfileImageUrl {
     }
 
     private void validate(String value) {
-        if (value == null || value.isBlank()) {
-            throw new DomainException(UserErrorCode.USER_INVALID_PROFILE_IMAGE_URL);
+        if (value == null) {
+            return;
         }
-        if (!value.matches("^https?://.*")) {
+        if (value.isBlank() || !value.matches("^https?://.*")) {
             throw new DomainException(UserErrorCode.USER_INVALID_PROFILE_IMAGE_URL);
         }
     }

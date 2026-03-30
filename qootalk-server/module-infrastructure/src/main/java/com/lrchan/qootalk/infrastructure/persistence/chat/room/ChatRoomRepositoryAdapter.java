@@ -1,14 +1,17 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.room;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.lrchan.qootalk.application.chat.port.out.LoadChatRoomPort;
+import com.lrchan.qootalk.application.chat.port.out.SaveChatRoomPort;
 import com.lrchan.qootalk.domain.chat.room.ChatRoom;
 import com.lrchan.qootalk.domain.chat.room.ChatRoomRepository;
 
 @Component
-public class ChatRoomRepositoryAdapter implements ChatRoomRepository {
+public class ChatRoomRepositoryAdapter implements ChatRoomRepository, SaveChatRoomPort, LoadChatRoomPort {
     
     private final ChatRoomJpaRepository chatRoomJpaRepository;
     
@@ -18,7 +21,7 @@ public class ChatRoomRepositoryAdapter implements ChatRoomRepository {
 
     @Override
     public Optional<ChatRoom> findById(Long id) {
-        return chatRoomJpaRepository.findById(id).map(ChatRoomEntityMapper::toDomain);
+        return chatRoomJpaRepository.findById(Objects.requireNonNull(id)).map(ChatRoomEntityMapper::toDomain);
     }
 
     @Override
@@ -34,7 +37,7 @@ public class ChatRoomRepositoryAdapter implements ChatRoomRepository {
     @Override
     public ChatRoom save(ChatRoom chatRoom) {
         ChatRoomEntity chatRoomEntity = ChatRoomEntityMapper.toEntity(chatRoom);
-        ChatRoomEntity savedEntity = chatRoomJpaRepository.save(chatRoomEntity);
+        ChatRoomEntity savedEntity = chatRoomJpaRepository.save(Objects.requireNonNull(chatRoomEntity));
         return ChatRoomEntityMapper.toDomain(savedEntity);
     }
 }

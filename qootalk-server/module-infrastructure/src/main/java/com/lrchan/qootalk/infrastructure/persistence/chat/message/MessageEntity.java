@@ -1,15 +1,13 @@
 package com.lrchan.qootalk.infrastructure.persistence.chat.message;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import com.lrchan.qootalk.domain.chat.message.MessageType;
-import com.lrchan.qootalk.infrastructure.persistence.common.BaseEntity;
+import com.lrchan.qootalk.infrastructure.common.BaseEntity;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -19,6 +17,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,8 +48,14 @@ public class MessageEntity extends BaseEntity {
 
     // null일때 멘션 없음을 의미(체크 유의)
     @ElementCollection
-    @CollectionTable(name = "message_mentions", joinColumns = @JoinColumn(name = "message_id"))
-    @Column(name = "user_id")
+    @CollectionTable(
+        name = "message_mentions",
+        joinColumns = @JoinColumn(name = "message_id"),
+        uniqueConstraints = {
+            @UniqueConstraint(name = "uk_message_mentions_message_user", columnNames = {"message_id", "user_id"})
+        }
+    )
+    @Column(name = "user_id", nullable = false)
     @Builder.Default
     private List<Long> mentions = new ArrayList<>();
 

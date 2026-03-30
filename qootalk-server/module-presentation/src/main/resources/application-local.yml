@@ -1,3 +1,9 @@
+qootalk:
+  channels:
+    chat-message: qootalk:chat:message
+    user-presence: qootalk:user:presence
+  presence-ttl-seconds: 300
+
 spring:
   config:
     import: "optional:file:.env[.properties],optional:file:../.env[.properties]"
@@ -22,13 +28,49 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
 
+  data:
+    redis:
+      host: ${LOCAL_REDIS_HOST}
+      port: ${LOCAL_REDIS_PORT}
+
+  kafka:
+    bootstrap-servers: ${LOCAL_KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: ${LOCAL_KAFKA_CONSUMER_GROUP:qootalk-chat-local}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+
+messaging:
+  kafka:
+    topics:
+      chat-message: ${CHAT_MESSAGE_TOPIC:qootalk.chat.message}
+      read-receipt: ${READ_RECEIPT_TOPIC:qootalk.read.receipt}
+    consumer-group: ${LOCAL_KAFKA_CONSUMER_GROUP:qootalk-chat-local}
+    partition-count: ${LOCAL_KAFKA_PARTITION_COUNT:3}
+    replication-factor: ${LOCAL_KAFKA_REPLICATION_FACTOR:1}
+  redis:
+    channels:
+      chat-message: ${REDIS_CHAT_MESSAGE_CHANNEL:qootalk:chat:message}
+      read-receipt: ${REDIS_READ_RECEIPT_CHANNEL:qootalk:chat:read-receipt}
+      user-presence: ${REDIS_USER_PRESENCE_CHANNEL:qootalk:user:presence}
+    presence-ttl-seconds: ${REDIS_PRESENCE_TTL_SECONDS:300}
+
 aws:
   s3:
+    endpoint: ${LOCAL_S3_ENDPOINT}
+    region: ${LOCAL_S3_REGION}
+    access-key: ${LOCAL_S3_ACCESS_KEY}
+    secret-key: ${LOCAL_S3_SECRET_KEY}
     bucket:
-      endpoint: http://localhost:4566
-      region: ap-northeast-2
-      access-key: accessKey
-      secret-key: secretKey
-      name: qootalk-s3-local
-    storage:
-      path: s3/chats/attachments/
+      name: ${LOCAL_S3_BUCKET_NAME}
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-expiration: ${JWT_ACCESS_EXPIRATION}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION}
