@@ -6,9 +6,6 @@ import java.util.List;
 import com.lrchan.qootalk.domain.chat.message.Message;
 import com.lrchan.qootalk.domain.chat.message.MessageType;
 
-import lombok.Builder;
-
-@Builder 
 public record SendMessageQueryResult(
     Long id,
     Long roomId,
@@ -21,16 +18,16 @@ public record SendMessageQueryResult(
     LocalDateTime createdAt
 ) {
     public static SendMessageQueryResult of(Message message, List<Long> attachmentIds) {
-        return SendMessageQueryResult.builder()
-            .id(message.id())
-            .roomId(message.roomId())
-            .senderId(message.userId())
-            .content(message.content())
-            .messageType(message.messageType())
-            .mentions(message.mentions())
-            .parentMessageId(message.parentMessageId())
-            .attachmentIds(attachmentIds)
-            .createdAt(message.createdAt())
-            .build();
+        return new SendMessageQueryResult(
+            message.id(),
+            message.roomId(),
+            message.userId(),
+            message.content(),
+            message.messageType(),
+            message.mentions(),
+            message.parentMessageId(),
+            attachmentIds,
+            message.createdAt()
+        );
     }
 }
