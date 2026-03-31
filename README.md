@@ -94,7 +94,7 @@ QooTalk Server는 사내 커뮤니케이션을 위한 채팅 백엔드 서버입
 
 즉, 유니크 키를 단순 제약 조건이 아니라 성능과 정합성을 함께 챙기는 설계 요소로 활용했습니다.
 
-- 관련 Docs : [`docs/unique-key-design.md`](./docs/unique-key-design.md)
+- 관련 Docs : [`qootalk-server/docs/unique-key-design.md`](./qootalk-server/docs/unique-key-design.md)
 
 
 ### 2. Kafka와 Redis를 함께 사용해 동시성 처리 구조를 강화
@@ -112,7 +112,7 @@ QooTalk Server는 사내 커뮤니케이션을 위한 채팅 백엔드 서버입
 
 결과적으로 실시간성은 유지하면서도, 이후 소비자 확장이나 이벤트 기반 기능 추가로 이어질 수 있는 기반을 만들었습니다.
 
-- 관련 Docs : [`docs/chat-redis-kafka-optimization.md`](./docs/chat-redis-kafka-optimization.md)
+- 관련 Docs : [`qootalk-server/docs/chat-redis-kafka-optimization.md`](./qootalk-server/docs/chat-redis-kafka-optimization.md)
 
 ### 3. Testcontainers를 활용해 실제 실행 환경에 가까운 테스트를 구성
 
@@ -206,34 +206,39 @@ Gradle로 직접 실행하거나 테스트를 돌릴 예정이라면 Java 21이 
 ### 2. Docker Compose로 실행
 
 ```bash
+cd qootalk-server
 docker compose up --build
 ```
 
 백그라운드 실행
 
 ```bash
+cd qootalk-server
 docker compose up -d --build
 ```
 
 종료
 
 ```bash
+cd qootalk-server
 docker compose down -v
 ```
 
 ### 3. Gradle로 직접 실행
 
 ```bash
+cd qootalk-server
 ./gradlew :module-presentation:bootRun
 ```
 
 테스트 실행
 
 ```bash
+cd qootalk-server
 ./gradlew test
 ```
 
 ### 4. 참고 문서
 
-- 통합 API 문서: [`docs/API_SPEC_V1.md`](./docs/API_SPEC_V1.md)
-- 세부 API 명세: [`docs/api-spec/README.md`](./docs/api-spec/README.md)
+- 통합 API 문서: [`qootalk-server/docs/API_SPEC_V1.md`](./qootalk-server/docs/API_SPEC_V1.md)
+- 세부 API 명세: [`qootalk-server/docs/api-spec/README.md`](./qootalk-server/docs/api-spec/README.md)
